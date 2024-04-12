@@ -1,5 +1,9 @@
 # Equipo: equipo-dinamite
-repositorio del equipo dinamite
+Repositorio del equipo dinamite
+- Alfonso Imanol Macias Marañon - A01808099
+- Diego Ponce de León Betanzos - A01664407
+- Erick Eduardo Bautista Acosta - A01707267
+- Andre Zalidvar Agle - A01709535
 
 # Especificaciones
 - En ningún momento deberán existir commits directos a las ramas main, master o develop, solo merges a través de Pull Request que hayan sido validados por el equipo.
