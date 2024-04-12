@@ -1,4 +1,4 @@
-# equipo-dinamite
+# Equipo: equipo-dinamite
 repositorio del equipo dinamite
 
 # Especificaciones
