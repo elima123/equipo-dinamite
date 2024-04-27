@@ -1,0 +1,136 @@
+@font-face {
+    font-family: 'Muli Light';
+    src: url('C:\Users\andre\OneDrive\Documents\Construccion de Software\fonts') format('truetype');
+}
+
+body {
+    font-family: 'Multi Light', sans-serif;
+}
+
+form {
+    margin: 10vh auto 10vh auto;
+    border: solid lightgray 1px;
+    width: 50%;
+}
+
+.hidden {
+    display: none;
+}
+
+.warning {
+    color: red;
+    font-size: small;
+    position: relative;
+    bottom: 5px;
+}
+
+.my-nav {
+    height: 9vh;
+    width: 100%;
+    background-color: lightgrey;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5vh;
+}
+
+.flex-1 {
+    display: flex;
+    justify-content: flex-start;
+    flex-basis: 50%;
+    align-items: center;
+    margin-left: 5vh;
+
+}
+
+.flex-1 img {
+    width: 120px;
+}
+
+.flex-2 {
+    display: flex;
+    justify-content: flex-end;
+    flex-basis: 50%;
+    align-items: center;
+    gap: 20px;
+    margin-right: 5vh;
+    margin-bottom: 2rem;
+}
+
+.flex-3 {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    border: solid blue 1px;
+    padding: 1rem;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+
+}
+
+.wrong {
+    position: relative;
+    bottom: 6rem;
+    z-index: 2;
+}
+
+.avanzar {
+    position: absolute;
+    top: 17%;
+    right: 24%;
+    z-index: 2;
+}
+
+.input-x {
+    z-index: 2;
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    padding: 0.5rem;
+    width: 400px;
+}
+
+.input-z {
+    z-index: 2;
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    padding: 0.5rem;
+    width: 400px;
+}
+
+.enter {
+    position: absolute;
+    right: 2%;
+    bottom: 27%;
+    z-index: 2;
+    width: 230px;
+    padding: 0.6rem 0;
+}
+
+.history {
+    margin: 0 auto;
+    width: 20%;
+}
+
+.vis-img {
+    width: 100%;
+}
+
+.history a {
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.flex-3 input {
+    flex-basis: 70%;
+}
+
+.sign-in-div {
+    margin: 0 auto;
+    width: 55%;
+}
