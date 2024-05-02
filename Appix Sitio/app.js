@@ -1,16 +1,38 @@
-import express from 'express'
-import { autenticar } from './database.js'
+// import express from 'express'
+// import { autenticar } from './database.js'
+const http = require('http')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const express = require('express')
+const session = require('express-session')
+const rutasUsuarios = require('./routes/usuarios.routes')
+// import http from 'http'
+// import path from 'path'
+// import cookieParser from 'cookie-parser'
+// import session from 'express-session'
+// import rutasUsuarios from './routes/usuarios.routes.js'
 
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.set("view engine", "ejs")
+app.set("views", "views")
 
+app.use(cookieParser())
+app.use(session({
+    secret: "lleguenatiempocabrones",
+    resave: false,
+    saveUninitialized: false
+}))
+app.use('/usuarios', rutasUsuarios)
 
 app.get('/', (req, res) => {
-    res.render('signIn.ejs')
+    res.setHeader('Content-Type', 'text/plain')
+    res.render("Default Text")
+    res.end()
 })
 
 app.get("/homePage", (req, res) => {
@@ -36,9 +58,10 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke')
 })
 
-app.use(express.static("public"))
+const server = http.createServer((req, res) => {
+    console.log(req.url)
+})
 
-
-app.listen(8000, () => {
-    console.log("Server started on port 8000")
+app.listen(4747, () => {
+    console.log("Server started on port 4747")
 })

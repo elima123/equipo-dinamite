@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <%- include('./../css.ejs') %>
+        <%- include('./../includes/head.html') %>
+        <title>Sign In</title>
+    </head>
+    <body>
+        <div class="body-registro">
+            <div class="img-div">
+                <img src="/imgs/intro_img.png">
+            </div>
+            <div class="registro-div">
+                <div class="flex-3">
+                    <img src="/fonts/logo_color.png"><!--<img src="/imgs/dinamite_logo.png"> -->
+                </div>
+                <h4>Para iniciar la sesion ingresa tu usuario y contrasena</h4>
+                <form action="/usuarios/login" method="POST" class="registro-form">
+                    <label for="nombre">Nombre Completo</label><br>
+                    <input id="nombre" name="nombre" placeholder="Carlos Guzman"><br>
+                    <label for="password">Contraseña</label><br>
+                    <input type="password" id="password" name="contrasena" placeholder="password">
+                    <br><br>
+                    <input type="submit" value="Entrar">
+                </form>
+                <footer>
+                    <p style="display: inline;">Powered By: </p><img src="/imgs/dinamite_logo.png">
+                </footer>
+            </div>
+        </div>
+    </body>
+    <%- include('./../scripts.ejs') %>
+</html>
