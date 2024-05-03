@@ -53,6 +53,9 @@ CREATE TABLE Proyectos (
     
     FOREIGN KEY (IDEmpresa) REFERENCES Empresas (IDEmpresa)
     );
+UPDATE Proyectos
+SET Estado = "finalizado" WHERE IDProyecto = 2 OR IDProyecto = 7;
+
 
 INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
 VALUES
@@ -102,6 +105,7 @@ VALUES
 ("Inmobiliaria del Caribe", "998-369-1478", "contacto@inmocaribe.com.mx"),
 ("Grupo Turístico del Pacífico", "322-2580-1478", "info@grupoturisticopacifico.com.mx");
     
+select * from Riesgos;
 CREATE TABLE Riesgos (
 	IDRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	Categoria ENUM("Alcance", "Tiempo", "Calidad", "Recursos", "Costo"),
@@ -125,6 +129,7 @@ INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto)
 VALUES
 (1, 3);
         
+select * from ProyectoRiesgos;
 CREATE TABLE ProyectoRiesgos (
 	IDProyectoRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	IDProyecto INT,
@@ -133,6 +138,14 @@ CREATE TABLE ProyectoRiesgos (
     FOREIGN KEY (IDProyecto) REFERENCES Proyectos (IDProyecto),
     FOREIGN KEY (IDRiesgo) REFERENCES Riesgos (IDRiesgo)
     );
+
+INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo)
+VALUES 
+(2, 3),
+(2, 8),
+(2, 16),
+(2, 24),
+(2, 27);
 
     
 INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia)

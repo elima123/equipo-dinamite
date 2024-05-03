@@ -19,14 +19,17 @@
                     <input id="nombre" name="nombre" placeholder="Carlos Guzman"><br>
                     <label for="password">Contraseña</label><br>
                     <input type="password" id="password" name="contrasena" placeholder="password">
+                    <p class="hidden" id="warning-empty">Campos no pueden estar vacios</p>
+                    <p class="hidden" id="warning-chars">Credencials no pueden contener: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.\/?]+/</p>
                     <br><br>
-                    <input type="submit" value="Entrar">
+                    <input type="submit" id="entrar" value="Entrar">
                 </form>
                 <footer>
-                    <p style="display: inline;">Powered By: </p><img src="/imgs/dinamite_logo.png">
+                    <p>Powered By: </p><img src="/imgs/dinamite_logo.png">
                 </footer>
             </div>
         </div>
     </body>
-    <%- include('./../scripts.ejs') %>
+    <!-- <%- include('./../scripts.ejs') %> -->
+    <script src="/validation.js"></script>
 </html>

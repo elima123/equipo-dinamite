@@ -59,4 +59,32 @@ exports.User = class {
             throw e
         }
     }
-}
+
+    static async getProyectosManager() {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT p.*, e.Nombre AS nombreEmpresa
+            FROM Proyectos as p
+            INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+            `)
+            await connection.release()
+            return result
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async getRiesgos(id) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT IDProyecto, IDRiesgo FROM ProyectoRiesgos WHERE IDProyecto = ?
+            `, [id])
+            const riesgoObject = result[0]
+            return riesgoObject
+        } catch(e) {
+            throw e
+        }
+    }
+} 

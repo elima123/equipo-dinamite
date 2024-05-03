@@ -10,8 +10,10 @@
             </div>
             <div class="search-nav">
                 <div class="input-group mb-3 no-margin">
-                    <input type="text" class="form-control" placeholder="buscar proyecto...">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    <input type="text" class="form-control" placeholder="buscar proyecto..." id="search-input">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <%- include('./../includes/search-icon.html') %>
+                    </button>
                 </div>
             </div>
             <div class="flex-2">
@@ -24,11 +26,41 @@
         <% } else { %>
             <p>you are a measely peasant</p>
         <% } %>
-        <section>
+        <div class="card-flexbox">
+            <% projects.forEach(project => { %>
+                <a href="/proyecto/<%= project.IDProyecto %>" <% if (project.Estado == "activo") { %>class="bueno" <% } else { %>class="malo" <% } %> >
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= project.Nombre %></h5>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">Cliente: <%= project.nombreEmpresa %></h6>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">Estado de Riesgo:
+                        <% project.riesgos.forEach(riesgoArray => { %>
+                            <% if (Array.isArray(riesgoArray)) { %>
+                                <% riesgoArray.forEach((riesgo, i) => { %>
+                                    <p>Riesgo #<%= i+1 %>: <%= riesgo.IDRiesgo %></p>
+                                <% }) %>
+                            <% } else { %>
+                                <p>Riesgo: <%= riesgoArray.IDRiesgo %></p>
+                            <% } %>
+                        <% }) %> 
+                      </h6>
+                      <p class="card-text"><%= project.Descripcion %></p>
+                      <!-- <a href="#" class="card-link">Card link</a>
+                      <a href="#" class="card-link">Another link</a> -->
+                    </div>
+                </div>
+                </a>
+            <% }) %>
+        </div>
+        <footer>
+            <p style="display: inline-block;">Powerded by: </p>
+            <img src="/imgs/dinamite_logo.png" width="240">
+        </footer>
+        <!-- <section>
             <div class="project-card">
                 
             </div>
-        </section>
+        </section> -->
         <!--
         <div class="flex-2">
             <button>Agregar Empresa</button>

@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const express = require('express')
 const session = require('express-session')
 const rutasUsuarios = require('./routes/usuarios.routes')
+// const rutasProyectos = require('./routes/proyectos.routes')
 // import http from 'http'
 // import path from 'path'
 // import cookieParser from 'cookie-parser'
@@ -28,6 +29,7 @@ app.use(session({
     saveUninitialized: false
 }))
 app.use('/usuarios', rutasUsuarios)
+// app.use('/proyecto/:idProyecto', rutasProyectos)
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/plain')

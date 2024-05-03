@@ -82,13 +82,44 @@ module.exports.get_homePage = async (req, res) => {
             res.render("usuarios/signIn.ejs")
             return
         }
-        userObject = usuario[0]
-        const proyectos = await model.
+        const userObject = usuario[0]
+
+        let proyectos
+        if (userObject.Rol == "manager") {
+            const proyectosAccesibles = await model.User.getProyectosManager()
+            proyectos = proyectosAccesibles[0]
+        }
+        if (userObject.Rol == "desarrollador") {
+            const proyectosAccesibles = await model.User.getProyectosDes(userObject.IDUsuario)
+            console.log(proyectosAccesibles)
+            proyectos = proyectosAccesibles[0]
+        }
+
+        let array_riesgos = []
+        for (let i = 0; i < proyectos.length; i++) {
+            const curr_id = proyectos[i].IDProyecto
+            const riesgos = await model.User.getRiesgos(curr_id)
+            array_riesgos.push(riesgos)
+        }
+        const combinedData = proyectos.map((project, i) => {
+            const projectRiesgos = array_riesgos[i].filter(riesgo => riesgo.IDProyecto === project.IDProyecto)
+            return { ...project, riesgos: projectRiesgos }
+        })
+        // console.log(combinedData)
 
         res.render("usuarios/homePage.ejs", {
-            user: userObject
+            user: userObject,
+            projects: combinedData
+            // projects: proyectos,
+            // riesgos: array_riesgos
         })
     } catch(e) {
         throw e
     }
 }
+
+// <% riesgos.forEach(project => { %>
+//     <% project.map((relationship, i) => { %>
+//         <p>Riesgo #<%= i+1 %>: <%= relationship.IDRiesgo %></p>
+//     <% }) %>
+// <% }) %>
