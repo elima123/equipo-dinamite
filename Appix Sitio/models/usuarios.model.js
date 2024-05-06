@@ -64,7 +64,9 @@ exports.User = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT p.*, e.Nombre AS nombreEmpresa
+            SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+                        DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+            e.Nombre AS nombreEmpresa
             FROM Proyectos as p
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
             `)
@@ -74,6 +76,14 @@ exports.User = class {
             throw e
         }
     }
+} 
+
+exports.Project = class {
+    // constructor(my_username, my_name, my_password) {
+    //     this.username = my_username,
+    //     this.name = my_name,
+    //     this.password = my_password
+    // }
 
     static async getRiesgos(id) {
         try {
@@ -81,10 +91,26 @@ exports.User = class {
             const result = await connection.execute(`
             SELECT IDProyecto, IDRiesgo FROM ProyectoRiesgos WHERE IDProyecto = ?
             `, [id])
+            await connection.release()
             const riesgoObject = result[0]
             return riesgoObject
         } catch(e) {
             throw e
         }
     }
-} 
+
+    static async riesgoInfo(id) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT Categoria, Impacto FROM Riesgos WHERE IDRiesgo = ?
+            `,[id])
+            await connection.release()
+            const neededInfo = result[0]
+            return neededInfo
+        } catch(e) {
+            throw e
+        }
+    }
+
+}

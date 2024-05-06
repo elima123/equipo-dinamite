@@ -6,12 +6,6 @@ const cookieParser = require('cookie-parser')
 const express = require('express')
 const session = require('express-session')
 const rutasUsuarios = require('./routes/usuarios.routes')
-// const rutasProyectos = require('./routes/proyectos.routes')
-// import http from 'http'
-// import path from 'path'
-// import cookieParser from 'cookie-parser'
-// import session from 'express-session'
-// import rutasUsuarios from './routes/usuarios.routes.js'
 
 const app = express()
 
@@ -43,6 +37,10 @@ app.get("/homePage", (req, res) => {
 
 app.get("/visual", (req, res) => {
     res.render("visual.ejs")
+})
+
+app.get("*", (req, res) => {
+    res.send("Error 404: Page Not Found")
 })
 
 app.post("/autenticar", (req, res) => {

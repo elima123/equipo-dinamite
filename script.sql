@@ -56,6 +56,8 @@ CREATE TABLE Proyectos (
 UPDATE Proyectos
 SET Estado = "finalizado" WHERE IDProyecto = 2 OR IDProyecto = 7;
 
+ALTER TABLE Proyectos
+MODIFY COLUMN Descripcion VARCHAR(240);
 
 INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
 VALUES
@@ -81,6 +83,9 @@ CREATE TABLE Empresas (
     Telefono VARCHAR(12),
     Correo VARCHAR(30)
     );
+    
+ALTER TABLE Empresas
+MODIFY COLUMN Nombre VARCHAR(60);
     
 INSERT INTO Empresas (Nombre, Telefono, Correo)
 VALUES
@@ -141,11 +146,19 @@ CREATE TABLE ProyectoRiesgos (
 
 INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo)
 VALUES 
-(2, 3),
-(2, 8),
-(2, 16),
-(2, 24),
-(2, 27);
+(7, 1),
+(7, 5),
+(7, 6),
+(7, 8),
+(7, 10),
+(7, 11),
+(7, 13),
+(7, 16),
+(7, 19),
+(7, 22),
+(7, 27),
+(7, 28),
+(7, 31);
 
     
 INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia)

@@ -2,6 +2,7 @@
 // import bcyrpt from 'bcryptjs'
 const model = require('../models/usuarios.model')
 const bcyrpt = require('bcryptjs')
+const algoritmo = require('../utils/algoritmo')
 
 module.exports.render_login = async (req, res) => {
     res.render("usuarios/signIn.ejs")
@@ -98,28 +99,46 @@ module.exports.get_homePage = async (req, res) => {
         let array_riesgos = []
         for (let i = 0; i < proyectos.length; i++) {
             const curr_id = proyectos[i].IDProyecto
-            const riesgos = await model.User.getRiesgos(curr_id)
+            const riesgos = await model.Project.getRiesgos(curr_id)
             array_riesgos.push(riesgos)
         }
-        const combinedData = proyectos.map((project, i) => {
+        let combinedData = proyectos.map((project, i) => {
             const projectRiesgos = array_riesgos[i].filter(riesgo => riesgo.IDProyecto === project.IDProyecto)
             return { ...project, riesgos: projectRiesgos }
         })
-        // console.log(combinedData)
+
+        let array_riesgos_rows = []
+        for (let i = 0; i < combinedData.length; i++) {
+            const arr_de_riesgos_de_proyecto = combinedData[i].riesgos
+            let arr = []
+            arr.push(combinedData[i].IDProyecto)
+            for (let j = 0; j < arr_de_riesgos_de_proyecto.length; j++) {
+                const idRiesgo = arr_de_riesgos_de_proyecto[j].IDRiesgo
+                riesgoDesc = await model.Project.riesgoInfo(idRiesgo)
+                riesgoCategoria = riesgoDesc[0].Categoria
+                riesgoImpacto = riesgoDesc[0].Impacto
+                arr.push(riesgoCategoria, riesgoImpacto)
+            }
+            array_riesgos_rows.push(arr)
+        }
+
+        for (let i = 0; i < array_riesgos_rows.length; i++) {
+            const idProyecto = array_riesgos_rows[i][0] 
+            const viabilidad = algoritmo.calcViabilidad(array_riesgos_rows[i])
+            for (let j = 0; j < combinedData.length; j++) {
+                if (combinedData[j].IDProyecto === idProyecto) {
+                    combinedData[j].Viabilidad = viabilidad
+                    break
+                }
+            }
+        }
 
         res.render("usuarios/homePage.ejs", {
             user: userObject,
-            projects: combinedData
-            // projects: proyectos,
-            // riesgos: array_riesgos
+            projects: combinedData,
+            projectsJSON: JSON.stringify(combinedData)
         })
     } catch(e) {
         throw e
     }
 }
-
-// <% riesgos.forEach(project => { %>
-//     <% project.map((relationship, i) => { %>
-//         <p>Riesgo #<%= i+1 %>: <%= relationship.IDRiesgo %></p>
-//     <% }) %>
-// <% }) %>

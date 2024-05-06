@@ -142,6 +142,7 @@ p .hidden {
     justify-content: space-between;
     align-items: center;
     margin: 2rem auto 2rem auto;
+    /* box-shadow: black 8px 4px 2px; */
 }
 
 .card-flexbox a {
@@ -150,24 +151,63 @@ p .hidden {
     transition: transform 0.3s ease-in-out;
     /* background-color: red; */
     border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .card-flexbox a:hover {
     transform: scale(1.1);
 }
 
-.bueno {
-    background-color: green;
+.card-title {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to left, blue, green, orange);
+    border-image-slice: 1;
 }
 
-.malo {
-    background-color: red;
+.flex-3 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
 }
 
-.card {
-    /* background: transparent; */
-    opacity: 95%;
+.flex-3 p {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
 }
+
+.my-title {
+    color: black;
+}
+
+.very-risky {border: solid red 2px; border-radius: 50%;}
+.at-risk {border: solid orange 2px; border-radius: 50%;}
+.viable {border: solid yellow 2px; border-radius: 50%;}
+.very-viable {border: solid greenyellow 2px; border-radius: 50%;}
+.perfect {border: solid green 2px; border-radius: 50%;}
+
+.p-desc {
+    padding-bottom: 0.5rem;
+    border-bottom: dotted lightgray 1px;
+    font-size: small;
+}
+
+.fechas-div {
+    line-height: 0.6rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* .card {
+    opacity: 55%;
+} */
 
 /* Seccion de Footer */
 footer {
@@ -177,19 +217,20 @@ footer {
     justify-content: center;
     align-items: center;
     width: 100%;
+    margin-top: auto;
     /* position: absolute;
     bottom: 0; */
 }
 
 
 .flex-3 {
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
     /* border: solid blue 1px; */
-    padding: 1rem;
+    /* padding: 0.5rem; */
 }
 
 table {
