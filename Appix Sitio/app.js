@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const express = require('express')
 const session = require('express-session')
 const rutasUsuarios = require('./routes/usuarios.routes')
+const rutasProyectos = require('./routes/proyectos.routes')
 
 const app = express()
 
@@ -23,7 +24,7 @@ app.use(session({
     saveUninitialized: false
 }))
 app.use('/usuarios', rutasUsuarios)
-// app.use('/proyecto/:idProyecto', rutasProyectos)
+app.use('/proyecto', rutasProyectos)
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/plain')
@@ -31,9 +32,13 @@ app.get('/', (req, res) => {
     res.end()
 })
 
-app.get("/homePage", (req, res) => {
-    res.render("homePage.ejs")
-})
+// app.get("/homePage", (req, res) => {
+//     res.render("homePage.ejs")
+// })
+
+// app.get("/proyecto/:idProyecto", (req, res) => {
+//     res.render("proyecto.ejs")
+// })
 
 app.get("/visual", (req, res) => {
     res.render("visual.ejs")

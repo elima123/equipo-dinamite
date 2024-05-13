@@ -176,16 +176,19 @@ p .hidden {
     width: 3rem;
     height: 3rem;
     margin-right: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.6rem 0.5rem 0.5rem 0.5rem;
     text-align: center;
+    align-self: center;
+    font-weight: 600;
 }
 
 .my-title {
     color: black;
 }
 
-.very-risky {border: solid red 2px; border-radius: 50%;}
-.at-risk {border: solid orange 2px; border-radius: 50%;}
+.very-risky {color: #fff; border-radius: 50%; background-color: red;}
+/* .at-risk {border: solid orange 2px; border-radius: 50%;} */
+.at-risk {color: #fff; border-radius: 50%; background-color: orange;}
 .viable {border: solid yellow 2px; border-radius: 50%;}
 .very-viable {border: solid greenyellow 2px; border-radius: 50%;}
 .perfect {border: solid green 2px; border-radius: 50%;}
@@ -228,7 +231,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 auto;
+    margin: 0 auto;    
     /* border: solid blue 1px; */
     /* padding: 0.5rem; */
 }

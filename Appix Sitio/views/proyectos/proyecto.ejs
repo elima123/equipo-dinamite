@@ -17,12 +17,14 @@
                 </div>
             </div>
             <div class="flex-2">
-                <p><%= user.Nombre %>:</p>
-                <p><%= user.Rol %></p>
+                <p><%= user.name %>:</p>
+                <p><%= user.rol %></p>
             </div>
         </nav>
         <% if (user.Rol == "manager") { %>
             <%- include('./../includes/manager_panel.html') %>
+        <% } else { %>
+            <p>you are a measely peasant</p>
         <% } %>
         <div class="card-flexbox" id="project-cards">
         
@@ -32,5 +34,4 @@
             <img src="/imgs/dinamite_logo.png" width="240">
         </footer>
     </body>
-    <%- include('./../scripts.ejs') %>
 </html>

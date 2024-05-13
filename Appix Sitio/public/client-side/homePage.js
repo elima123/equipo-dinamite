@@ -5,4 +5,3 @@ document.getElementById('search-input').addEventListener('input', e => {
 })
 
 let projects = []
-

@@ -1,5 +1,3 @@
-// import model from '../models/usuarios.model.js'
-// import bcyrpt from 'bcryptjs'
 const model = require('../models/usuarios.model')
 const bcyrpt = require('bcryptjs')
 const algoritmo = require('../utils/algoritmo')
@@ -14,8 +12,7 @@ module.exports.do_login = async (req, res) => {
         const userContrasena = req.body.contrasena
 
         // const usuarios = await model.User.findUser(userNombre)
-        const usuarios = await model.User.verifyUser(userNombre, userContrasena)
-        const usuario = usuarios[0]
+        const usuario = await model.User.verifyUser(userNombre, userContrasena)
         // if (!usuario) {
         //     res.render("usuarios/registro")
         // }
@@ -36,6 +33,7 @@ module.exports.do_login = async (req, res) => {
 
         req.session.nombre = userObject.Nombre
         req.session.pass = userObject.Contrasena
+        req.session.rol = userObject.Rol
         
         req.session.isLoggedIn = true
         res.status(201).redirect("/usuarios/homePage")
@@ -68,16 +66,10 @@ module.exports.get_registro = async (req, res) => {
 
 module.exports.get_homePage = async (req, res) => {
     try {
-        if (!req.session.isLoggedIn) {
-            res.status(400).redirect("/usuarios/login")
-            return
-        }
-
         const userNombre = req.session.nombre
         const userContrasena = req.session.pass
 
-        const usuarios = await model.User.verifyUser(userNombre, userContrasena)
-        const usuario = usuarios[0]
+        const usuario = await model.User.verifyUser(userNombre, userContrasena)
 
         if (usuario.length < 1) {
             res.render("usuarios/signIn.ejs")
@@ -87,13 +79,11 @@ module.exports.get_homePage = async (req, res) => {
 
         let proyectos
         if (userObject.Rol == "manager") {
-            const proyectosAccesibles = await model.User.getProyectosManager()
-            proyectos = proyectosAccesibles[0]
+            proyectos = await model.User.getProyectosManager()
         }
         if (userObject.Rol == "desarrollador") {
-            const proyectosAccesibles = await model.User.getProyectosDes(userObject.IDUsuario)
-            console.log(proyectosAccesibles)
-            proyectos = proyectosAccesibles[0]
+            proyectos = await model.User.getProyectosDes(userObject.IDUsuario)
+            console.log(proyectos)
         }
 
         let array_riesgos = []

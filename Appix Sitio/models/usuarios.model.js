@@ -1,5 +1,3 @@
-// import db from '../utils/database.js'
-// import bcrypt from 'bcryptjs'
 const db = require('../utils/database')
 const bcrypt = require('bcryptjs')
 
@@ -54,7 +52,8 @@ exports.User = class {
             SELECT * FROM Usuarios WHERE Nombre = ? AND Contrasena = ?`,
             [nombre, contrasena])
             await connection.release()
-            return result
+            const realResult = result[0]
+            return realResult
         } catch(e) {
             throw e
         }
@@ -71,8 +70,29 @@ exports.User = class {
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
             `)
             await connection.release()
-            return result
+            const realResult = result[0]
+            return realResult
         } catch (e) {
+            throw e
+        }
+    } 
+
+    static async getProyectosDes(idUsuario) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+            e.Nombre AS nombreEmpresa
+            FROM Proyectos as p
+            INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+            INNER JOIN UsuarioProyectos as up ON up.IDProyecto = p.IDProyecto
+            WHERE up.IDUsuario = ?;
+            `,[idUsuario])
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch(e) {
             throw e
         }
     }
@@ -112,5 +132,4 @@ exports.Project = class {
             throw e
         }
     }
-
 }
