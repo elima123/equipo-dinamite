@@ -38,7 +38,6 @@ VALUES
 ("Sergio Hernandez", "Sergio789"),
 ("Adriana Aguilar", "Adriana1234"),
 ("Ricardo Mendoza", "Ricardo5678");    
-
     
 select * from Proyectos;
 CREATE TABLE Proyectos (
@@ -132,8 +131,16 @@ CREATE TABLE UsuarioProyectos (
     
 INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto)
 VALUES
-(1, 3);
-        
+(6, 7);
+
+SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+e.Nombre AS nombreEmpresa
+FROM Proyectos as p
+INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+INNER JOIN UsuarioProyectos as up ON up.IDProyecto = p.IDProyecto
+WHERE up.IDUsuario = 6;
+      
 select * from ProyectoRiesgos;
 CREATE TABLE ProyectoRiesgos (
 	IDProyectoRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
