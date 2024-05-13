@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+    <head>
+        <%- include('./../includes/head.html') %>
+        <title>Home</title>
+    </head>
+    <body>
+        <nav class="universal-nav">
+            <div class="flex-1">
+                <img src="/fonts/logo_color.png" alt="Appix">
+            </div>
+            <div class="search-nav">
+                <div class="input-group mb-3 no-margin">
+                    <input type="text" class="form-control" placeholder="buscar proyecto..." id="search-input">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <%- include('./../includes/search-icon.html') %>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-2">
+                <p><%= user.Nombre %>:</p>
+                <p><%= user.Rol %></p>
+            </div>
+        </nav>
+        <% if (user.Rol == "manager") { %>
+            <%- include('./../includes/manager_panel.html') %>
+        <% } %>
+        <div class="card-flexbox" id="project-cards">
+        
+        </div>
+        <footer>
+            <p style="display: inline-block">Powered by: </p>
+            <img src="/imgs/dinamite_logo.png" width="240">
+        </footer>
+    </body>
+    <%- include('./../scripts.ejs') %>
+</html>

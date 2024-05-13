@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Muli Light';
-    src: url('C:\Users\andre\OneDrive\Documents\Construccion de Software\fonts') format('truetype');
+    src: url('C:\Users\andre\OneDrive\Documents\Avance 3\public\fonts\Muli-Light.ttf') format('truetype');
 }
 
 body {
@@ -9,13 +9,19 @@ body {
 
 form {
     margin: 10vh auto 10vh auto;
-    border: solid lightgray 1px;
-    width: 50%;
+    /* border: solid lightgray 1px; */
+    /* width: 50%; */
 }
 
 .hidden {
     display: none;
 }
+
+p .hidden {
+    color: red;
+    font-size: small;
+}
+
 
 .warning {
     color: red;
@@ -24,46 +30,210 @@ form {
     bottom: 5px;
 }
 
-.my-nav {
-    height: 9vh;
+/* Seccion de NavBar */
+.universal-nav {
+    height: 8vh;
     width: 100%;
     background-color: lightgrey;
+    /* background-color: lightblue; */
+    /* background-color: #24527a; */
+    /* background-color: #afbfb9; */
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5vh;
+    align-items: center;
 }
 
 .flex-1 {
     display: flex;
     justify-content: flex-start;
-    flex-basis: 50%;
+    flex-basis: 20%;
     align-items: center;
-    margin-left: 5vh;
-
+    padding-left: 5vh;
 }
 
 .flex-1 img {
-    width: 120px;
+    width: 150px;
+}
+
+.search-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 39%;
+    padding: 0;
+}
+
+.no-margin {
+    margin: auto 0;
+    position: relative;
+    top: 7px;
 }
 
 .flex-2 {
     display: flex;
-    justify-content: flex-end;
-    flex-basis: 50%;
+    justify-content: center;
+    flex-basis: 39%;
     align-items: center;
     gap: 20px;
-    margin-right: 5vh;
-    margin-bottom: 2rem;
+    height: 100%;
+    font-size: larger;
+    /* margin-right: 5vh;
+    margin-bottom: 2rem; */
+}
+
+.flex-2 p {
+    margin: auto 0;
+}
+
+/* Seccion de Managar Options */
+.manager-options {
+    width: 100%;
+    background: #f3f3f3;
+    /* background-color: #adf8f6; */
+    /* background-color: #a7bcb9; */
+    /* background-color: #e0ebeb; */
+    height: 6vh;
+    padding: 0 2rem 0 6rem;
+    display: flex;
+    align-items: center;
+}
+
+.manager-options p {
+    display: inline-block; 
+    margin: auto 0 auto 0;
+    width: 30%;
+}
+
+.fornow {
+    display: inline-block;
+    width: 60%;
+    margin: auto 0 auto 0;
+    color: #fff;
+}
+
+.controls-flex {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    margin: auto 0 auto 0;
+}
+
+.controls-flex a {
+    cursor: pointer;
+    border: solid black 1px;
+    padding: 5px 10px;
+    font-size: small;
+    border-radius: 6px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.controls-flex a:hover {
+    transform: scale(1.1);
+}
+
+/* Cartas de Proyectos */
+.card-flexbox {
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem auto 2rem auto;
+    /* box-shadow: black 8px 4px 2px; */
+}
+
+.card-flexbox a {
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.3s ease-in-out;
+    /* background-color: red; */
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.card-flexbox a:hover {
+    transform: scale(1.1);
+}
+
+.card-title {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to left, blue, green, orange);
+    border-image-slice: 1;
 }
 
 .flex-3 {
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    border: solid blue 1px;
-    padding: 1rem;
+}
+
+.flex-3 p {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.5rem;
+    padding: 0.6rem 0.5rem 0.5rem 0.5rem;
+    text-align: center;
+    align-self: center;
+    font-weight: 600;
+}
+
+.my-title {
+    color: black;
+}
+
+.very-risky {color: #fff; border-radius: 50%; background-color: red;}
+/* .at-risk {border: solid orange 2px; border-radius: 50%;} */
+.at-risk {color: #fff; border-radius: 50%; background-color: orange;}
+.viable {border: solid yellow 2px; border-radius: 50%;}
+.very-viable {border: solid greenyellow 2px; border-radius: 50%;}
+.perfect {border: solid green 2px; border-radius: 50%;}
+
+.p-desc {
+    padding-bottom: 0.5rem;
+    border-bottom: dotted lightgray 1px;
+    font-size: small;
+}
+
+.fechas-div {
+    line-height: 0.6rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* .card {
+    opacity: 55%;
+} */
+
+/* Seccion de Footer */
+footer {
+    background-color: lightgrey;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+    /* position: absolute;
+    bottom: 0; */
+}
+
+
+.flex-3 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;    
+    /* border: solid blue 1px; */
+    /* padding: 0.5rem; */
 }
 
 table {
@@ -134,3 +304,51 @@ table {
     margin: 0 auto;
     width: 55%;
 }
+
+/* Seccion Registro */
+.body-registro {
+    display: flex;
+    width: 100%;
+    font-family: 'Muli Light', sans-serif;
+    height: 100vh;
+}
+
+.img-div {
+    flex-basis: 50%;
+    text-align: center;
+    height: 100%;
+    overflow: hidden;
+}
+
+.img-div img {
+    height: 120vh;
+    overflow: hidden;
+}
+
+.registro-div {
+    flex-basis: 50%;
+    border-left: solid black 1px;
+    /* position: relative; */
+}
+
+.registro-form {
+    width: 80%;
+}
+
+.registro-form input {
+    width: 80%;
+}
+
+.registro-div h4 {
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.registro-div img {
+    max-width: 250px;
+}
+
+/* footer {
+    width: 100%;
+    text-align: center;
+} */

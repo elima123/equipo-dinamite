@@ -38,7 +38,6 @@ VALUES
 ("Sergio Hernandez", "Sergio789"),
 ("Adriana Aguilar", "Adriana1234"),
 ("Ricardo Mendoza", "Ricardo5678");    
-
     
 select * from Proyectos;
 CREATE TABLE Proyectos (
@@ -53,6 +52,11 @@ CREATE TABLE Proyectos (
     
     FOREIGN KEY (IDEmpresa) REFERENCES Empresas (IDEmpresa)
     );
+UPDATE Proyectos
+SET Estado = "finalizado" WHERE IDProyecto = 2 OR IDProyecto = 7;
+
+ALTER TABLE Proyectos
+MODIFY COLUMN Descripcion VARCHAR(240);
 
 INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
 VALUES
@@ -79,6 +83,9 @@ CREATE TABLE Empresas (
     Correo VARCHAR(30)
     );
     
+ALTER TABLE Empresas
+MODIFY COLUMN Nombre VARCHAR(60);
+    
 INSERT INTO Empresas (Nombre, Telefono, Correo)
 VALUES
 ("Grupo Industrial Azteca", "55-1234-5678", "contacto@grupoazteca.com.mx"),
@@ -102,6 +109,7 @@ VALUES
 ("Inmobiliaria del Caribe", "998-369-1478", "contacto@inmocaribe.com.mx"),
 ("Grupo Turístico del Pacífico", "322-2580-1478", "info@grupoturisticopacifico.com.mx");
     
+select * from Riesgos;
 CREATE TABLE Riesgos (
 	IDRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	Categoria ENUM("Alcance", "Tiempo", "Calidad", "Recursos", "Costo"),
@@ -123,8 +131,17 @@ CREATE TABLE UsuarioProyectos (
     
 INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto)
 VALUES
-(1, 3);
-        
+(6, 7);
+
+SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+e.Nombre AS nombreEmpresa
+FROM Proyectos as p
+INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+INNER JOIN UsuarioProyectos as up ON up.IDProyecto = p.IDProyecto
+WHERE up.IDUsuario = 6;
+      
+select * from ProyectoRiesgos;
 CREATE TABLE ProyectoRiesgos (
 	IDProyectoRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	IDProyecto INT,
@@ -133,6 +150,22 @@ CREATE TABLE ProyectoRiesgos (
     FOREIGN KEY (IDProyecto) REFERENCES Proyectos (IDProyecto),
     FOREIGN KEY (IDRiesgo) REFERENCES Riesgos (IDRiesgo)
     );
+
+INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo)
+VALUES 
+(7, 1),
+(7, 5),
+(7, 6),
+(7, 8),
+(7, 10),
+(7, 11),
+(7, 13),
+(7, 16),
+(7, 19),
+(7, 22),
+(7, 27),
+(7, 28),
+(7, 31);
 
     
 INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia)
