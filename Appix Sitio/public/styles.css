@@ -396,7 +396,7 @@ table {
 	background: #F8F8F8;
 	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
 	border-radius: 3px;
-	font-family: 'Montserrat', sans-serif;
+	/* font-family: 'Montserrat', sans-serif; */
 	padding: 20px;
 	text-align: center;
 	width: 600px;
@@ -405,7 +405,7 @@ table {
 	transform: scale(0.7);
 	opacity: 0;
 }
-
+ 
 .popup .btn-cerrar-popup {
 	font-size: 16px;
 	line-height: 16px;
@@ -465,6 +465,45 @@ table {
 	background: rgba(94,125,227, .9);
 }
 
+.contenedor article .btn-abrir-popup {
+	padding: 0 20px;
+	margin-bottom: 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5E7DE3;
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	transition: .3s ease all;
+	cursor: pointer;
+}
+
+.contenedor article .btn-abrir-popup:hover {
+	background: rgba(94,125,227, .9);
+}
+
+.contenedor {
+	width: 90%;
+	max-width: 1000px;
+	margin: 20px auto;
+}
+
+.contenedor article {
+	line-height: 28px;
+}
+
+.contenedor article h1 {
+	font-size: 30px;
+	text-align: left;
+	padding: 50px 0;
+}
+
+.contenedor article p {
+	margin-bottom: 20px;
+}
 /* ------------------------- */
 /* ANIMACIONES */
 /* ------------------------- */
