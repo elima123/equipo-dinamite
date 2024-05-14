@@ -50,6 +50,23 @@
             <p style="display: inline-block">Powered by: </p>
             <img src="/imgs/dinamite_logo.png" width="240">
         </footer>
+        <!--popup-->
+        <div class="overlay" id="overlay">
+          <div class="popup" id="popup">
+            <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+            <h3>Registrar Empresa</h3>
+            <form action="">
+              <div class="contenedor-inputs">
+                <input type="text" placeholder="Nombre">
+                <input type="text" placeholder="Descripcion">
+                <input type="text" placeholder="Telefono">
+                <input type="email" placeholder="Correo">
+              </div>
+              <input type="submit" class="btn-submit" value="Registrar">
+            </form>
+          </div>
+        </div>
+      
     </body>
     <%- include('./../scripts.ejs') %>
 </html>
