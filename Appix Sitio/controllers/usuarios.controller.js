@@ -94,7 +94,12 @@ module.exports.get_homePage = async (req, res) => {
         }
         let combinedData = proyectos.map((project, i) => {
             const projectRiesgos = array_riesgos[i].filter(riesgo => riesgo.IDProyecto === project.IDProyecto)
-            return { ...project, riesgos: projectRiesgos }
+            return {...project, riesgos: projectRiesgos, active: false}
+            // if (i < 9) {
+            //     return { ...project, riesgos: projectRiesgos, active: true }
+            // } else {
+            //     return { ...project, riesgos: projectRiesgos, active: false }    
+            // }
         })
 
         let array_riesgos_rows = []
@@ -122,11 +127,15 @@ module.exports.get_homePage = async (req, res) => {
                 }
             }
         }
+        // console.log(combinedData)
+
+        const numPages = Math.ceil(combinedData.length/9)
 
         res.render("usuarios/homePage.ejs", {
             user: userObject,
             projects: combinedData,
-            projectsJSON: JSON.stringify(combinedData)
+            projectsJSON: JSON.stringify(combinedData),
+            numPages
         })
     } catch(e) {
         throw e

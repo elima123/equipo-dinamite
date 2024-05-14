@@ -49,6 +49,7 @@ p .hidden {
     flex-basis: 20%;
     align-items: center;
     padding-left: 5vh;
+    gap: 2rem;
 }
 
 .flex-1 img {
@@ -138,24 +139,29 @@ p .hidden {
     display: flex;
     flex-wrap: wrap;
     width: 90%;
-    gap: 2rem;
-    justify-content: space-between;
+    justify-content: flex-start;
+    column-gap: 5.3rem;
+    row-gap: 2rem;
     align-items: center;
     margin: 2rem auto 2rem auto;
-    /* box-shadow: black 8px 4px 2px; */
 }
 
 .card-flexbox a {
     cursor: pointer;
     text-decoration: none;
     transition: transform 0.3s ease-in-out;
-    /* background-color: red; */
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .card-flexbox a:hover {
     transform: scale(1.1);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card-title {
@@ -346,6 +352,19 @@ table {
 
 .registro-div img {
     max-width: 250px;
+}
+
+.page-counter {
+    margin: 0 auto 2rem auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.page-link {
+    cursor: pointer;
 }
 
 /* footer {

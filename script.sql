@@ -56,24 +56,27 @@ UPDATE Proyectos
 SET Estado = "finalizado" WHERE IDProyecto = 2 OR IDProyecto = 7;
 
 ALTER TABLE Proyectos
-MODIFY COLUMN Descripcion VARCHAR(240);
+MODIFY COLUMN Nombre VARCHAR(50);
 
 INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
 VALUES
 (4, "TiendaOnline.com", "Una tienda en linea para venta de zapatos", "activo", "2024-02-28","2024-08-28", 200000);
     
-
+SELECT p.*, e.Nombre AS nombreEmpresa
+FROM Proyectos as p
+INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa 
+WHERE IDProyecto = 1;
     
 INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
 VALUES
-(1, "Proyecto Beta", "Desarrollo de plataforma e-commerce", "activo", "2024-02-15", "2024-09-30", 200000),
-(2, "Proyecto Gamma", "Optimización de procesos logísticos", "activo", "2024-03-10", "2024-08-15", 120000),
-(3, "Proyecto Delta", "Diseño de nuevo producto tecnológico", "activo", "2024-04-20", "2024-11-10", 180000),
-(5, "Proyecto Epsilon", "Implementación de estrategia de marketing digital", "activo", "2024-05-05", "2024-12-20", 160000),
-(6, "Proyecto Zeta", "Desarrollo de aplicación móvil", "activo", "2024-06-30", "2025-01-31", 220000),
-(7, "Proyecto Eta", "Reestructuración de sistemas informáticos", "activo", "2024-07-15", "2025-02-28", 190000),
-(8, "Proyecto Theta", "Investigación de mercado internacional", "activo", "2024-08-10", "2025-03-15", 250000),
-(9, "Proyecto Iota", "Implementación de sistema de gestión ambiental", "activo", "2024-09-25", "2025-04-30", 210000);
+(10, "Sitio E-Commerce Tenis Jurica", "Venta en linea de tenis en Jurica", "activo", "2024-02-15", "2024-09-30", 80000),
+(11, "Stickers el Guero", "Venta de stickers digitales", "activo", "2024-03-10", "2024-08-15", 50000),
+(12, "Pagina de Ferreteria", "Plataforma e-commerce de ferretaria local", "activo", "2024-04-20", "2024-11-10", 240000),
+(13, "Sitio Pet Shelter", "Difusion de venta de mascotas", "activo", "2024-05-05", "2024-12-20", 110000),
+(14, "Sistema Seguridad", "sistema de entrada y salida de empleados", "activo", "2024-06-30", "2025-01-31", 440000),
+(15, "Task Manager", "aplicacion movil para manejar juntas, tareas, entregas", "activo", "2024-07-15", "2025-02-28", 190000),
+(16, "Streaming Services", "pagina web de peliculas y series", "activo", "2024-08-10", "2025-03-15", 230000),
+(17, "Crypto App", "app movil para comprar/vender cryptomonedas", "activo", "2024-09-25", "2025-04-30", 300000);
     
 select * from empresas;
 CREATE TABLE Empresas (
@@ -150,6 +153,11 @@ CREATE TABLE ProyectoRiesgos (
     FOREIGN KEY (IDProyecto) REFERENCES Proyectos (IDProyecto),
     FOREIGN KEY (IDRiesgo) REFERENCES Riesgos (IDRiesgo)
     );
+    
+SELECT r.*
+FROM ProyectoRiesgos as pr
+INNER JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+WHERE pr.IDProyecto = 1;
 
 INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo)
 VALUES 

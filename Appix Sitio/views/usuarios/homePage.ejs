@@ -27,6 +27,25 @@
         <div class="card-flexbox" id="project-cards">
         
         </div>
+
+        <nav class="page-counter">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" onclick="">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <% for (let i = 1; i <= numPages; i++) { %>
+                <li class="page-item"><a class="page-link" onclick="cambiarPagina(<%= i %>)"><%= i %></a>
+              <% } %>
+              <li class="page-item">
+                <a class="page-link" onclick="">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+        </nav>
+
         <footer>
             <p style="display: inline-block">Powered by: </p>
             <img src="/imgs/dinamite_logo.png" width="240">

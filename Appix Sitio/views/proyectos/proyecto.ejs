@@ -1,37 +1,125 @@
 <!DOCTYPE html>
     <head>
         <%- include('./../includes/head.html') %>
-        <title>Home</title>
+        <link rel="stylesheet" href="/proj-styles.css">
+        <title>Proyecto: <%= proyectoObject.IDProyecto %></title>
     </head>
     <body>
         <nav class="universal-nav">
             <div class="flex-1">
+                <a href="/usuarios/homePage">
+                    &lt;Regresar
+                </a>
                 <img src="/fonts/logo_color.png" alt="Appix">
-            </div>
-            <div class="search-nav">
-                <div class="input-group mb-3 no-margin">
-                    <input type="text" class="form-control" placeholder="buscar proyecto..." id="search-input">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-                        <%- include('./../includes/search-icon.html') %>
-                    </button>
-                </div>
             </div>
             <div class="flex-2">
                 <p><%= user.name %>:</p>
                 <p><%= user.rol %></p>
             </div>
         </nav>
-        <% if (user.Rol == "manager") { %>
-            <%- include('./../includes/manager_panel.html') %>
-        <% } else { %>
-            <p>you are a measely peasant</p>
-        <% } %>
-        <div class="card-flexbox" id="project-cards">
-        
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" id="navtab-1" aria-current="page" onclick="viewInfo()">Info de Proyecto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="navtab-2" onclick="viewRiesgos()">Info Riesgos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="navtab-3" onclick="viewAnalisis()">Analisis</a>
+            </li>
+        </ul>
+
+        <div class="general-view">
+            <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
+                <h1><%= proyectoObject.Nombre %></h1>
+                <button role="none" class="button-close">Cerrar Proyecto</button>
+            </div>
+            <div class="flex-3" style="width: 85%;">
+                <div class="proj-title">
+                    Info de Proyecto
+                </div>
+                <div class="proj-viabilidad">
+                    Viabilidad: 
+                </div>
+            </div>
+            <div class="flex-3" style="width: 85%;">
+                <div class="card-flexbox">
+                        <div class="card" style="width: 30rem;">
+                            <div class="card-body" style="padding: 2rem;">
+                              <h6 class="card-subtitle mb-2 text-body-secondary">
+                                Cliente: <%= proyectoObject.nombreEmpresa %>
+                              </h6><br>
+                              <h6>Descripcion</h6>
+                              <p class="card-text p-desc" style="border: solid green 2px;"><%= proyectoObject.Descripcion %></p>
+                              <div class="fechas-div">
+                                <p class="card-text">Inicio</p>
+                                <p class="card-text">Fin</p>
+                              </div>
+                              <div class="fechas-div">
+                                <p class="card-text"><%= proyectoObject.start %></p>
+                                <p class="card-text"><%= proyectoObject.end %></p>
+                              </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="card-flexbox">
+                    <div class="card" style="width: 30rem;">
+                        <div class="card-body" style="padding: 2rem;">
+                          <h6 class="card-subtitle mb-2 text-body-secondary">
+                            Cliente: <%= proyectoObject.nombreEmpresa %>
+                          </h6><br>
+                          <h6>Descripcion</h6>
+                          <p class="card-text p-desc"><%= proyectoObject.Descripcion %></p>
+                          <div class="fechas-div">
+                            <p class="card-text">Inicio</p>
+                            <p class="card-text">Fin</p>
+                          </div>
+                          <div class="fechas-div">
+                            <p class="card-text"><%= proyectoObject.start %></p>
+                            <p class="card-text"><%= proyectoObject.end %></p>
+                          </div>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="riesgos-view hidden">
+            <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
+                <h1><%= proyectoObject.Nombre %></h1>
+                <button role="none" class="button-edit">Editar Riesgos</button>
+            </div>
+            <h4>Riesgos Anotados</h4>
+            <table>
+                <tr class="tr-main" style="height: 2rem;">
+                    <th>IDRiesgo</th>
+                    <th>Riesgo</th>
+                    <th>Categoria</th>
+                    <th>Probabilidad</th>
+                    <th>Impacto</th>
+                    <th>Estrategia</th>
+                </tr>
+                <% riesgosObjectsArray.forEach(riesgo => { %>
+                    <tr class="tr-order">
+                        <td><%= riesgo.IDRiesgo %></td>
+                        <td><%= riesgo.Riesgo %></td>
+                        <td><%= riesgo.Categoria %></td>
+                        <td><%= riesgo.Probabilidad %></td>
+                        <td><%= riesgo.Impacto %></td>
+                        <td><%= riesgo.Estrategia %></td>
+                    </tr>
+                <% }) %>
+            </table>
+        </div>
+
+        <div class="analisis-view hidden">
+            graficas
         </div>
         <footer>
             <p style="display: inline-block">Powered by: </p>
             <img src="/imgs/dinamite_logo.png" width="240">
         </footer>
     </body>
+    <script src="/client-side/proyecto.js"></script>
 </html>

@@ -17,8 +17,13 @@ module.exports.get_proyecto = async (req, res) => {
     console.log("result of fetching project info")
     console.log(proyectoObject)
 
+    const riesgosObjectsArray = await model.Project.getRiesgos(proyectoID)
+    console.log("result of fetching riesgos of project")
+    console.log(riesgosObjectsArray)
+
     res.render("proyectos/proyecto.ejs", {
         user,
-        proyectoObject
+        proyectoObject,
+        riesgosObjectsArray
     })
 }
