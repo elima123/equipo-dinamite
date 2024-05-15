@@ -390,6 +390,7 @@ table {
 
 .overlay.active {
 	visibility: visible;
+    z-index: 4;
 }
 
 .popup {

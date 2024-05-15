@@ -17,7 +17,7 @@ exports.Project = class {
         } catch(e) {
             throw e
         } 
-    }
+    } 
 
     static async getRiesgos(idProyecto) {
         try {

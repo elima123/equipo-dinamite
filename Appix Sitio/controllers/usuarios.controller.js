@@ -83,51 +83,11 @@ module.exports.get_homePage = async (req, res) => {
         }
         if (userObject.Rol == "desarrollador") {
             proyectos = await model.User.getProyectosDes(userObject.IDUsuario)
-            console.log(proyectos)
         }
 
-        let array_riesgos = []
-        for (let i = 0; i < proyectos.length; i++) {
-            const curr_id = proyectos[i].IDProyecto
-            const riesgos = await model.Project.getRiesgos(curr_id)
-            array_riesgos.push(riesgos)
-        }
-        let combinedData = proyectos.map((project, i) => {
-            const projectRiesgos = array_riesgos[i].filter(riesgo => riesgo.IDProyecto === project.IDProyecto)
-            return {...project, riesgos: projectRiesgos, active: false}
-            // if (i < 9) {
-            //     return { ...project, riesgos: projectRiesgos, active: true }
-            // } else {
-            //     return { ...project, riesgos: projectRiesgos, active: false }    
-            // }
+        let combinedData = proyectos.map((project) => {
+            return {...project, active: false}
         })
-
-        let array_riesgos_rows = []
-        for (let i = 0; i < combinedData.length; i++) {
-            const arr_de_riesgos_de_proyecto = combinedData[i].riesgos
-            let arr = []
-            arr.push(combinedData[i].IDProyecto)
-            for (let j = 0; j < arr_de_riesgos_de_proyecto.length; j++) {
-                const idRiesgo = arr_de_riesgos_de_proyecto[j].IDRiesgo
-                riesgoDesc = await model.Project.riesgoInfo(idRiesgo)
-                riesgoCategoria = riesgoDesc[0].Categoria
-                riesgoImpacto = riesgoDesc[0].Impacto
-                arr.push(riesgoCategoria, riesgoImpacto)
-            }
-            array_riesgos_rows.push(arr)
-        }
-
-        for (let i = 0; i < array_riesgos_rows.length; i++) {
-            const idProyecto = array_riesgos_rows[i][0] 
-            const viabilidad = algoritmo.calcViabilidad(array_riesgos_rows[i])
-            for (let j = 0; j < combinedData.length; j++) {
-                if (combinedData[j].IDProyecto === idProyecto) {
-                    combinedData[j].Viabilidad = viabilidad
-                    break
-                }
-            }
-        }
-        // console.log(combinedData)
 
         const numPages = Math.ceil(combinedData.length/9)
 

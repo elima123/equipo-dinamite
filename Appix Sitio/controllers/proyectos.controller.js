@@ -26,4 +26,4 @@ module.exports.get_proyecto = async (req, res) => {
         proyectoObject,
         riesgosObjectsArray
     })
-}
+} 
