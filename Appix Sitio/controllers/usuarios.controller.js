@@ -1,6 +1,5 @@
 const model = require('../models/usuarios.model')
 const bcyrpt = require('bcryptjs')
-const algoritmo = require('../utils/algoritmo')
 
 module.exports.render_login = async (req, res) => {
     res.render("usuarios/signIn.ejs")
@@ -11,29 +10,17 @@ module.exports.do_login = async (req, res) => {
         const userNombre = req.body.nombre
         const userContrasena = req.body.contrasena
 
-        // const usuarios = await model.User.findUser(userNombre)
         const usuario = await model.User.verifyUser(userNombre, userContrasena)
-        // if (!usuario) {
-        //     res.render("usuarios/registro")
-        // }
-        if (usuario.length < 1) {
+        
+        if (!usuario) {
             res.render("usuarios/signIn.ejs")
             return
         }
-        userObject = usuario[0]
 
-        // const isValid = await model.User.verifyUser();
-
-        // const doMatch = await bcyrpt.compare(req.body.contrasena)
-
-        // if(!doMatch) {
-        //     res.render("usuarios/registro.ejs")
-        //     return
-        // }
-
-        req.session.nombre = userObject.Nombre
-        req.session.pass = userObject.Contrasena
-        req.session.rol = userObject.Rol
+        req.session.nombre = usuario.Nombre
+        req.session.pass = usuario.Contrasena
+        req.session.correo = usuario.Correo
+        req.session.rol = usuario.Rol
         
         req.session.isLoggedIn = true
         res.status(201).redirect("/usuarios/homePage")
@@ -66,23 +53,22 @@ module.exports.get_registro = async (req, res) => {
 
 module.exports.get_homePage = async (req, res) => {
     try {
-        const userNombre = req.session.nombre
+        const userCorreo = req.session.correo
         const userContrasena = req.session.pass
 
-        const usuario = await model.User.verifyUser(userNombre, userContrasena)
+        const usuario = await model.User.verifyUser(userCorreo, userContrasena)
 
-        if (usuario.length < 1) {
+        if (!usuario) {
             res.render("usuarios/signIn.ejs")
             return
         }
-        const userObject = usuario[0]
 
         let proyectos
-        if (userObject.Rol == "manager") {
+        if (usuario.Rol == "manager") {
             proyectos = await model.User.getProyectosManager()
         }
-        if (userObject.Rol == "desarrollador") {
-            proyectos = await model.User.getProyectosDes(userObject.IDUsuario)
+        if (usuario.Rol == "desarrollador") {
+            proyectos = await model.User.getProyectosDes(usuario.IDUsuario)
         }
 
         let combinedData = proyectos.map((project) => {
@@ -92,7 +78,7 @@ module.exports.get_homePage = async (req, res) => {
         const numPages = Math.ceil(combinedData.length/9)
 
         res.render("usuarios/homePage.ejs", {
-            user: userObject,
+            user: usuario,
             projects: combinedData,
             projectsJSON: JSON.stringify(combinedData),
             numPages

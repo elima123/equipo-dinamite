@@ -35,7 +35,7 @@ exports.User = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT * FROM Usuarios WHERE Nombre = ?`,
+            SELECT * FROM Usuarios WHERE Correo = ?`,
             [nombre])
             await connection.release()
             console.log("next line is result of findUser model function")
@@ -49,10 +49,10 @@ exports.User = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT * FROM Usuarios WHERE Nombre = ? AND Contrasena = ?`,
+            SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
             [nombre, contrasena])
             await connection.release()
-            const realResult = result[0]
+            const realResult = result[0][0]
             return realResult
         } catch(e) {
             throw e
