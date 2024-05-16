@@ -1,6 +1,22 @@
 const db = require('../utils/database')
 const bcrypt = require('bcryptjs')
 
+exports.Empresa = class {
+    async registrarEmpresa(name, telefono, correo) {
+        try {
+            const connection = await db() 
+            const result = await connection.execute(`
+            INSERT INTO Empresas (Nombre, Telefono, Correo)
+            VALUES (?, ?, ?)
+            `, [name, telefono, correo])
+            await connection.release()
+            return "yes"
+        } catch (error) {
+            throw error
+        }
+    }
+}
+
 exports.Project = class {
     static async getProject(idProyecto) {
         try {
@@ -17,7 +33,7 @@ exports.Project = class {
         } catch(e) {
             throw e
         } 
-    }
+    } 
 
     static async getRiesgos(idProyecto) {
         try {
@@ -34,26 +50,6 @@ exports.Project = class {
             return realResult
         } catch(e) {
             throw e
-        }
-    }
-
-    static async registrarProyecto(name, empresa, desc, costo, fechaInicio, fechaFinal) {
-        try {
-            const connection = await db() 
-            const empresaID = await connection.execute(`
-            SELECT IDEmpresa 
-            FROM Empresas 
-            WHERE Nombre = ?
-            `, [empresa])
-            const idEmpresa = empresaID[0][0].IDEmpresa
-            const result = await connection.execute(`
-            INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
-            VALUES (?, ?, ?, "activo", ?, ?, ?)
-            `, [idEmpresa, name, desc, fechaInicio, fechaFinal, costo])
-            await connection.release()
-            return "yes"
-        } catch (error) {
-            throw error
         }
     }
 } 

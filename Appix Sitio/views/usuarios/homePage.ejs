@@ -20,6 +20,13 @@
                 <p><%= user.Nombre %>:</p>
                 <p><%= user.Rol %></p>
             </div>
+            <div class="flex-cerrar">
+              <form action="/usuarios/salir" method="POST">
+                <button type="submit" class="btn-cerrar">
+                  &lt;Cerrar Sesion&gt; <%- include('./../includes/leave_icon.html') %>
+                </button>
+              </form>
+            </div>
         </nav>
         <% if (user.Rol == "manager") { %>
             <%- include('./../includes/manager_panel.html') %>
@@ -55,17 +62,41 @@
           <div class="popup" id="popup">
             <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
             <h3>Registrar Empresa</h3>
-            <form action="">
+            <form action="/empresa/registro" method="POST">
               <div class="contenedor-inputs">
-                <input type="text" placeholder="Nombre">
-                <input type="text" placeholder="Descripcion">
-                <input type="text" placeholder="Telefono">
-                <input type="email" placeholder="Correo">
+                <input type="text" placeholder="Nombre"name="Nombre">
+                <input type="text" placeholder="Telefono" name="Telefono">
+                <input type="email" placeholder="Correo" name="Correo">
               </div>
               <input type="submit" class="btn-submit" value="Registrar">
             </form>
           </div>
         </div>
+
+      <!--popup AGREGAR PROYECTO-->
+      <div class="overlay" id="overlayAgregarProyecto">
+        <div class="popup" id="popup2">
+          <a id="btn-cerrar-popup-2" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+          <h3>Agregar Proyecto</h3>
+          <form action="/proyecto/registro" method="POST">
+            <div class="contenedor-inputs">
+              <input type="text" placeholder="Nombre del Proyecto" name="nombre">
+              <select name="nombreEmpresa">
+                <option value="" class="placeholder">Seleccione una empresa</option>
+                <% projects.forEach(project => { %>
+                  <option value="<%= project.nombreEmpresa %>"><%= project.nombreEmpresa %></option>
+                <% }) %>
+              </select>
+              <input type="text" placeholder="Descripcion" name="desc">
+              <input type="number" placeholder="Costo" name="costo">
+              <input type="date" placeholder="Fecha de inicio" name="fechaI">
+              <input type="date" placeholder="Fecha Final" name="fechaF">
+            </div>
+            <input type="submit" class="btn-submit" value="Registrar">
+          </form>
+        </div>
+      </div>
+      <!--popup AGREGAR PROYECTO-->
       
     </body>
     <%- include('./../scripts.ejs') %>

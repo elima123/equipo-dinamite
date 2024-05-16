@@ -49,7 +49,7 @@ module.exports.get_registro = async (req, res) => {
         return
     }
     res.render("usuarios/signIn.ejs")
-}
+} 
 
 // module.exports.post_registro = async (req, res) => {
 //     try {
@@ -99,5 +99,18 @@ module.exports.get_homePage = async (req, res) => {
         })
     } catch(e) {
         throw e
+    }
+}
+
+module.exports.cerrar_sesion = (req, res) => {
+    try {
+        req.session.destroy((err) => {
+            if (err) {
+                throw err;
+            }
+            res.render('usuarios/signIn.ejs');
+        });
+    } catch (e) {
+        throw e;
     }
 }

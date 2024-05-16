@@ -73,7 +73,7 @@ p .hidden {
 .flex-2 {
     display: flex;
     justify-content: center;
-    flex-basis: 39%;
+    flex-basis: 27%;
     align-items: center;
     gap: 20px;
     height: 100%;
@@ -84,6 +84,16 @@ p .hidden {
 
 .flex-2 p {
     margin: auto 0;
+}
+
+.flex-cerrar {
+    flex-basis: 14%;
+    text-align: center;
+}
+
+.btn-cerrar {
+    background-color: gold;
+    color: #000;
 }
 
 /* Seccion de Managar Options */
@@ -122,15 +132,21 @@ p .hidden {
 }
 
 .controls-flex a {
+    color: #fff;
+}
+
+.controls-flex a, .btn-cerrar {
     cursor: pointer;
     border: solid black 1px;
     padding: 5px 10px;
     font-size: small;
     border-radius: 6px;
     transition: transform 0.3s ease-in-out;
+    text-decoration: none;
+    /* color: #fff; */
 }
 
-.controls-flex a:hover {
+.controls-flex a:hover, .btn-cerrar:hover {
     transform: scale(1.1);
 }
 
@@ -424,28 +440,26 @@ table {
 	font-size: 36px;
 	font-weight: 600;
 	margin-bottom: 10px;
-	/* opacity: 0; */
 }
 
-.popup h4 {
-	font-size: 26px;
-	font-weight: 300;
-	margin-bottom: 40px;
-	/* opacity: 0; */
-}
-
-/* .popup form .contenedor-inputs {
-	 opacity: 0;
-} */
-
-.popup form .contenedor-inputs input {
+.popup form .contenedor-inputs input, select {
 	width: 100%;
 	margin-bottom: 20px;
-	height: 52px;
+	height: 40px;
 	font-size: 18px;
-	line-height: 52px;
+	line-height: 40px;
 	text-align: center;
 	border: 1px solid #BBBBBB;
+}
+
+.popup select {
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+.placeholder {
+    color: lightgrey;
 }
 
 .popup form .btn-submit {
@@ -487,7 +501,7 @@ table {
 }
 
 .contenedor {
-	width: 90%;
+	width: 80%;
 	max-width: 1000px;
 	margin: 20px auto;
 }

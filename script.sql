@@ -123,6 +123,12 @@ CREATE TABLE Riesgos (
 ALTER TABLE Riesgos
 CHANGE Probablidad Probabilidad ENUM("Baja", "Media", "Alta");
     
+ALTER TABLE Riesgos
+ADD COLUMN ImpactoNumerico FLOAT;
+
+UPDATE Riesgos
+SET ImpactoNumerico = 0.03 WHERE Impacto = "Medio";
+    
 select * from UsuarioProyectos;
 CREATE TABLE UsuarioProyectos (
 	IDUsuario INT,
@@ -130,11 +136,11 @@ CREATE TABLE UsuarioProyectos (
     
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios (IDUsuario),
     FOREIGN KEY (IDProyecto) REFERENCES Proyectos (IDProyecto)
-    );
+);
     
 INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto)
 VALUES
-(6, 7);
+(6, 4);
 
 SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
 			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
@@ -143,7 +149,29 @@ FROM Proyectos as p
 INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
 INNER JOIN UsuarioProyectos as up ON up.IDProyecto = p.IDProyecto
 WHERE up.IDUsuario = 6;
-      
+
+SELECT p.IDProyecto, p.IDEmpresa, p.Nombre, pr.IDProyecto, pr.IDRiesgo, 
+COUNT(pr.IDRiesgo) AS numRiesgos,
+r.IDRiesgo, r.Impacto, r.ImpactoNumerico,
+(((1-(SUM(r.ImpactoNumerico)))/1)*100) AS viabilidad
+FROM Proyectos as p
+JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+WHERE p.IDProyecto = 1;
+
+SELECT p.IDProyecto, p.Nombre, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+e.nombre AS nombreEmpresa,
+ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS viabilidad
+FROM Proyectos as p
+INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+JOIN UsuarioProyectos as up ON p.IDProyecto = up.IDProyecto
+WHERE up.IDUsuario = 6
+GROUP BY p.IDProyecto;
+-- WHERE p.IDProyecto = 1;
+
 select * from ProyectoRiesgos;
 CREATE TABLE ProyectoRiesgos (
 	IDProyectoRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -161,19 +189,20 @@ WHERE pr.IDProyecto = 1;
 
 INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo)
 VALUES 
-(7, 1),
-(7, 5),
-(7, 6),
-(7, 8),
-(7, 10),
-(7, 11),
-(7, 13),
-(7, 16),
-(7, 19),
-(7, 22),
-(7, 27),
-(7, 28),
-(7, 31);
+(5, 1),
+(6, 5),
+(8, 6),
+(9, 8),
+(10, 10),
+(11, 11),
+(11, 14),
+(12, 13),
+(13, 16),
+(14, 19),
+(15, 22),
+(17, 27),
+(17, 28),
+(17, 31);
 
     
 INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia)

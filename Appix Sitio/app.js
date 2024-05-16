@@ -7,6 +7,7 @@ const express = require('express')
 const session = require('express-session')
 const rutasUsuarios = require('./routes/usuarios.routes')
 const rutasProyectos = require('./routes/proyectos.routes')
+const rutasEmpresas = require('./routes/empresas.routes')
 
 const app = express()
 
@@ -25,6 +26,7 @@ app.use(session({
 }))
 app.use('/usuarios', rutasUsuarios)
 app.use('/proyecto', rutasProyectos)
+app.use('/empresa', rutasEmpresas)
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/plain')
