@@ -69,8 +69,8 @@ exports.User = class {
             ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
             FROM Proyectos as p
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
-            JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
-            JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            LEFT JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+            LEFT JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
             GROUP BY p.IDProyecto
             `)
             await connection.release()

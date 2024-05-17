@@ -2,7 +2,7 @@ const db = require('../utils/database')
 const bcrypt = require('bcryptjs')
 
 exports.Empresa = class {
-    async registrarEmpresa(name, telefono, correo) {
+    static async registrarEmpresa(name, telefono, correo) {
         try {
             const connection = await db() 
             const result = await connection.execute(`
@@ -13,6 +13,20 @@ exports.Empresa = class {
             return "yes"
         } catch (error) {
             throw error
+        }
+    }
+
+    static async getEmpresaNames() {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT e.Nombre 
+            FROM Empresas as e
+            `)
+            await connection.release()
+            return result[0]
+        } catch (e) {
+            throw e
         }
     }
 }

@@ -9,7 +9,7 @@ module.exports.registrar_empresa = async (req, res) => {
 
         const result = await model.Empresa.registrarEmpresa(nombre, telefono, correo)
         if (result == "yes") {
-            res.redirect('/usuarios/homePage')
+            res.redirect('/usuarios/homePage') 
         } else {
             
         }

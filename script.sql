@@ -9,6 +9,9 @@ CREATE TABLE Usuarios (
     );
     
 ALTER TABLE Usuarios
+ADD COLUMN Correo VARCHAR(80);
+    
+ALTER TABLE Usuarios
 ADD COLUMN Rol ENUM("desarrollador", "manager");
     
 DELETE FROM Usuarios WHERE IDUsuario > 20;
@@ -16,28 +19,32 @@ DELETE FROM Usuarios WHERE IDUsuario > 20;
 UPDATE Usuarios
 SET Rol = "desarrollador" WHERE IDUsuario > 3;
 
-INSERT INTO Usuarios (Nombre, Contrasena)
-VALUES
-("Carlos López", "Carlos123"),
-("Sofia Martinez", "Sofia456"),
-("Alejandro Ramirez", "Alejandrito789"),
-("Valeria Hernandez", "Valeria1234"),
-("Diego Gonzalez", "Diego4567"),
-("Ana Rodriguez", "Ana7890"),
-("Luisa Sanchez", "Luisa12345"),
-("Jorge Cruz", "Jorge6789"),
-("Natalia Garcia", "Natalia123"),
-("Rodrigo Torres", "Rodrigo456"),
-("Maria Flores", "Maria789"),
-("Eduardo Diaz", "Eduardo1234"),
-("Andrea Vazquez", "Andrea5678"),
-("Francisco Reyes", "Francisco12345"),
-("Pamela Torres", "Pamela6789"),
-("Javier Gomez", "Javier123"),
-("Daniela Martinez", "Daniela456"),
-("Sergio Hernandez", "Sergio789"),
-("Adriana Aguilar", "Adriana1234"),
-("Ricardo Mendoza", "Ricardo5678");    
+UPDATE Usuarios
+SET Correo = 
+    CASE 
+        WHEN Nombre = 'Carlos López' THEN 'carlos.lopez@ejemplo.com'
+        WHEN Nombre = 'Sofia Martinez' THEN 'sofia.martinez@ejemplo.com'
+        WHEN Nombre = 'Alejandro Ramirez' THEN 'alejandro.ramirez@ejemplo.com'
+        WHEN Nombre = 'Valeria Hernandez' THEN 'valeria.hernandez@ejemplo.com'
+        WHEN Nombre = 'Diego Gonzalez' THEN 'diego.gonzalez@ejemplo.com'
+        WHEN Nombre = 'Ana Rodriguez' THEN 'ana.rodriguez@ejemplo.com'
+        WHEN Nombre = 'Luisa Sanchez' THEN 'luisa.sanchez@ejemplo.com'
+        WHEN Nombre = 'Jorge Cruz' THEN 'jorge.cruz@ejemplo.com'
+        WHEN Nombre = 'Natalia Garcia' THEN 'natalia.garcia@ejemplo.com'
+        WHEN Nombre = 'Rodrigo Torres' THEN 'rodrigo.torres@ejemplo.com'
+        WHEN Nombre = 'Maria Flores' THEN 'maria.flores@ejemplo.com'
+        WHEN Nombre = 'Eduardo Diaz' THEN 'eduardo.diaz@ejemplo.com'
+        WHEN Nombre = 'Andrea Vazquez' THEN 'andrea.vazquez@ejemplo.com'
+        WHEN Nombre = 'Francisco Reyes' THEN 'francisco.reyes@ejemplo.com'
+        WHEN Nombre = 'Pamela Torres' THEN 'pamela.torres@ejemplo.com'
+        WHEN Nombre = 'Javier Gomez' THEN 'javier.gomez@ejemplo.com'
+        WHEN Nombre = 'Daniela Martinez' THEN 'daniela.martinez@ejemplo.com'
+        WHEN Nombre = 'Sergio Hernandez' THEN 'sergio.hernandez@ejemplo.com'
+        WHEN Nombre = 'Adriana Aguilar' THEN 'adriana.aguilar@ejemplo.com'
+        WHEN Nombre = 'Ricardo Mendoza' THEN 'ricardo.mendoza@ejemplo.com'
+        ELSE Correo  -- Keep the existing email if no match
+    END;
+
     
 select * from Proyectos;
 CREATE TABLE Proyectos (
@@ -85,6 +92,9 @@ CREATE TABLE Empresas (
     Telefono VARCHAR(12),
     Correo VARCHAR(30)
     );
+    
+SELECT e.Nombre 
+FROM Empresas as e;
     
 ALTER TABLE Empresas
 MODIFY COLUMN Nombre VARCHAR(60);

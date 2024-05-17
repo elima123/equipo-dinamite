@@ -1,6 +1,6 @@
 <script>     
         let projects = JSON.parse('<%- projectsJSON %>')
-        const projPorPage = 12
+        const projPorPage = 9
         cambiarPagina(1)
 
         function filterProjects(searchTerm) {
@@ -9,6 +9,15 @@
                         project.Descripcion.toLowerCase().includes(searchTerm) ||
                         project.nombreEmpresa.toLowerCase().includes(searchTerm)
                 )
+
+                // let previouslyInactive = []
+
+                // filteredProjects.forEach(project => {
+                //         if (!project.active) {
+                //         project.active = true
+                //         previouslyInactive.push(project)
+                //         }
+                // })
 
                 const projectCards = document.getElementById('project-cards')
                 projectCards.innerHTML = ''
@@ -33,7 +42,9 @@
                                 title.textContent = project.Nombre
 
                                 const viability = document.createElement('p')
-                                if (project.Viabilidad < 50) { 
+                                if (project.Viabilidad == null){
+                                        viability.className = "blank"
+                                } else if (project.Viabilidad < 50) { 
                                         viability.className = 'very-risky' 
                                 } else if (project.Viabilidad < 65){ 
                                         viability.className='at-risk'
@@ -44,7 +55,12 @@
                                 } else if (project.Viabilidad <= 100){ 
                                         viability.className='perfect'
                                 } 
-                                viability.textContent = project.Viabilidad
+
+                                if (project.Viabilidad == null) {
+                                        viability.textContent = "?"        
+                                } else {
+                                        viability.textContent = project.Viabilidad
+                                }
                                 const client = document.createElement('h6')
                                 client.className = 'card-subtitle mb-2 text-body-secondary'
                                 client.textContent = 'Cliente: ' + project.nombreEmpresa
@@ -102,6 +118,9 @@
                         }
                                  
                 })
+                // previouslyInactive.forEach(project => {
+                //         project.active = false
+                // })
         }
 
         const searchSubmit = document.getElementById('button-addon2')

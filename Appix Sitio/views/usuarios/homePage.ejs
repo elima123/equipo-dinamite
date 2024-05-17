@@ -83,8 +83,8 @@
               <input type="text" placeholder="Nombre del Proyecto" name="nombre">
               <select name="nombreEmpresa">
                 <option value="" class="placeholder">Seleccione una empresa</option>
-                <% projects.forEach(project => { %>
-                  <option value="<%= project.nombreEmpresa %>"><%= project.nombreEmpresa %></option>
+                <% empresas.forEach(empresa => { %>
+                  <option value="<%= empresa.Nombre %>"><%= empresa.Nombre %></option>
                 <% }) %>
               </select>
               <input type="text" placeholder="Descripcion" name="desc">

@@ -3,6 +3,9 @@
         <%- include('./../includes/head.html') %>
         <link rel="stylesheet" href="/proj-styles.css">
         <title>Proyecto: <%= proyectoObject.IDProyecto %></title>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+      <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
     </head>
     <body>
         <nav class="universal-nav">
@@ -35,94 +38,98 @@
                 <h1><%= proyectoObject.Nombre %></h1>
                 <button role="none" class="button-close">Cerrar Proyecto</button>
             </div>
-            <div class="powerbi-date-range">
-                <p></p>
-            </div>
-            <div class="flex-3" style="width: 85%;">
-                <div class="proj-title">
-                    Info de Proyecto
+
+            <div class="flex-3">
+              <div class="f-50">
+                <h5 class="card-subtitle mb-2 text-body-secondary" style="margin: 0 3rem 2rem 3rem;">
+                  Cliente: <%= proyectoObject.nombreEmpresa %>
+                </h5><br>
+              </div>
+              <div class="powerbi-date-range">
+                <!-- <div id="container-speed" style="width: 25%; max-height: 120px; display: inline-block;"></div>
+                <div id="container-rpm" style="width: 25%; max-height: 120px; display: inline-block;"></div> -->
+                <p style="display: inline-block;"><%= proyectoObject.start %></p>
+                <p style="display: inline-block;"><%= proyectoObject.end %></p>
+              </div>
+              <!-- <div class="powerbi-date-range">
+                <div>
+                  <p><%= proyectoObject.start %></p>
+                  <p><%= proyectoObject.end %></p>
                 </div>
-                <div class="proj-viabilidad">
-                    Viabilidad: 
+                <div>
+                  <p class=""></p>
+                  <p id="date-line"></p>
+                  <p class=""></p>
                 </div>
+              </div> -->
             </div>
-            <div class="flex-3" style="width: 85%;">
-                <div class="card-flexbox">
-                        <div class="card" style="width: 30rem;">
-                            <div class="card-body" style="padding: 2rem;">
-                              <h6 class="card-subtitle mb-2 text-body-secondary">
-                                Cliente: <%= proyectoObject.nombreEmpresa %>
-                              </h6><br>
-                              <h6>Descripcion</h6>
-                              <p class="card-text p-desc" style="border: solid green 2px;"><%= proyectoObject.Descripcion %></p>
-                              <div class="fechas-div">
-                                <p class="card-text">Inicio</p>
-                                <p class="card-text">Fin</p>
-                              </div>
-                              <div class="fechas-div">
-                                <p class="card-text"><%= proyectoObject.start %></p>
-                                <p class="card-text"><%= proyectoObject.end %></p>
-                              </div>
-                            </div>
-                        </div>
+
+            <div class="card" style="width: 87%;">
+                <!-- <img src="..." class="card-img-top" alt="..."> -->
+                <div class="card-body">
+                  <h5 class="card-title">Descripcion</h5>
+                  <p class="card-text">
+                    <%= proyectoObject.Descripcion %>
+                  </p>
                 </div>
-                <div class="card-flexbox">
-                    <div class="card" style="width: 30rem;">
-                        <div class="card-body" style="padding: 2rem;">
-                          <h6 class="card-subtitle mb-2 text-body-secondary">
-                            Cliente: <%= proyectoObject.nombreEmpresa %>
-                          </h6><br>
-                          <h6>Descripcion</h6>
-                          <p class="card-text p-desc"><%= proyectoObject.Descripcion %></p>
-                          <div class="fechas-div">
-                            <p class="card-text">Inicio</p>
-                            <p class="card-text">Fin</p>
-                          </div>
-                          <div class="fechas-div">
-                            <p class="card-text"><%= proyectoObject.start %></p>
-                            <p class="card-text"><%= proyectoObject.end %></p>
-                          </div>
-                        </div>
-                    </div>
+                <h6 class="card-subtitle mb-2" style="margin-left: 1rem;">Riesgos</h6>
+                <ul class="list-group list-group-flush">
+                  <% riesgos.forEach(riesgo => { %>
+                    <li class="list-group-item"><%= riesgo.IDRiesgo %>: <%= riesgo.Riesgo %></li>  
+                  <% }) %>
+                </ul>
             </div>
-            </div>
+            <!-- <div class="flex-3" style="width: 85%;">
+              <div class="proj-title">
+                  Info de Proyecto
+              </div>
+              <div class="proj-viabilidad">
+                  Viabilidad: 
+              </div>
+            </div> -->
         </div>
 
         <div class="riesgos-view hidden">
-            <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
-                <h1><%= proyectoObject.Nombre %></h1>
-                <button role="none" class="button-edit">Editar Riesgos</button>
-            </div>
-            <h4>Riesgos Anotados</h4>
-            <table>
-                <tr class="tr-main" style="height: 2rem;">
-                    <th>IDRiesgo</th>
-                    <th>Riesgo</th>
-                    <th>Categoria</th>
-                    <th>Probabilidad</th>
-                    <th>Impacto</th>
-                    <th>Estrategia</th>
-                </tr>
-                <% riesgosObjectsArray.forEach(riesgo => { %>
-                    <tr class="tr-order">
-                        <td><%= riesgo.IDRiesgo %></td>
-                        <td><%= riesgo.Riesgo %></td>
-                        <td><%= riesgo.Categoria %></td>
-                        <td><%= riesgo.Probabilidad %></td>
-                        <td><%= riesgo.Impacto %></td>
-                        <td><%= riesgo.Estrategia %></td>
-                    </tr>
-                <% }) %>
-            </table>
+          <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
+            <h1><%= proyectoObject.Nombre %></h1>
+            <button role="none" class="button-edit">Editar Riesgos</button>
+        </div>
+          <h4>Riesgos Anotados</h4>
+          <table class="table table-striped" style="margin-bottom: 3rem;">
+            <thead>
+              <tr>
+                <th scope="col">IDRiesgo</th>
+                <th scope="col">Riesgo</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Probabilidad</th>
+                <th scope="col">Impacto</th>
+                <th scope="col">Estrategia</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% riesgos.forEach(riesgo => { %>
+                  <tr >
+                      <td><%= riesgo.IDRiesgo %></td>
+                      <td><%= riesgo.Riesgo %></td>
+                      <td><%= riesgo.Categoria %></td>
+                      <td><%= riesgo.Probabilidad %></td>
+                      <td><%= riesgo.Impacto %></td>
+                      <td><%= riesgo.Estrategia %></td>
+                  </tr>
+              <% }) %>
+            </tbody>
+          </table>
         </div>
 
         <div class="analisis-view hidden">
-            graficas
+          <div id="container" style="width: 50%; height: 400px;"></div>
+          <div id="container-2" style="width: 50%; height: 400px;"></div>
         </div>
+  
         <footer>
             <p style="display: inline-block">Powered by: </p>
             <img src="/imgs/dinamite_logo.png" width="240">
         </footer>
     </body>
-    <script src="/client-side/proyecto.js"></script>
+    <%- include('./../proj-script.ejs') %>
 </html>

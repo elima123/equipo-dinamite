@@ -1,4 +1,5 @@
 const model = require('../models/usuarios.model')
+const modelEmp = require('../models/empresas.model')
 const bcyrpt = require('bcryptjs')
 
 module.exports.render_login = async (req, res) => {
@@ -75,12 +76,16 @@ module.exports.get_homePage = async (req, res) => {
             return {...project, active: false}
         })
 
+
         const numPages = Math.ceil(combinedData.length/9)
+
+        const empresas = await modelEmp.Empresa.getEmpresaNames()
 
         res.render("usuarios/homePage.ejs", {
             user: usuario,
             projects: combinedData,
             projectsJSON: JSON.stringify(combinedData),
+            empresas,
             numPages
         })
     } catch(e) {
