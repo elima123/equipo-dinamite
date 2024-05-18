@@ -54,7 +54,16 @@ module.exports.get_registro = async (req, res) => {
 
 module.exports.get_homePage = async (req, res) => {
     try {
+<<<<<<< Updated upstream
         const userCorreo = req.session.correo
+=======
+        if (!req.session.isLoggedIn) {
+            res.status(400).redirect("/usuarios/login")
+            return
+        }     
+
+        const userNombre = req.session.nombre
+>>>>>>> Stashed changes
         const userContrasena = req.session.pass
 
         const usuario = await model.User.verifyUser(userCorreo, userContrasena)
