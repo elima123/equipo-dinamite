@@ -35,7 +35,7 @@ exports.User = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT * FROM Usuarios WHERE Nombre = ?`,
+            SELECT * FROM Usuarios WHERE Correo = ?`,
             [nombre])
             await connection.release()
             console.log("next line is result of findUser model function")
@@ -49,10 +49,10 @@ exports.User = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT * FROM Usuarios WHERE Nombre = ? AND Contrasena = ?`,
+            SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
             [nombre, contrasena])
             await connection.release()
-            const realResult = result[0]
+            const realResult = result[0][0]
             return realResult
         } catch(e) {
             throw e
@@ -64,10 +64,14 @@ exports.User = class {
             const connection = await db()
             const result = await connection.execute(`
             SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
-                        DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
-            e.Nombre AS nombreEmpresa
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+            e.nombre AS nombreEmpresa,
+            ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
             FROM Proyectos as p
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+            LEFT JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+            LEFT JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            GROUP BY p.IDProyecto
             `)
             await connection.release()
             const realResult = result[0]
@@ -75,19 +79,23 @@ exports.User = class {
         } catch (e) {
             throw e
         }
-    } 
+    }  
 
     static async getProyectosDes(idUsuario) {
         try {
             const connection = await db()
             const result = await connection.execute(`
             SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
-			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
-            e.Nombre AS nombreEmpresa
+			            DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+            e.nombre AS nombreEmpresa,
+            ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
             FROM Proyectos as p
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
-            INNER JOIN UsuarioProyectos as up ON up.IDProyecto = p.IDProyecto
-            WHERE up.IDUsuario = ?;
+            JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+            JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            JOIN UsuarioProyectos as up ON p.IDProyecto = up.IDProyecto
+            WHERE up.IDUsuario = ?
+            GROUP BY p.IDProyecto
             `,[idUsuario])
             await connection.release()
             const realResult = result[0]

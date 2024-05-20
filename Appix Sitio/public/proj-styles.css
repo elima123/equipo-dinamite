@@ -1,0 +1,160 @@
+.flex-1 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.flex-1 a:hover {
+    color: blueviolet;
+}
+
+/* Nav de Vistas */
+.nav-tabs {
+    margin: 0 0 2rem 0;
+}
+
+.nav-link {
+    color: inherit;
+    cursor: pointer;
+}
+
+/* General Info de Proyecto Seccion */
+.general-view {
+    margin: 0 0 2rem 0;
+}
+
+.card {
+    margin-left: 5rem;
+}
+
+.button-close {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #FF7F8F, #E62C03);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
+  cursor: pointer;
+  /* display: inline-block; */
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  /* position: relative; */
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  /* width: 100%; */
+  z-index: 9;
+  border: 0;
+  transition: box-shadow .2s;
+}
+
+.button-edit {
+    background-color: initial;
+    background-image: linear-gradient(-180deg, yellow, gold);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    /* display: inline-block; */
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    pointer-events: auto;
+    /* position: relative; */
+    text-align: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    /* width: 100%; */
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
+  }
+
+.button-close:hover {
+  box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+}
+
+.button-edit:hover {
+    box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+}
+
+.proj-title, .proj-viabilidad {
+    flex-basis: 40%;
+    border-bottom: solid gray 2px;
+}
+
+.f-50 {
+    flex-basis: 40%;
+}
+
+.powerbi-date-range {
+    display: flex;
+    flex-basis: 30%;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 6rem;
+}
+
+/* Riesgos View Seccion */
+.riesgos-view h4 {
+    text-align: center;
+}
+
+table {
+    margin: 0 auto 3rem auto;
+}
+
+.tr-main {
+    width: 100%;
+    height: 2rem;
+    color: white;
+    background-color: #24292E;
+}
+
+.tr-detail {
+    width: 100%;
+    height: 1.8rem;
+    color: white;
+    background-color: #989DDD;
+}
+
+th {
+    font-weight: 400;
+    border-left: solid white 2px;
+    text-align: center;
+}
+
+.tr-order {
+    width: 100%;
+    height: 2rem;
+    box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+}
+
+.tr-order:nth-child(even) {
+    background-color: lightgray;
+}
+
+.tr-order-detail:nth-child(even) {
+    background-color: lightgray;
+}
+
+td {
+    text-align: center;
+    /* padding-left: 1rem; */
+    font-size: smaller;
+    border-left: solid white 2px;
+}
+
+/* .active {
+    background-color: lightgray;
+} */

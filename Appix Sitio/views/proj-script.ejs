@@ -1,0 +1,348 @@
+<script>
+    const generalView = document.querySelector(".general-view")
+    const riesgosView = document.querySelector(".riesgos-view")
+    const analisisView = document.querySelector(".analisis-view")
+    const navtab1 = document.querySelector("#navtab-1")
+    const navtab2 = document.querySelector("#navtab-2")
+    const navtab3 = document.querySelector("#navtab-3")
+
+    function viewInfo() {
+        riesgosView.classList.add('hidden')
+        analisisView.classList.add('hidden')
+        navtab2.classList.remove('active')
+        navtab3.classList.remove('active')
+
+        generalView.classList.remove('hidden')
+        navtab1.classList.add('active')
+    }
+
+    function viewRiesgos() {
+        generalView.classList.add('hidden')
+        analisisView.classList.add('hidden')
+        navtab1.classList.remove('active')
+        navtab3.classList.remove('active')
+
+        riesgosView.classList.remove('hidden')
+        navtab2.classList.add('active')
+    }
+
+    function viewAnalisis() {
+        generalView.classList.add('hidden')
+        riesgosView.classList.add('hidden')
+        navtab1.classList.remove('active')
+        navtab2.classList.remove('active')
+
+        analisisView.classList.remove('hidden')
+        navtab3.classList.add('active')
+    } 
+
+    let riesgosData = JSON.parse('<%- riesgosJSON %>')
+    let cantCalidad = 0
+        let cantTiempo = 0
+        let cantRecursos = 0
+        let cantAlcance = 0
+        let cantCosto = 0
+        for (let i = 0; i < riesgosData.length; i++) {
+            const categoria = riesgosData[i].Categoria;
+            if (categoria === "Calidad") {
+                cantCalidad += 1;
+            } else if (categoria === "Alcance") {
+                cantAlcance += 1;
+            } else if (categoria === "Tiempo") {
+                cantTiempo += 1;
+            } else if (categoria === "Costo") {
+                cantCosto += 1;
+            } else if (categoria === "Recursos") {
+                cantRecursos += 1;
+            }
+        }
+
+    (function (H) {
+    H.seriesTypes.pie.prototype.animate = function (init) {
+        const series = this,
+            chart = series.chart,
+            points = series.points,
+            {
+                animation
+            } = series.options,
+            {
+                startAngleRad
+            } = series;
+
+        function fanAnimate(point, startAngleRad) {
+            const graphic = point.graphic,
+                args = point.shapeArgs;
+
+            if (graphic && args) {
+
+                graphic
+                    // Set inital animation values
+                    .attr({
+                        start: startAngleRad,
+                        end: startAngleRad,
+                        opacity: 1
+                    })
+                    // Animate to the final position
+                    .animate({
+                        start: args.start,
+                        end: args.end
+                    }, {
+                        duration: animation.duration / points.length
+                    }, function () {
+                        // On complete, start animating the next point
+                        if (points[point.index + 1]) {
+                            fanAnimate(points[point.index + 1], args.end);
+                        }
+                        // On the last point, fade in the data labels, then
+                        // apply the inner size
+                        if (point.index === series.points.length - 1) {
+                            series.dataLabelsGroup.animate({
+                                opacity: 1
+                            },
+                            void 0,
+                            function () {
+                                points.forEach(point => {
+                                    point.opacity = 1;
+                                });
+                                series.update({
+                                    enableMouseTracking: true
+                                }, false);
+                                chart.update({
+                                    plotOptions: {
+                                        pie: {
+                                            innerSize: '40%',
+                                            borderRadius: 8
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    });
+            }
+        }
+
+        if (init) {
+            // Hide points on init
+            points.forEach(point => {
+                point.opacity = 0;
+            });
+        } else {
+            fanAnimate(points[0], startAngleRad);
+        }
+    };
+}(Highcharts));
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'pie'
+    },
+    title: {
+        text: 'Districubion de Tipos de Riesgos',
+        align: 'left'
+    },
+    // subtitle: {
+    //     text: 'Custom animation of pie series',
+    //     align: 'left'
+    // },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            borderWidth: 2,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b><br>{point.percentage}%',
+                distance: 20
+            }
+        }
+    },
+    series: [{
+        // Disable mouse tracking on load, enable after custom animation
+        enableMouseTracking: false,
+        animation: {
+            duration: 2000
+        },
+        colorByPoint: true,
+        data: [{
+            name: 'Calidad',
+            y: parseFloat(((cantCalidad / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Alcance',
+            y: parseFloat(((cantAlcance / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Tiempo',
+            y: parseFloat(((cantTiempo / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Recursos',
+            y: parseFloat(((cantRecursos / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Costo',
+            y: parseFloat(((cantCosto / riesgosData.length) * 100).toFixed(1))
+        }]
+    }]
+});
+
+const gaugeOptions = {
+    chart: {
+        type: 'solidgauge'
+    },
+
+    title: null,
+
+    pane: {
+        center: ['50%', '85%'],
+        size: '140%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+    },
+
+    exporting: {
+        enabled: false
+    },
+
+    tooltip: {
+        enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+        stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        tickWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+            y: -70
+        },
+        labels: {
+            y: 16
+        }
+    },
+
+    plotOptions: {
+        solidgauge: {
+            dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
+            }
+        }
+    }
+};
+
+// The speed gauge
+const chartSpeed = Highcharts.chart(
+    'container-speed', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 200,
+            title: {
+                text: 'Timeline'
+            }
+        },
+
+        credits: {
+            enabled: false
+        },
+
+        series: [{
+            name: 'Speed',
+            data: [80],
+            // dataLabels: {
+            //     format:
+            //     '<div style="text-align:center">' +
+            //     '<span style="font-size:25px">{y}</span><br/>' +
+            //     '<span style="font-size:12px;opacity:0.4">km/h</span>' +
+            //     '</div>'
+            // },
+            tooltip: {
+                valueSuffix: ' km/h'
+            }
+        }]
+
+    }));
+
+// The RPM gauge
+const chartRpm = Highcharts.chart(
+    'container-rpm', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 5,
+            title: {
+                text: 'RPM'
+            }
+        },
+
+        series: [{
+            name: 'RPM',
+            data: [1],
+            dataLabels: {
+                format:
+                '<div style="text-align:center">' +
+                '<span style="font-size:25px">{y:.1f}</span><br/>' +
+                '<span style="font-size:12px;opacity:0.4">' +
+                '* 1000 / min' +
+                '</span>' +
+                '</div>'
+            },
+            tooltip: {
+                valueSuffix: ' revolutions/min'
+            }
+        }]
+
+    }));
+
+// Bring life to the dials
+setInterval(function () {
+    // Speed
+    let point,
+        newVal,
+        inc;
+
+    if (chartSpeed) {
+        point = chartSpeed.series[0].points[0];
+        inc = Math.round((Math.random() - 0.5) * 100);
+        newVal = point.y + inc;
+
+        if (newVal < 0 || newVal > 200) {
+            newVal = point.y - inc;
+        }
+
+        point.update(newVal);
+    }
+
+    // RPM
+    if (chartRpm) {
+        point = chartRpm.series[0].points[0];
+        inc = Math.random() - 0.5;
+        newVal = point.y + inc;
+
+        if (newVal < 0 || newVal > 5) {
+            newVal = point.y - inc;
+        }
+
+        point.update(newVal);
+    }
+}, 2000);
+
+
+</script>

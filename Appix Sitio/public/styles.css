@@ -49,6 +49,7 @@ p .hidden {
     flex-basis: 20%;
     align-items: center;
     padding-left: 5vh;
+    gap: 2rem;
 }
 
 .flex-1 img {
@@ -72,7 +73,7 @@ p .hidden {
 .flex-2 {
     display: flex;
     justify-content: center;
-    flex-basis: 39%;
+    flex-basis: 27%;
     align-items: center;
     gap: 20px;
     height: 100%;
@@ -83,6 +84,16 @@ p .hidden {
 
 .flex-2 p {
     margin: auto 0;
+}
+
+.flex-cerrar {
+    flex-basis: 14%;
+    text-align: center;
+}
+
+.btn-cerrar {
+    background-color: gold;
+    color: #000;
 }
 
 /* Seccion de Managar Options */
@@ -121,15 +132,21 @@ p .hidden {
 }
 
 .controls-flex a {
+    color: #fff;
+}
+
+.controls-flex a, .btn-cerrar {
     cursor: pointer;
     border: solid black 1px;
     padding: 5px 10px;
     font-size: small;
     border-radius: 6px;
     transition: transform 0.3s ease-in-out;
+    text-decoration: none;
+    /* color: #fff; */
 }
 
-.controls-flex a:hover {
+.controls-flex a:hover, .btn-cerrar:hover {
     transform: scale(1.1);
 }
 
@@ -138,24 +155,29 @@ p .hidden {
     display: flex;
     flex-wrap: wrap;
     width: 90%;
-    gap: 2rem;
-    justify-content: space-between;
+    justify-content: flex-start;
+    column-gap: 5.3rem;
+    row-gap: 2rem;
     align-items: center;
     margin: 2rem auto 2rem auto;
-    /* box-shadow: black 8px 4px 2px; */
 }
 
 .card-flexbox a {
     cursor: pointer;
     text-decoration: none;
     transition: transform 0.3s ease-in-out;
-    /* background-color: red; */
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .card-flexbox a:hover {
     transform: scale(1.1);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card-title {
@@ -186,6 +208,7 @@ p .hidden {
     color: black;
 }
 
+.blank {color: #fff; border-radius: 50%; background-color: green;}
 .very-risky {color: #fff; border-radius: 50%; background-color: red;}
 /* .at-risk {border: solid orange 2px; border-radius: 50%;} */
 .at-risk {color: #fff; border-radius: 50%; background-color: orange;}
@@ -348,7 +371,163 @@ table {
     max-width: 250px;
 }
 
+.page-counter {
+    margin: 0 auto 2rem auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.page-link {
+    cursor: pointer;
+}
+
 /* footer {
     width: 100%;
     text-align: center;
 } */
+
+/* Culpa a Erick si falla
+*/
+
+.overlay {
+	background: rgba(0,0,0,.3);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	visibility: hidden;
+}
+
+.overlay.active {
+	visibility: visible;
+    z-index: 4;
+}
+
+.popup {
+	background: #F8F8F8;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+	border-radius: 3px;
+	/* font-family: 'Montserrat', sans-serif; */
+	padding: 20px;
+	text-align: center;
+	width: 600px;
+	
+	transition: .3s ease all;
+	transform: scale(0.7);
+	opacity: 0;
+}
+ 
+.popup .btn-cerrar-popup {
+	font-size: 16px;
+	line-height: 16px;
+	display: block;
+	text-align: right;
+	transition: .3s ease all;
+	color: #BBBBBB;
+}
+
+.popup .btn-cerrar-popup:hover {
+	color: #000;
+}
+
+.popup h3 {
+	font-size: 36px;
+	font-weight: 600;
+}
+
+.popup form .contenedor-inputs input, select {
+	width: 100%;
+	margin-bottom: 15px;
+	height: 40px;
+	font-size: 18px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #BBBBBB;
+}
+
+.popup select {
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+.popup option {
+    line-height: 30px;
+    font-size: 18px;
+}
+
+.placeholder {
+    color: lightgrey;
+}
+
+.popup form .btn-submit {
+	padding: 0 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5E7DE3;
+	border-radius: 3px;
+	/* font-family: 'Montserrat', sans-serif; */
+	font-size: 16px;
+	cursor: pointer;
+	transition: .3s ease all;
+}
+
+.popup form .btn-submit:hover {
+	background: rgba(94,125,227, .9);
+}
+
+.contenedor article .btn-abrir-popup {
+	padding: 0 20px;
+	margin-bottom: 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5E7DE3;
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	transition: .3s ease all;
+	cursor: pointer;
+}
+
+.contenedor article .btn-abrir-popup:hover {
+	background: rgba(94,125,227, .9);
+}
+
+.contenedor {
+	width: 80%;
+	max-width: 1000px;
+	margin: 20px auto;
+}
+
+.contenedor article {
+	line-height: 28px;
+}
+
+.contenedor article h1 {
+	font-size: 30px;
+	text-align: left;
+	padding: 50px 0;
+}
+
+.contenedor article p {
+	margin-bottom: 20px;
+}
+/* ------------------------- */
+/* ANIMACIONES */
+/* ------------------------- */
+.popup.active {	transform: scale(1); opacity: 1; }
+.popup.active h3 { animation: entradaTitulo .8s ease .5s forwards; }
+.popup.active h4 { animation: entradaSubtitulo .8s ease .5s forwards; }
+.popup.active .contenedor-inputs { animation: entradaInputs 1s linear 1s forwards; }
