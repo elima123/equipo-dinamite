@@ -7,11 +7,11 @@ body {
     font-family: 'Multi Light', sans-serif;
 }
 
-form {
+.registro-form {
     margin: 10vh auto 10vh auto;
     /* border: solid lightgray 1px; */
     /* width: 50%; */
-}
+} 
 
 .hidden {
     display: none;
@@ -148,6 +148,18 @@ p .hidden {
 
 .controls-flex a:hover, .btn-cerrar:hover {
     transform: scale(1.1);
+}
+
+/* Filtrar Proyectos */
+.order-by-div {
+    max-width: 20%;
+    margin: 0 0 2rem 5rem;
+    padding: 0;
+    font-size: 2rem;
+}
+
+.order-by-div label {
+    font-size: 1rem;
 }
 
 /* Cartas de Proyectos */
@@ -485,7 +497,7 @@ table {
 	background: rgba(94,125,227, .9);
 }
 
-.contenedor article .btn-abrir-popup {
+/* .contenedor article .btn-abrir-popup {
 	padding: 0 20px;
 	margin-bottom: 20px;
 	height: 40px;
@@ -499,7 +511,7 @@ table {
 	cursor: pointer;
 	transition: .3s ease all;
 	cursor: pointer;
-}
+} */
 
 .contenedor article .btn-abrir-popup:hover {
 	background: rgba(94,125,227, .9);
@@ -531,3 +543,13 @@ table {
 .popup.active h3 { animation: entradaTitulo .8s ease .5s forwards; }
 .popup.active h4 { animation: entradaSubtitulo .8s ease .5s forwards; }
 .popup.active .contenedor-inputs { animation: entradaInputs 1s linear 1s forwards; }
+
+.costo-btn {
+    border: none;
+    border-radius: 0 5px 5px  0;
+    height: 2.5rem;
+    background-color: lightgrey;
+    flex-grow: 1;
+    position: relative;
+    bottom: .45rem;
+}

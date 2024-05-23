@@ -10,5 +10,6 @@ router.get('/test_json', (req, res) => {
 router.get('/login', controller.get_registro)
 router.post('/login', controller.do_login)
 router.get('/homePage', isAuth, controller.get_homePage)
+// router.post('/homePage', isAuth, controller.order_homePage)
 router.post('/salir', controller.cerrar_sesion)
-module.exports = router
+module.exports = router 

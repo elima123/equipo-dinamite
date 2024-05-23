@@ -23,7 +23,7 @@
             <div class="flex-cerrar">
               <form action="/usuarios/salir" method="POST">
                 <button type="submit" class="btn-cerrar">
-                  &lt;Cerrar Sesion&gt; <%- include('./../includes/leave_icon.html') %>
+                  Salir   <%- include('./../includes/leave_icon.html') %>
                 </button>
               </form>
             </div>
@@ -31,6 +31,20 @@
         <% if (user.Rol == "manager") { %>
             <%- include('./../includes/manager_panel.html') %>
         <% } %>
+
+        <div class="order-by-div">
+          <form>
+            <label>Filtrar Proyectos</label>
+            <select name="filter" class="form-select" onclick="handleFilterChange(this)">
+              <option value="ID">ID Proyecto</option>
+              <option value="FechaInicio">Fecha Inicio</option>
+              <option value="FechaFinal">Fecha Final</option>
+              <option value="Viabilidad">Viabilidad</option>
+              <option value="Costo">Costo</option>
+            </select>
+          </form>
+        </div>
+
         <div class="card-flexbox" id="project-cards">
         
         </div>
@@ -88,9 +102,18 @@
                 <% }) %>
               </select>
               <input type="text" placeholder="Descripcion" name="desc">
-              <input type="number" placeholder="Costo" name="costo">
-              <input type="date" placeholder="Fecha de inicio" name="fechaI">
-              <input type="date" placeholder="Fecha Final" name="fechaF">
+              <div class="flex-3 costo-div">
+                <input type="number" placeholder="Costo/Presupuesto" name="costo" style="flex-grow: 10;">
+                <button role="none" type="button" class="costo-btn">$</button>
+              </div>
+              <div class="flex-3">
+                <label>Fecha de Inicio</label>
+                <label style="width: 50%; text-align: start;">Fecha Final</label>
+              </div>
+              <div class="flex-3">
+                <input type="date" name="fechaI">
+                <input type="date" name="fechaF">
+              </div>
             </div>
             <input type="submit" class="btn-submit" value="Registrar">
           </form>

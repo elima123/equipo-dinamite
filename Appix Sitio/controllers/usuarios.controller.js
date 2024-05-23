@@ -8,10 +8,10 @@ module.exports.render_login = async (req, res) => {
 
 module.exports.do_login = async (req, res) => {
     try {
-        const userNombre = req.body.nombre
+        const userCorreo = req.body.correo
         const userContrasena = req.body.contrasena
 
-        const usuario = await model.User.verifyUser(userNombre, userContrasena)
+        const usuario = await model.User.verifyUser(userCorreo, userContrasena)
         
         if (!usuario) {
             res.render("usuarios/signIn.ejs")
@@ -67,8 +67,7 @@ module.exports.get_homePage = async (req, res) => {
         let proyectos
         if (usuario.Rol == "manager") {
             proyectos = await model.User.getProyectosManager()
-        }
-        if (usuario.Rol == "desarrollador") {
+        } else if (usuario.Rol == "desarrollador") {
             proyectos = await model.User.getProyectosDes(usuario.IDUsuario)
         }
 
@@ -88,6 +87,45 @@ module.exports.get_homePage = async (req, res) => {
             empresas,
             numPages
         })
+    } catch(e) {
+        throw e
+    }
+}
+
+module.exports.order_homePage = async (req, res) => {
+    try {
+        const filter = req.body.filter
+        console.log(filter)
+
+        const userCorreo = req.session.correo
+        const userContrasena = req.session.pass
+
+        const usuario = await model.User.verifyUser(userCorreo, userContrasena)
+
+        let proyectos
+        if (usuario.Rol == 'manager') {
+            proyectos = await model.User.getProyectosManager(filter)
+        } else if (usuario.Rol == 'desarrollador'){
+            proyectos = await model.User.getProyectosDes(usuario.IDUsuario, filter)
+        }
+
+        let combinedData = proyectos.map((project) => {
+            return {...project, active: false}
+        })
+
+
+        const numPages = Math.ceil(combinedData.length/9)
+
+        const empresas = await modelEmp.Empresa.getEmpresaNames()
+
+        res.render("usuarios/homePage.ejs", {
+            user: usuario,
+            projects: combinedData,
+            projectsJSON: JSON.stringify(combinedData),
+            empresas,
+            numPages
+        })
+
     } catch(e) {
         throw e
     }

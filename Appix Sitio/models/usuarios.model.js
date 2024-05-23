@@ -45,18 +45,18 @@ exports.User = class {
             throw e
         }
     }
-    static async verifyUser(nombre, contrasena) {
+    static async verifyUser(correo, contrasena) {
         try {
             const connection = await db()
             const result = await connection.execute(`
             SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
-            [nombre, contrasena])
+            [correo, contrasena])
             await connection.release()
             const realResult = result[0][0]
             return realResult
         } catch(e) {
             throw e
-        }
+        } 
     }
 
     static async getProyectosManager() {
