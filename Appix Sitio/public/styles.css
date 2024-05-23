@@ -221,9 +221,11 @@ p .hidden {
 }
 
 .blank {color: #fff; border-radius: 50%; background-color: green;}
-.very-risky {color: #fff; border-radius: 50%; background-color: red;}
+/* .very-risky {color: #fff; border-radius: 50%; background-color: red;} */
+.very-risky {border: solid red 2px; border-radius: 50%;}
 /* .at-risk {border: solid orange 2px; border-radius: 50%;} */
-.at-risk {color: #fff; border-radius: 50%; background-color: orange;}
+/* .at-risk {color: #fff; border-radius: 50%; background-color: orange;} */
+.at-risk {border: solid orange 2px; border-radius: 50%;}
 .viable {border: solid yellow 2px; border-radius: 50%;}
 .very-viable {border: solid greenyellow 2px; border-radius: 50%;}
 .perfect {border: solid green 2px; border-radius: 50%;}

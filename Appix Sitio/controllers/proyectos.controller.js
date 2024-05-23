@@ -20,6 +20,7 @@ module.exports.get_proyecto = async (req, res) => {
     res.render("proyectos/proyecto.ejs", {
         user,
         proyectoObject,
+        proyectosJSON: JSON.stringify(proyectoObject),
         riesgos: riesgosObjectsArray,
         riesgosJSON: JSON.stringify(riesgosObjectsArray)
     })

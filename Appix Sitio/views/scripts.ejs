@@ -26,24 +26,24 @@
                 filterProjects(searchTerm, currentFilter, currentPage)
         }
 
-        function cambiarPagina(numPagina) {
-                currentPage = numPagina
-                filterProjects(searchTerm, currentFilter, currentPage)
-        }
-
         // function cambiarPagina(numPagina) {
-        //         const rangeHigh = numPagina*projPorPage - 1
-        //         const rangeLow = (numPagina-1)*projPorPage
-
-        //         projects.map((project, i) => {
-        //                 if (i >= rangeLow && i <= rangeHigh) {
-        //                         project.active = true
-        //                 } else {
-        //                         project.active = false
-        //                 }
-        //         })
-        //         filterProjects('', currentFilter)
+        //         currentPage = numPagina
+        //         filterProjects(searchTerm, currentFilter, currentPage)
         // }
+
+        function cambiarPagina(numPagina) {
+                const rangeHigh = numPagina*projPorPage - 1
+                const rangeLow = (numPagina-1)*projPorPage
+
+                projects.map((project, i) => {
+                        if (i >= rangeLow && i <= rangeHigh) {
+                                project.active = true
+                        } else {
+                                project.active = false
+                        }
+                })
+                filterProjects('', currentFilter)
+        }
 
         function filterProjects(searchTerm, currentFilter, currentPage) {
                 const filteredProjects = projects.filter(project =>

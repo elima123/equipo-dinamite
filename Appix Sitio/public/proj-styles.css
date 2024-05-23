@@ -58,7 +58,7 @@
     background-image: linear-gradient(-180deg, yellow, gold);
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
-    color: #FFFFFF;
+    color: #000;
     cursor: pointer;
     /* display: inline-block; */
     height: 40px;
@@ -158,3 +158,56 @@ td {
 /* .active {
     background-color: lightgray;
 } */
+
+.button-20 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 4px;
+    /* height: 32px; */
+    /* width: 81px; */
+    border: none;
+    /* background: #1b1b1cd0; */
+    background-color: #8f8f8f;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .label {
+    line-height: 22px;
+    font-size: 17px;
+    /* color: #DE8A2A; */
+    color: #fff;
+    /* letter-spacing: 1px; */
+  }
+  
+  .button-20:hover {
+    background: #1b1b1cea;
+  }
+  
+  .button-20:hover .svg-icon {
+    animation: rotate 1.3s linear infinite;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(10deg);
+    }
+  
+    50% {
+      transform: rotate(0deg);
+    }
+  
+    75% {
+      transform: rotate(-10deg);
+    }
+  
+    100% {
+      transform: rotate(0deg);
+    }
+  }
