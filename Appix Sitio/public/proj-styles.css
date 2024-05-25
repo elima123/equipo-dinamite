@@ -1,9 +1,10 @@
-.body {
+body {
+    padding-top: 8vh;
     background-image: url('/imgs/fondo_blanco.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; 
     /* padding-top: ; */
 }
 
@@ -19,7 +20,7 @@
 /* Nav de Vistas */
 .nav-tabs {
     margin: 0 0 2rem 0;
-    background-color: #fff;
+    /* background-color: #fff; */
     /* position: fixed; */
     /* border: solid black 1px; */
     /* height: 6.7vh; */
@@ -33,6 +34,13 @@
 /* General Info de Proyecto Seccion */
 .general-view {
     margin: 0 0 2rem 0;
+}
+
+.general-title {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to left, blue, green, orange);
+    border-image-slice: 1;
+    margin: 0 3rem 2rem 3rem; width: 85%;
 }
 
 .info-body {
@@ -247,5 +255,10 @@ td {
 .graph-div {
   margin-bottom: 2rem; 
   width: 95%;
+}
 
+#container, #container-2 {
+  border-left: solid black 1px;
+  border-right: solid black 1px;
+  /* border-top: solid black 1px; */
 }

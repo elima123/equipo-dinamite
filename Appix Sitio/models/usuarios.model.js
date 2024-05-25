@@ -106,38 +106,16 @@ exports.User = class {
     }
 } 
 
-exports.Project = class {
-    // constructor(my_username, my_name, my_password) {
-    //     this.username = my_username,
-    //     this.name = my_name,
-    //     this.password = my_password
-    // }
-
-    static async getRiesgos(id) {
-        try {
-            const connection = await db()
-            const result = await connection.execute(`
-            SELECT IDProyecto, IDRiesgo FROM ProyectoRiesgos WHERE IDProyecto = ?
-            `, [id])
-            await connection.release()
-            const riesgoObject = result[0]
-            return riesgoObject
-        } catch(e) {
-            throw e
-        }
+exports.getUsuarios = async function () {
+    try {
+        const connection = await db()
+        const result = await connection.execute(`
+        SELECT * FROM Usuarios
+        `)
+        await connection.release()
+        const realResult = result[0]
+        return realResult
+    } catch (e) {
+        throw e
     }
-
-    static async riesgoInfo(id) {
-        try {
-            const connection = await db()
-            const result = await connection.execute(`
-            SELECT Categoria, Impacto FROM Riesgos WHERE IDRiesgo = ?
-            `,[id])
-            await connection.release()
-            const neededInfo = result[0]
-            return neededInfo
-        } catch(e) {
-            throw e
-        }
-    }
-}
+} 

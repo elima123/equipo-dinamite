@@ -39,19 +39,6 @@ module.exports.get_registro = async (req, res) => {
     res.render("usuarios/signIn.ejs")
 } 
 
-// module.exports.post_registro = async (req, res) => {
-//     try {
-//         const { username, name, password } = req.body
-//         const user = new model.User(username, name, password)
-//         const savedUser = await user.save()
-
-//         res.status(201).redirect("usuarios/login.ejs")
-//     } catch(e) {
-//         console.error(e)
-//         res.status(500).json({ message: "Error registering user "})
-//     }
-// }
-
 module.exports.get_homePage = async (req, res) => {
     try {
         const userCorreo = req.session.correo
@@ -88,6 +75,30 @@ module.exports.get_homePage = async (req, res) => {
             numPages
         })
     } catch(e) {
+        throw e
+    }
+}
+
+module.exports.get_control = async (req, res) => {
+    try {
+        const userCorreo = req.session.correo
+        const userContrasena = req.session.pass
+
+        const usuario = await model.User.verifyUser(userCorreo, userContrasena)
+
+        if (!usuario) {
+            res.render("usuarios/signIn.ejs")
+            return
+        }
+
+        const usuarios = await model.getUsuarios()
+
+        res.render('usuarios/control.ejs', {
+            usuario,
+            usuarios
+        })
+
+    } catch (e) {
         throw e
     }
 }

@@ -5,12 +5,6 @@ exports.Project = class {
     static async getProject(idProyecto) {
         try {
             const connection = await db()
-            // const result = await connection.execute(`
-            // SELECT p.*, e.Nombre AS nombreEmpresa
-            // FROM Proyectos as p
-            // INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa 
-            // WHERE IDProyecto = ?
-            // `,[idProyecto])
             const result = await connection.execute(`
             SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
 			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,

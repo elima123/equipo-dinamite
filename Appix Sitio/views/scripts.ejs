@@ -1,4 +1,8 @@
 <script>     
+        function controlPage() {
+                window.location.href = '/usuarios/control'
+        }
+
         let projects = JSON.parse('<%- projectsJSON %>')
         const projPorPage = 9
         let currentFilter = "id"

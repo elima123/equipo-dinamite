@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+    <head>
+        <%- include('./../includes/head.html') %>
+        <title>Home</title>
+    </head>
+    <body clas="first-body">
+        <nav class="universal-nav">
+            <div class="flex-1">
+                <%- include('./../includes/go-back.html') %>
+                <img src="/imgs/logo_blanco.png" alt="Appix">
+            </div>
+            <div class="flex-2">
+                <%- include('./../includes/person_icon.html') %>
+                <p><%= usuario.Nombre %></p>
+                <% if (usuario.Rol == "manager") { %>
+                  <p>(M)</p>
+                <% } else if (usuario.Rol == "desarrollador"){ %>
+                  <p>(D)</p>
+                <% } %>
+            </div>
+        </nav>
+
+        <section>
+            <table>
+                <tr>
+
+                </tr>
+            </table>
+        </section>
+
+        <footer>
+            <p style="display: inline-block">Powered by: </p>
+            <img src="/imgs/dinamite_logo.png" width="240">
+        </footer>        
+      
+    </body>
+    <%- include('./../scripts/ctrl-script.ejs') %>
+</html>

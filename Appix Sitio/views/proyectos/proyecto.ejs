@@ -10,12 +10,10 @@
     <body>
         <nav class="universal-nav">
             <div class="flex-1">
-                <a href="/usuarios/homePage">
-                    &lt;Regresar
-                </a>
-                <img src="/fonts/logo_color.png" alt="Appix">
+              <%- include('./../includes/go-back.html') %>
+                <img src="/imgs/logo_blanco.png" alt="Appix">
             </div>
-            <div class="flex-2">
+            <div class="flex-2"> 
                 <%- include('./../includes/person_icon.html') %>
                 <p><%= user.name %></p>
                 <% if (user.rol == "manager") { %>
@@ -38,8 +36,8 @@
             </li>
         </ul>
 
-        <div class="general-view">
-            <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
+        <section class="general-view">
+            <div class="flex-3 general-title">
                 <h1><%= proyectoObject.Nombre %></h1>
                 <button role="none" class="button-close">Cerrar Proyecto</button>
             </div>
@@ -72,20 +70,23 @@
                   <% }) %>
                 </ul>
               </div>
-              <div style="flex-basis: 50%; padding-left: 2rem; text-align: start;">
-                <div style="width: 100%;">
+              <div style="flex-basis: 50%;  text-align: start;">
+                <div style="width: 100%; text-align: start;">
                   <h6 style="max-width: 100%;">Progreso de Timeline de Proyecto</h6>
-                  <div class="flex-3" style="width: 80%; justify-content: flex-start; gap: 12rem;">
+                  <div class="flex-3" style="width: 80%; justify-content: space-between; margin: 0;">
                     <label><%= proyectoObject.start %></label>
                     <label><%= proyectoObject.end %></label>
                   </div>
+                  <div class="progress" role="progressbar" id="prog-bar"></div>
+                    <!-- <div class="progress-bar" style="width: 50%"></div> -->
+                  <!-- </div> -->
                   <div id="range-div" style="width: 100%;"></div>
                 </div>
                 <div id="container-viable" style="width: 80%; max-height: 80%; display: inline-block;"></div>
               </div>
             </div>
 
-        </div>
+        </section>
 
         <div class="riesgos-view hidden">
           <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
