@@ -3,10 +3,10 @@
         <%- include('./../includes/head.html') %>
         <title>Home</title>
     </head>
-    <body>
+    <body clas="first-body">
         <nav class="universal-nav">
             <div class="flex-1">
-                <img src="/fonts/logo_color.png" alt="Appix">
+                <img src="/imgs/logo_blanco.png" alt="Appix">
             </div>
             <div class="search-nav">
                 <div class="input-group mb-3 no-margin">
@@ -17,22 +17,41 @@
                 </div>
             </div>
             <div class="flex-2">
-                <p><%= user.Nombre %>:</p>
-                <p><%= user.Rol %></p>
+                <%- include('./../includes/person_icon.html') %>
+                <p><%= user.Nombre %></p>
+                <% if (user.Rol == "manager") { %>
+                  <p>(M)</p>
+                <% } else if (user.Rol == "desarrollador"){ %>
+                  <p>(D)</p>
+                <% } %>
+                <!-- <p><%= user.Rol %></p> -->
             </div>
             <div class="flex-cerrar">
               <form action="/usuarios/salir" method="POST">
-                <button type="submit" class="btn-cerrar">
-                  Salir   <%- include('./../includes/leave_icon.html') %>
-                </button>
+                <%- include('./../includes/leave_button.html') %> 
               </form>
             </div>
         </nav>
-        <% if (user.Rol == "manager") { %>
-            <%- include('./../includes/manager_panel.html') %>
-        <% } %>
 
-        <div class="order-by-div">
+        <header class="manager-options">
+          <div class="order-by-div">
+              <form>
+                <label style="border-bottom: solid black 1px;"><b>Filtrar Proyectos</b></label>
+                <select name="filter" class="form-select" onclick="handleFilterChange(this)">
+                  <option value="ID">ID Proyecto</option>
+                  <option value="FechaInicio">Fecha Inicio</option>
+                  <option value="FechaFinal">Fecha Final</option>
+                  <option value="Viabilidad">Viabilidad</option>
+                  <option value="Costo">Costo</option>
+                </select>
+              </form>
+          </div>
+          <% if (user.Rol == "manager") { %>
+            <%- include('./../includes/manager_panel.html') %>
+          <% } %>     
+      </header> 
+
+        <!-- <div class="order-by-div">
           <form>
             <label>Filtrar Proyectos</label>
             <select name="filter" class="form-select" onclick="handleFilterChange(this)">
@@ -43,7 +62,7 @@
               <option value="Costo">Costo</option>
             </select>
           </form>
-        </div>
+        </div> -->
 
         <div class="card-flexbox" id="project-cards">
         

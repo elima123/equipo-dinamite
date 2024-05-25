@@ -34,30 +34,8 @@ app.get('/', (req, res) => {
     res.end()
 })
 
-// app.get("/homePage", (req, res) => {
-//     res.render("homePage.ejs")
-// })
-
-// app.get("/proyecto/:idProyecto", (req, res) => {
-//     res.render("proyecto.ejs")
-// })
-
-app.get("/visual", (req, res) => {
-    res.render("visual.ejs")
-})
-
 app.get("*", (req, res) => {
     res.send("Error 404: Page Not Found")
-})
-
-app.post("/autenticar", (req, res) => {
-    const { usuario, contrasena } = req.body
-    const response = autenticar(usuario, contrasena)
-    if (response == "yes") {
-        res.render("homePage.ejs")
-    } else {
-        res.render("signIn.ejs")
-    }
 })
 
 app.use((err, req, res, next) => {

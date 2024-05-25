@@ -1,3 +1,12 @@
+.body {
+    background-image: url('/imgs/fondo_blanco.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* padding-top: ; */
+}
+
 .flex-1 a {
     text-decoration: none;
     color: inherit;
@@ -10,6 +19,10 @@
 /* Nav de Vistas */
 .nav-tabs {
     margin: 0 0 2rem 0;
+    background-color: #fff;
+    /* position: fixed; */
+    /* border: solid black 1px; */
+    /* height: 6.7vh; */
 }
 
 .nav-link {
@@ -22,8 +35,34 @@
     margin: 0 0 2rem 0;
 }
 
+.info-body {
+  width: 100%; 
+  align-items: flex-start; 
+  height: 450px;
+}
+
 .card {
     margin-left: 5rem;
+}
+
+.card-scroll {
+  flex-basis: 40%; 
+    max-height: 100%;
+  overflow: scroll; 
+    overflow-x: hidden;
+    padding-top: 6.5rem;
+    position: relative;
+}
+
+.card-body-scroll {
+  width: 100%;
+  top: 0;
+  /* left: 0; */
+  right: 0;
+  position: absolute; 
+  z-index: 9;
+  border: none;
+  padding: 1rem 1rem 0 1rem;
 }
 
 .button-close {
@@ -95,14 +134,6 @@
 
 .f-50 {
     flex-basis: 40%;
-}
-
-.powerbi-date-range {
-    display: flex;
-    flex-basis: 30%;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 6rem;
 }
 
 /* Riesgos View Seccion */
@@ -211,3 +242,10 @@ td {
       transform: rotate(0deg);
     }
   }
+
+/* Graph Section */
+.graph-div {
+  margin-bottom: 2rem; 
+  width: 95%;
+
+}

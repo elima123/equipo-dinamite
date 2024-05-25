@@ -5,6 +5,15 @@
 
 body {
     font-family: 'Multi Light', sans-serif;
+    padding-top: 8vh;
+}
+
+.first-body {
+    background-image: url('/imgs/Fondo1.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .registro-form {
@@ -34,13 +43,15 @@ p .hidden {
 .universal-nav {
     height: 8vh;
     width: 100%;
-    background-color: lightgrey;
+    /* background-color: lightgrey; */
     /* background-color: lightblue; */
-    /* background-color: #24527a; */
-    /* background-color: #afbfb9; */
+    background: linear-gradient(to right, #0092ca, #e8751a);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 10;
 }
 
 .flex-1 {
@@ -64,6 +75,15 @@ p .hidden {
     padding: 0;
 }
 
+#button-addon2 {
+    /* color: transparent; */
+    /* border: solid transparent; */
+    /* background-color: #fff; */
+    /* border-left: solid lightgrey 2px; */
+    border: solid #fff 2px;
+    color: #fff;
+}
+
 .no-margin {
     margin: auto 0;
     position: relative;
@@ -78,6 +98,7 @@ p .hidden {
     gap: 20px;
     height: 100%;
     font-size: larger;
+    color: #fff;
     /* margin-right: 5vh;
     margin-bottom: 2rem; */
 }
@@ -92,38 +113,65 @@ p .hidden {
 }
 
 .btn-cerrar {
-    background-color: gold;
-    color: #000;
+    /* background-color: transparent; */
+    background-color: #fff;
+    /* color: #fff; */
+    color: inherit;
+    border: solid green 1px;
+    border-color: white;
+    outline: white;
 }
 
 /* Seccion de Managar Options */
 .manager-options {
     width: 100%;
-    background: #f3f3f3;
+    /* background: #f3f3f3; */
     /* background-color: #adf8f6; */
     /* background-color: #a7bcb9; */
     /* background-color: #e0ebeb; */
-    height: 6vh;
-    padding: 0 2rem 0 6rem;
+    height: 15vh;
+    /* margin-top: 8vh; */
+    padding: 1rem 3rem 1rem 3rem;
     display: flex;
     align-items: center;
+    /* border-bottom: solid black 1px; */
 }
 
 .manager-options p {
     display: inline-block; 
     margin: auto 0 auto 0;
     width: 30%;
+    position: relative;
+    bottom: .5rem;
 }
 
+
 .fornow {
-    display: inline-block;
-    width: 60%;
+    flex-basis: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin: auto 0 auto 0;
-    color: #fff;
+    /* color: #fff; */
+}
+
+.fornow-p {
+    flex-basis: 20%;
+    width: 100%;
+    text-align: center;
+    /* border: solid black 1px; */
+}
+
+.fornow-p p {
+    border-bottom: solid black 1px;
+    width: 70%;
 }
 
 .controls-flex {
     width: 100%;
+    flex-basis: 80%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -152,11 +200,12 @@ p .hidden {
 
 /* Filtrar Proyectos */
 .order-by-div {
-    max-width: 20%;
+    /* max-width: 20%; */
+    flex-basis: 30%;
     margin: 0 0 2rem 5rem;
     padding: 0;
     font-size: 2rem;
-}
+} 
 
 .order-by-div label {
     font-size: 1rem;
@@ -171,7 +220,7 @@ p .hidden {
     column-gap: 5.3rem;
     row-gap: 2rem;
     align-items: center;
-    margin: 2rem auto 2rem auto;
+    margin: 1rem auto 2rem auto;
 }
 
 .card-flexbox a {

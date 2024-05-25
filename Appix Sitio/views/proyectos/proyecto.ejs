@@ -16,8 +16,13 @@
                 <img src="/fonts/logo_color.png" alt="Appix">
             </div>
             <div class="flex-2">
-                <p><%= user.name %>:</p>
-                <p><%= user.rol %></p>
+                <%- include('./../includes/person_icon.html') %>
+                <p><%= user.name %></p>
+                <% if (user.rol == "manager") { %>
+                  <p>(M)</p>
+                <% } else if (user.Rol == "desarrollador"){ %>
+                  <p>(D)</p>
+                <% } %>
             </div>
         </nav>
 
@@ -29,7 +34,7 @@
               <a class="nav-link" id="navtab-2" onclick="viewRiesgos()">Info Riesgos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="navtab-3" onclick="viewAnalisis()">Analisis</a>
+              <a class="nav-link" id="navtab-3" onclick="viewAnalisis()">Análisis</a>
             </li>
         </ul>
 
@@ -45,22 +50,16 @@
                   Cliente: <%= proyectoObject.nombreEmpresa %>
                 </h5><br>
               </div>
-              <!-- <div class="powerbi-date-range">
-                <div>
-                  <p><%= proyectoObject.start %></p>
-                  <p><%= proyectoObject.end %></p>
-                </div>
-                <div>
-                  <p class=""></p>
-                  <p id="date-line"></p>
-                  <p class=""></p>
-                </div>
-              </div> -->
             </div>
 
-            <div class="flex-3" style="width: 95%; border: solid black 2px;">
-              <div class="card" style="flex-basis: 40%; border: solid red 2px;">
-                <div class="card-body" >
+            <div class="flex-3 info-body">
+              <% if (riesgos.length > 8) { %>
+                <div class="card card-scroll">
+                  <div class="card card-body-scroll">
+              <% } else { %>
+                <div class="card">
+                  <div class="card-body">
+              <% } %>
                   <h5 class="card-title">Descripcion</h5>
                   <p class="card-text" style="width: 100%;">
                     <%= proyectoObject.Descripcion %>
@@ -73,17 +72,19 @@
                   <% }) %>
                 </ul>
               </div>
-              <div style="flex-basis: 50%; border: solid green 2px; padding-left: 2rem;">
-                <div>
-                  <div class="powerbi-date-range">
-                    <p style="display: inline-block;"><%= proyectoObject.start %></p>
-                    <p style="display: inline-block;"><%= proyectoObject.end %></p>
+              <div style="flex-basis: 50%; padding-left: 2rem; text-align: start;">
+                <div style="width: 100%;">
+                  <h6 style="max-width: 100%;">Progreso de Timeline de Proyecto</h6>
+                  <div class="flex-3" style="width: 80%; justify-content: flex-start; gap: 12rem;">
+                    <label><%= proyectoObject.start %></label>
+                    <label><%= proyectoObject.end %></label>
                   </div>
                   <div id="range-div" style="width: 100%;"></div>
                 </div>
-                <div id="container-viable" style="border: solid black 2px; width: 80%; max-height: 80%; display: inline-block;"></div>
+                <div id="container-viable" style="width: 80%; max-height: 80%; display: inline-block;"></div>
               </div>
             </div>
+
         </div>
 
         <div class="riesgos-view hidden">
@@ -123,8 +124,11 @@
         </div>
 
         <div class="analisis-view hidden">
-          <div id="container" style="width: 50%; height: 400px;"></div>
-          <div id="container-2" style="width: 50%; height: 400px;"></div>
+          <h1 style="text-align: center; margin-bottom: 2rem;"><%= proyectoObject.Nombre %></h1>
+          <div class="flex-3 graph-div">
+            <div id="container" style="width: 49%; height: 400px;"></div>
+            <div id="container-2" style="width: 49%; height: 400px;"></div>
+          </div>
         </div>
   
         <footer>

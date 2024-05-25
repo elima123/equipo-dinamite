@@ -5,7 +5,8 @@ const pool = mysql.createPool({
     host: "127.0.0.1",
     user: "root",
     password: "",
-    database: "appix"
+    database: "appix",
+    connectionLimit: 10
 }).promise()
 
 module.exports = async () => {
@@ -16,11 +17,3 @@ module.exports = async () => {
         throw e
     }
 }
-
-// export async function autenticar(usuario, contra) {
-//     const [rows] = await pool.query(`
-//     SELECT * FROM wrappers
-//     WHERE wrapperStatus = 'active'
-//     `)
-//     return rows
-// }
