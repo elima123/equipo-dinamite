@@ -1,3 +1,5 @@
+# QUEDA ESTRICTAMENTE PROIVIDO HACER PUSH DIRECTAMENTE A MASTER BRANCH.
+
 # Equipo: equipo-dinamite
 Repositorio del equipo dinamite
 - Alfonso Imanol Macias Marañon - A01808099
