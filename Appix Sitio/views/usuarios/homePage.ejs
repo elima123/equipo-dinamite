@@ -3,10 +3,10 @@
         <%- include('./../includes/head.html') %>
         <title>Home</title>
     </head>
-    <body>
+    <body class="first-body">
         <nav class="universal-nav">
             <div class="flex-1">
-                <img src="/fonts/logo_color.png" alt="Appix">
+                <img src="/imgs/logo_blanco.png" alt="Appix">
             </div>
             <div class="search-nav">
                 <div class="input-group mb-3 no-margin">
@@ -17,20 +17,40 @@
                 </div>
             </div>
             <div class="flex-2">
-                <p><%= user.Nombre %>:</p>
-                <p><%= user.Rol %></p>
+                <%- include('./../includes/person_icon.html') %>
+                <p><%= user.Nombre %></p>
+                <% if (user.Rol == "manager") { %>
+                  <p>(M)</p>
+                <% } else if (user.Rol == "desarrollador"){ %>
+                  <p>(D)</p>
+                <% } %>
+                <!-- <p><%= user.Rol %></p> -->
             </div>
             <div class="flex-cerrar">
               <form action="/usuarios/salir" method="POST">
-                <button type="submit" class="btn-cerrar">
-                  &lt;Cerrar Sesion&gt; <%- include('./../includes/leave_icon.html') %>
-                </button>
+                <%- include('./../includes/leave_button.html') %> 
               </form>
             </div>
         </nav>
-        <% if (user.Rol == "manager") { %>
+
+        <header class="manager-options">
+          <div class="order-by-div">
+              <form>
+                <label style="border-bottom: solid black 1px;"><b>Filtrar Proyectos</b></label>
+                <select name="filter" class="form-select" onclick="handleFilterChange(this)">
+                  <option value="ID">ID Proyecto</option>
+                  <option value="FechaInicio">Fecha Inicio</option>
+                  <option value="FechaFinal">Fecha Final</option>
+                  <option value="Viabilidad">Viabilidad</option>
+                  <option value="Costo">Costo</option>
+                </select>
+              </form>
+          </div>
+          <% if (user.Rol == "manager") { %>
             <%- include('./../includes/manager_panel.html') %>
-        <% } %>
+          <% } %>     
+      </header> 
+
         <div class="card-flexbox" id="project-cards">
         
         </div>
@@ -88,9 +108,18 @@
                 <% }) %>
               </select>
               <input type="text" placeholder="Descripcion" name="desc">
-              <input type="number" placeholder="Costo" name="costo">
-              <input type="date" placeholder="Fecha de inicio" name="fechaI">
-              <input type="date" placeholder="Fecha Final" name="fechaF">
+              <div class="flex-3 costo-div">
+                <input type="number" placeholder="Costo/Presupuesto" name="costo" style="flex-grow: 10;">
+                <button role="none" type="button" class="costo-btn">$</button>
+              </div>
+              <div class="flex-3">
+                <label>Fecha de Inicio</label>
+                <label style="width: 50%; text-align: start;">Fecha Final</label>
+              </div>
+              <div class="flex-3">
+                <input type="date" name="fechaI">
+                <input type="date" name="fechaF">
+              </div>
             </div>
             <input type="submit" class="btn-submit" value="Registrar">
           </form>

@@ -1,14 +1,72 @@
 <script>     
+        function controlPage() {
+                window.location.href = '/usuarios/control'
+        }
+
         let projects = JSON.parse('<%- projectsJSON %>')
         const projPorPage = 9
-        cambiarPagina(1)
+        let currentFilter = "id"
+        let searchTerm = ""
+        let currentPage = 1
+        const searchSubmit = document.getElementById('button-addon2')
+        const searchInput = document.getElementById('search-input')
+        cambiarPagina(currentPage)
 
-        function filterProjects(searchTerm) {
+        searchSubmit.addEventListener('click', handleSearch)
+
+        searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                        handleSearch()
+                }
+        })
+
+        function handleFilterChange(selectElement) {
+                currentFilter = selectElement.value
+                filterProjects(searchTerm, currentFilter, currentPage)
+        }
+
+        function handleSearch() {
+                searchTerm = searchInput.value.toLowerCase()
+                filterProjects(searchTerm, currentFilter, currentPage)
+        }
+
+        // function cambiarPagina(numPagina) {
+        //         currentPage = numPagina
+        //         filterProjects(searchTerm, currentFilter, currentPage)
+        // }
+
+        function cambiarPagina(numPagina) {
+                const rangeHigh = numPagina*projPorPage - 1
+                const rangeLow = (numPagina-1)*projPorPage
+
+                projects.map((project, i) => {
+                        if (i >= rangeLow && i <= rangeHigh) {
+                                project.active = true
+                        } else {
+                                project.active = false
+                        }
+                })
+                filterProjects('', currentFilter)
+        }
+
+        function filterProjects(searchTerm, currentFilter, currentPage) {
                 const filteredProjects = projects.filter(project =>
                         project.Nombre.toLowerCase().includes(searchTerm) || 
                         project.Descripcion.toLowerCase().includes(searchTerm) ||
                         project.nombreEmpresa.toLowerCase().includes(searchTerm)
                 )
+
+                if (currentFilter === "FechaInicio") {
+                        filteredProjects.sort((a, b) => new Date(a.FechaInicio) - new Date(b.FechaInicio))
+                } else if (currentFilter === "FechaFinal") {
+                        filteredProjects.sort((a, b) => new Date(a.FechaFinal) - new Date(b.FechaFinal))
+                } else if (currentFilter === "Viabilidad") {
+                        filteredProjects.sort((a, b) => b.Viabilidad - a.Viabilidad)
+                } else if (currentFilter === "Costo") {
+                        filteredProjects.sort((a, b) => a.Costo - b.Costo)
+                } else if (currentFilter === "ID") {
+                        filteredProjects.sort((a, b) => a.IDProyecto = b.IDProyecto)
+                }
 
                 // let previouslyInactive = []
 
@@ -121,36 +179,6 @@
                 // previouslyInactive.forEach(project => {
                 //         project.active = false
                 // })
-        }
-
-        const searchSubmit = document.getElementById('button-addon2')
-        const searchInput = document.getElementById('search-input')
-
-        function handleSearch() {
-                const searchTerm = searchInput.value.toLowerCase()
-                filterProjects(searchTerm)
-        }
-
-        searchSubmit.addEventListener('click', handleSearch)
-
-        searchInput.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
-                        handleSearch()
-                }
-        })
-
-        function cambiarPagina(numPagina) {
-                const rangeHigh = numPagina*projPorPage - 1
-                const rangeLow = (numPagina-1)*projPorPage
-
-                projects.map((project, i) => {
-                        if (i >= rangeLow && i <= rangeHigh) {
-                                project.active = true
-                        } else {
-                                project.active = false
-                        }
-                })                
-                filterProjects('')
         }
 
         var btnAbrirPopup = document.getElementById('btn-abrir-popup'),

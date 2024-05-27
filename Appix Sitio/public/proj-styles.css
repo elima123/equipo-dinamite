@@ -1,3 +1,13 @@
+body {
+    padding-top: 8vh;
+    background-image: url('/imgs/fondo_blanco.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat; 
+    /* padding-top: ; */
+}
+
 .flex-1 a {
     text-decoration: none;
     color: inherit;
@@ -10,6 +20,10 @@
 /* Nav de Vistas */
 .nav-tabs {
     margin: 0 0 2rem 0;
+    /* background-color: #fff; */
+    /* position: fixed; */
+    /* border: solid black 1px; */
+    /* height: 6.7vh; */
 }
 
 .nav-link {
@@ -22,8 +36,41 @@
     margin: 0 0 2rem 0;
 }
 
+.general-title {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to left, blue, green, orange);
+    border-image-slice: 1;
+    margin: 0 3rem 2rem 3rem; width: 85%;
+}
+
+.info-body {
+  width: 100%; 
+  align-items: flex-start; 
+  height: 450px;
+}
+
 .card {
     margin-left: 5rem;
+}
+
+.card-scroll {
+  flex-basis: 40%; 
+    max-height: 100%;
+  overflow: scroll; 
+    overflow-x: hidden;
+    padding-top: 6.5rem;
+    position: relative;
+}
+
+.card-body-scroll {
+  width: 100%;
+  top: 0;
+  /* left: 0; */
+  right: 0;
+  position: absolute; 
+  z-index: 9;
+  border: none;
+  padding: 1rem 1rem 0 1rem;
 }
 
 .button-close {
@@ -58,7 +105,7 @@
     background-image: linear-gradient(-180deg, yellow, gold);
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
-    color: #FFFFFF;
+    color: #000;
     cursor: pointer;
     /* display: inline-block; */
     height: 40px;
@@ -95,14 +142,6 @@
 
 .f-50 {
     flex-basis: 40%;
-}
-
-.powerbi-date-range {
-    display: flex;
-    flex-basis: 30%;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 6rem;
 }
 
 /* Riesgos View Seccion */
@@ -158,3 +197,68 @@ td {
 /* .active {
     background-color: lightgray;
 } */
+
+.button-20 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 4px;
+    /* height: 32px; */
+    /* width: 81px; */
+    border: none;
+    /* background: #1b1b1cd0; */
+    background-color: #8f8f8f;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .label {
+    line-height: 22px;
+    font-size: 17px;
+    /* color: #DE8A2A; */
+    color: #fff;
+    /* letter-spacing: 1px; */
+  }
+  
+  .button-20:hover {
+    background: #1b1b1cea;
+  }
+  
+  .button-20:hover .svg-icon {
+    animation: rotate 1.3s linear infinite;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(10deg);
+    }
+  
+    50% {
+      transform: rotate(0deg);
+    }
+  
+    75% {
+      transform: rotate(-10deg);
+    }
+  
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+/* Graph Section */
+.graph-div {
+  margin-bottom: 2rem; 
+  width: 95%;
+}
+
+#container, #container-2 {
+  border-left: solid black 1px;
+  border-right: solid black 1px;
+  /* border-top: solid black 1px; */
+}

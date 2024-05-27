@@ -5,12 +5,6 @@ exports.Project = class {
     static async getProject(idProyecto) {
         try {
             const connection = await db()
-            // const result = await connection.execute(`
-            // SELECT p.*, e.Nombre AS nombreEmpresa
-            // FROM Proyectos as p
-            // INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa 
-            // WHERE IDProyecto = ?
-            // `,[idProyecto])
             const result = await connection.execute(`
             SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
 			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
@@ -68,4 +62,37 @@ exports.Project = class {
             throw error
         }
     }
+
+    // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->}
+    static async agregarRiesgo(idProyecto, idRiesgo) {
+        try {
+            const connection = await db() 
+            const result = await connection.execute(`
+            INSERT INTO proyectoriesgos (IDProyecto, IDRiesgo)
+            SELECT ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM proyectoriesgos
+                WHERE IDProyecto = ? AND IDRiesgo = ?
+            );
+
+            `, [idProyecto, idRiesgo, idProyecto, idRiesgo])       
+            await connection.release()
+            return "yes"
+        } catch (error) {
+            throw error
+        }
+    }
+    static async removerRiesgo(idProyecto, idRiesgo) {
+        try {
+            const connection = await db() 
+            const result = await connection.execute(`
+            DELETE FROM proyectoriesgos WHERE IDProyecto = ? AND IDRiesgo = ?;
+            `, [idProyecto, idRiesgo])       
+            await connection.release()
+            return "yes"
+        } catch (error) {
+            throw error
+        }
+    }
+    // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
 } 

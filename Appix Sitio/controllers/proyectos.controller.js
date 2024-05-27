@@ -20,10 +20,11 @@ module.exports.get_proyecto = async (req, res) => {
     res.render("proyectos/proyecto.ejs", {
         user,
         proyectoObject,
+        proyectosJSON: JSON.stringify(proyectoObject),
         riesgos: riesgosObjectsArray,
         riesgosJSON: JSON.stringify(riesgosObjectsArray)
     })
-} 
+}
 
 module.exports.registrar_proyecto = async (req, res) => {
     try {
@@ -39,10 +40,34 @@ module.exports.registrar_proyecto = async (req, res) => {
         // if (result == "yes") {
         //     res.redirect('/usuarios/homePage')
         // } else {
-            
+
         // }
         res.redirect('/usuarios/homePage')
     } catch (e) {
         throw e
     }
 }
+
+// <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
+module.exports.editarRiesgo = async (req, res) => {
+    try {
+        const idProyecto = req.body.idProyecto
+        // Iterar sobre cada checkbox
+        for (let i = 1; i <= 32; i++) {
+            const checkboxName = 'Checkbox' + i; // Nombre de la checkbox
+            const checkboxValue = req.body[checkboxName] === 'on'; // Valor de la checkbox
+
+            if (checkboxValue) {
+                const result = await model.Project.agregarRiesgo(idProyecto, i)
+            } else {
+                const result = await model.Project.removerRiesgo(idProyecto, i)
+            }
+
+        }
+        const urlBack = "/proyecto/" + idProyecto
+        res.redirect(urlBack)
+    } catch (e) {
+        throw e
+    }
+}
+// <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
