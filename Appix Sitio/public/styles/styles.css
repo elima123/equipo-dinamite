@@ -7,9 +7,26 @@ body {
     font-family: 'Multi Light', sans-serif;
 }
 
+/* .signIn-body {
+    background-image: url('/imgs/Fondo1.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+
 .first-body {
     padding-top: 8vh;
     background-image: url('/imgs/Fondo1.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.control-body {
+    padding-top: 8vh;
+    background-image: url('/imgs/fondo_upside.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -295,7 +312,9 @@ p .hidden {
 
 /* Seccion de Footer */
 footer {
-    background-color: lightgrey;
+    /* background-color: lightgrey; */
+    /* background-color: #009f00; */
+    background-image: url('/imgs/footer_fondo.png');
     height: 10rem;
     display: flex;
     justify-content: center;

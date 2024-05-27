@@ -51,6 +51,7 @@ body {
 
 .card {
     margin-left: 5rem;
+    min-width: 25rem;
 }
 
 .card-scroll {

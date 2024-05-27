@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <head>
         <%- include('./../includes/head.html') %>
-        <link rel="stylesheet" href="/proj-styles.css">
+        <link rel="stylesheet" href="/styles/proj-styles.css">
         <title>Proyecto: <%= proyectoObject.IDProyecto %></title>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/highcharts-more.js"></script>
@@ -57,7 +57,7 @@
               <% } else { %>
                 <div class="card">
                   <div class="card-body">
-              <% } %>
+              <% } %> 
                   <h5 class="card-title">Descripcion</h5>
                   <p class="card-text" style="width: 100%;">
                     <%= proyectoObject.Descripcion %>
@@ -68,6 +68,9 @@
                   <% riesgos.forEach(riesgo => { %>
                     <li class="list-group-item"><%= riesgo.IDRiesgo %>: <%= riesgo.Riesgo %></li>  
                   <% }) %>
+                  <% if(riesgos.length == 0) { %>
+                    <li class="list-group-item">none</li>
+                  <% } %>
                 </ul>
               </div>
               <div style="flex-basis: 50%;  text-align: start;">
@@ -137,5 +140,5 @@
             <img src="/imgs/dinamite_logo.png" width="240">
         </footer>
     </body>
-    <%- include('./../proj-script.ejs') %>
+    <%- include('./../scripts/proj-script.ejs') %>
 </html>

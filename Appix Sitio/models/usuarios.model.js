@@ -119,3 +119,18 @@ exports.getUsuarios = async function () {
         throw e
     }
 } 
+
+exports.createUser = async function (nombre, correo, contrasena, rol) {
+    try {
+        const connection = await db()
+        const result = await connection.execute(`
+        INSERT INTO Usuarios (Nombre, Correo, Contrasena, Rol)
+        VALUES (?,?,?,?)
+        `, [nombre, correo, contrasena, rol])
+        await connection.release()
+        const realResult = result[0]
+        return "yes"
+    } catch (e) {
+        throw e
+    }
+}
