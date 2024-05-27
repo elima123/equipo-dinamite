@@ -129,4 +129,23 @@
       
     </body>
     <%- include('./../scripts.ejs') %>
+
+    <script>
+      console.log("hello")
+      const projects = JSON.parse('<%- projectsJSON %>')
+      const searchSubmit = document.getElementById('button-addon2')
+      searchSubmit.addEventListener('click', () => {
+          const searchInput = document.getElementById('search-input')
+          const searchTerm = searchInput.value.toLowerCase()
+          console.log("filteredProjects2")
+          const filteredProjects = projects.filter(project =>
+              project.Nombre.toLowerCase().includes(searchTerm) || 
+              project.Descripcion.toLowerCase().includes(searchTerm) ||
+              project.nombreEmpresa.toLowerCase().includes(searchTerm)
+          )
+          // Now use filteredProjects to display or update your UI
+          console.log("filteredProjects")
+          })
+  </script>
+
 </html>
