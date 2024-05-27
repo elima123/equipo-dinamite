@@ -1,0 +1,26 @@
+#grid-container {
+    width: 95%;
+    margin: 0 auto 2rem auto;
+    overflow-x: hidden;
+}
+
+section h1 {
+    margin-top: 1.5rem;
+}
+
+.button-flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 95%;
+    padding-right: 2rem;
+}
+
+/* .button-flex button {
+    position: relative;
+    top: 3rem;
+} */
+
+th {
+    background-color: white;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+    <head>
+        <%- include('./../includes/head.html') %>
+        <title>Home</title>
+    </head>
+    <body class="first-body">
+        <nav class="universal-nav">
+            <div class="flex-1">
+                <img src="/imgs/logo_blanco.png" alt="Appix">
+            </div>
+            <div class="search-nav">
+                <div class="input-group mb-3 no-margin">
+                    <input type="text" class="form-control" placeholder="buscar proyecto..." id="search-input">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <%- include('./../includes/search-icon.html') %>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-2">
+                <%- include('./../includes/person_icon.html') %>
+                <p><%= user.Nombre %></p>
+                <% if (user.Rol == "manager") { %>
+                  <p>(M)</p>
+                <% } else if (user.Rol == "desarrollador"){ %>
+                  <p>(D)</p>
+                <% } %>
+                <!-- <p><%= user.Rol %></p> -->
+            </div>
+            <div class="flex-cerrar">
+              <form action="/usuarios/salir" method="POST">
+                <%- include('./../includes/leave_button.html') %> 
+              </form>
+            </div>
+        </nav>
+
+        <header class="manager-options">
+          <div class="order-by-div">
+              <form>
+                <label style="border-bottom: solid black 1px;"><b>Filtrar Proyectos</b></label>
+                <select name="filter" class="form-select" onclick="handleFilterChange(this)">
+                  <option value="ID">ID Proyecto</option>
+                  <option value="FechaInicio">Fecha Inicio</option>
+                  <option value="FechaFinal">Fecha Final</option>
+                  <option value="Viabilidad">Viabilidad</option>
+                  <option value="Costo">Costo</option>
+                </select>
+              </form>
+          </div>
+          <% if (user.Rol == "manager") { %>
+            <%- include('./../includes/manager_panel.html') %>
+          <% } %>     
+      </header> 
+
+        <div class="card-flexbox" id="project-cards">
+        
+        </div>
+
+        <nav class="page-counter">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" onclick="">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <% for (let i = 1; i <= numPages; i++) { %>
+                <li class="page-item"><a class="page-link" onclick="cambiarPagina(<%= i %>)"><%= i %></a>
+              <% } %>
+              <li class="page-item">
+                <a class="page-link" onclick="">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+        </nav>
+
+        <footer>
+            <p style="display: inline-block">Powered by: </p>
+            <img src="/imgs/dinamite_logo.png" width="240">
+        </footer>
+        <!--popup-->
+        <div class="overlay" id="overlay">
+          <div class="popup" id="popup">
+            <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+            <h3>Registrar Empresa</h3>
+            <form action="/empresa/registro" method="POST">
+              <div class="contenedor-inputs">
+                <input type="text" placeholder="Nombre"name="Nombre">
+                <input type="text" placeholder="Telefono" name="Telefono">
+                <input type="email" placeholder="Correo" name="Correo">
+              </div>
+              <input type="submit" class="btn-submit" value="Registrar">
+            </form>
+          </div>
+        </div>
+
+      <!--popup AGREGAR PROYECTO-->
+      <div class="overlay" id="overlayAgregarProyecto">
+        <div class="popup" id="popup2">
+          <a id="btn-cerrar-popup-2" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+          <h3>Agregar Proyecto</h3>
+          <form action="/proyecto/registro" method="POST">
+            <div class="contenedor-inputs">
+              <input type="text" placeholder="Nombre del Proyecto" name="nombre">
+              <select name="nombreEmpresa">
+                <option value="" class="placeholder">Seleccione una empresa</option>
+                <% empresas.forEach(empresa => { %>
+                  <option value="<%= empresa.Nombre %>"><%= empresa.Nombre %></option>
+                <% }) %>
+              </select>
+              <input type="text" placeholder="Descripcion" name="desc">
+              <div class="flex-3 costo-div">
+                <input type="number" placeholder="Costo/Presupuesto" name="costo" style="flex-grow: 10;">
+                <button role="none" type="button" class="costo-btn">$</button>
+              </div>
+              <div class="flex-3">
+                <label>Fecha de Inicio</label>
+                <label style="width: 50%; text-align: start;">Fecha Final</label>
+              </div>
+              <div class="flex-3">
+                <input type="date" name="fechaI">
+                <input type="date" name="fechaF">
+              </div>
+            </div>
+            <input type="submit" class="btn-submit" value="Registrar">
+          </form>
+        </div>
+      </div>
+      <!--popup AGREGAR PROYECTO-->
+      
+    </body>
+    <%- include('./../scripts.ejs') %>
+</html>

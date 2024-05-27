@@ -1,0 +1,112 @@
+const projects = JSON.parse('<%- projectsJSON %>')
+        
+        filterProjects('')
+
+        function filterProjects(searchTerm) {
+            const filteredProjects = projects.filter(project =>
+                project.Nombre.toLowerCase().includes(searchTerm) || 
+                project.Descripcion.toLowerCase().includes(searchTerm) ||
+                project.nombreEmpresa.toLowerCase().includes(searchTerm)
+            )
+            console.log(filteredProjects)
+
+            // Clear previous cards
+            const projectCards = document.getElementById('project-cards')
+            projectCards.innerHTML = ''
+
+            // Add filtered projects to the DOM
+            filteredProjects.forEach(project => {
+                const anchor = document.createElement('a')
+                anchor.href = '/proyecto/project.IDProyecto'
+
+                const card = document.createElement('div')
+                card.className = 'card'
+                card.style = 'width: 20rem'
+
+                const cardBody = document.createElement('div')
+                cardBody.className = 'card-body'
+
+                const titleScoreDiv = document.createElement('div')
+                titleScoreDiv.className = 'flex-3'
+
+                const title = document.createElement('h5')
+                title.className = 'card-title'
+                title.textContent = project.Nombre
+
+                const viability = document.createElement('p')
+                if (project.Viabilidad < 50) { 
+                        className = "very-risky" 
+                } else if (project.Viabilidad < 65){ 
+                        className="at-risk"
+                } else if (project.Viabilidad < 80){ 
+                        className="viable"
+                } else if (project.Viabilidad < 95){ 
+                        className="very-viable"
+                } else if (project.Viabilidad <= 100){ 
+                        className="perfect"
+                } 
+                viability.textContent = project.Viabilidad
+
+                const client = document.createElement('h6')
+                client.className = 'card-subtitle mb-2 text-body-secondary'
+                client.textContent = 'Cliente: ' + project.nombreEmpresa
+
+                const descTitle = document.createElement('h6')
+                descTitle.textContent = 'Descripcion'
+
+                const description = document.createElement('p')
+                description.className = 'card-text p-desc'
+                description.textContent = project.Descripcion
+
+                const fechasLabelDiv = document.createElement('div')
+                fechasLabelDiv.className = 'fechas-div'
+
+                const fechaInicio = document.createElement('p')
+                fechaInicio.className = 'card-text'
+                fechaInicio.textContent = 'Inicio'
+
+                const fechaFin = document.createElement('p')
+                fechaFin.className = 'card-text'
+                fechaFin.textContent = 'Fin'
+
+                const fechasDiv = document.createElement('div')
+                fechasDiv.className = 'fechas-div'
+
+                const fechaStart = document.createElement('p')
+                fechaStart.className = 'card-text'
+                fechaStart.textContent = project.start
+
+                const fechaEnd = document.createElement('p')
+                fechaEnd.className = 'card-text'
+                fechaEnd.textContent = project.end
+
+                
+                titleScoreDiv.append(title)
+                titleScoreDiv.append(viability)
+
+                fechasLabelDiv.append(fechaInicio)
+                fechasLabelDiv.append(fechaFin)
+
+                fechasDiv.append(fechaStart)
+                fechasDiv.append(fechaEnd)
+
+                cardBody.append(titleScoreDiv)
+                cardBody.append(client)
+                cardBody.append(descTitle)
+                cardBody.append(description)
+                cardBody.append(fechasLabelDiv)
+                cardBody.append(fechasDiv)
+                // cardBody.appendChild(title)
+                // cardBody.appendChild(viability)
+                // Append other elements here
+                card.appendChild(cardBody)
+                projectCards.appendChild(card)
+            })
+        }
+
+        const searchSubmit = document.getElementById('button-addon2')
+        searchSubmit.addEventListener('click', () => {
+            const searchInput = document.getElementById('search-input')
+            const searchTerm = searchInput.value.toLowerCase()
+            filterProjects(searchTerm)
+        })

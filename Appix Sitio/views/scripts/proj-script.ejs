@@ -1,0 +1,335 @@
+<script>
+    function backHome() {
+        window.location.href = '/usuarios/homePage'
+    }
+
+    const generalView = document.querySelector(".general-view")
+    const riesgosView = document.querySelector(".riesgos-view")
+    const analisisView = document.querySelector(".analisis-view")
+    const navtab1 = document.querySelector("#navtab-1")
+    const navtab2 = document.querySelector("#navtab-2")
+    const navtab3 = document.querySelector("#navtab-3")
+
+    function viewInfo() {
+        riesgosView.classList.add('hidden')
+        analisisView.classList.add('hidden')
+        navtab2.classList.remove('active')
+        navtab3.classList.remove('active')
+
+        generalView.classList.remove('hidden')
+        navtab1.classList.add('active')
+    }
+
+    function viewRiesgos() {
+        generalView.classList.add('hidden')
+        analisisView.classList.add('hidden')
+        navtab1.classList.remove('active')
+        navtab3.classList.remove('active')
+
+        riesgosView.classList.remove('hidden')
+        navtab2.classList.add('active')
+    }
+
+    function viewAnalisis() {
+        generalView.classList.add('hidden')
+        riesgosView.classList.add('hidden')
+        navtab1.classList.remove('active')
+        navtab2.classList.remove('active')
+
+        analisisView.classList.remove('hidden')
+        navtab3.classList.add('active')
+    } 
+
+    let proyectoData = JSON.parse('<%- proyectosJSON %>')
+
+    const startDate = new Date(proyectoData.FechaInicio)
+    const endDate = new Date(proyectoData.FechaFinal)
+    const today = new Date()
+
+    const timeDifference = endDate.getTime() - startDate.getTime()
+    const days = Math.floor(timeDifference/(1000*60*60*24))
+
+    const currentDifference = today.getTime() - startDate.getTime()
+    const todayDays = Math.floor(currentDifference/(1000*60*60*24))
+
+    const percentage = ((todayDays/days)*100).toFixed(0)
+    console.log(percentage)
+
+    const progressBar = document.getElementById('prog-bar')
+    progressBar.innerHTML = ''
+    progressBar.style = 'width: 80%;'
+
+    const progress = document.createElement('div')
+    progress.className = 'progress-bar'
+    progress.style = `width: ${percentage}%;`
+
+    progressBar.appendChild(progress)
+
+    const rangeDiv = document.getElementById('range-div')
+    rangeDiv.innerHTML = ''
+
+    let riesgosData = JSON.parse('<%- riesgosJSON %>')
+    let cantCalidad = 0
+        let cantTiempo = 0
+        let cantRecursos = 0
+        let cantAlcance = 0
+        let cantCosto = 0
+        for (let i = 0; i < riesgosData.length; i++) {
+            const categoria = riesgosData[i].Categoria;
+            if (categoria === "Calidad") {
+                cantCalidad += 1;
+            } else if (categoria === "Alcance") {
+                cantAlcance += 1;
+            } else if (categoria === "Tiempo") {
+                cantTiempo += 1;
+            } else if (categoria === "Costo") {
+                cantCosto += 1;
+            } else if (categoria === "Recursos") {
+                cantRecursos += 1;
+            }
+        }
+
+// Data retrieved from https://netmarketshare.com/
+// Build the chart
+Highcharts.chart('container-2', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Distribución de Tipo de Riesgo',
+        align: 'left'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Distribución',
+        colorByPoint: true,
+        data: [{
+            name: 'Calidad',
+            y: parseFloat(((cantCalidad / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Alcance',
+            y: parseFloat(((cantAlcance / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Tiempo',
+            y: parseFloat(((cantTiempo / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Recursos',
+            y: parseFloat(((cantRecursos / riesgosData.length) * 100).toFixed(1))
+        }, {
+            name: 'Costo',
+            y: parseFloat(((cantCosto / riesgosData.length) * 100).toFixed(1))
+        }]
+    }]
+});
+
+// Indicador de Viabilidad
+
+Highcharts.chart('container-viable', {
+    
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false,
+        height: '80%'
+    },
+    
+    title: {
+        text: 'Viabilidad'
+    },
+    
+    pane: {
+        startAngle: -90,
+        endAngle: 89.9,
+        background: null,
+        center: ['50%', '75%'],
+        size: '110%'
+    },
+    
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 100,
+        tickPixelInterval: 72,
+        tickPosition: 'inside',
+        tickColor: Highcharts.defaultOptions.chart.backgroundColor || '#FFFFFF',
+        tickLength: 20,
+        tickWidth: 2,
+        minorTickInterval: null,
+        labels: {
+            distance: 20,
+            style: {
+                fontSize: '14px'
+            }
+        },
+        lineWidth: 0,
+        plotBands: [{
+            from: 0,
+            to: 50,
+            color: '#ff0000',
+            thickness: 20,
+            borderRadius: '30%'
+        }, {
+            from: 50,
+            to: 65,
+            color: '#ffa500', // red
+            thickness: 20,
+            borderRadius: '30%'
+        }, {
+            from: 65,
+            to: 80,
+            color: '#ffff00', // yellow
+            thickness: 20,
+            borderRadius: '30%'
+        }, {
+            from: 80,
+            to: 95,
+            color: '#adff2f',
+            thickness: 20,
+            borderRadius: '30%'
+        }, {
+            from: 95,
+            to: 100,
+            color: '#008000',
+            thickness: 20,
+            borderRadius: '30%'
+        }]
+    },
+    
+    series: [{
+        name: 'Viabilidad',
+        data: [proyectoData.Viabilidad],
+        tooltip: {
+            valueSuffix: ' %'
+        },
+        dataLabels: {
+            format: '{y} %',
+            borderWidth: 0,
+            color: (
+                Highcharts.defaultOptions.title &&
+                Highcharts.defaultOptions.title.style &&
+                Highcharts.defaultOptions.title.style.color
+            ) || '#333333',
+            style: {
+                fontSize: '16px'
+            }
+        },
+        dial: {
+            radius: '80%',
+            backgroundColor: 'gray',
+            baseWidth: 12,
+            baseLength: '0%',
+            rearLength: '0%'
+        },
+        pivot: {
+            backgroundColor: 'gray',
+            radius: 6
+        }
+    
+    }]
+});
+
+// Grafica de Viabilidad contra el Tiempo
+
+Highcharts.chart('container', {
+
+title: {
+    text: 'Viabilidad a través del Tiempo',
+    align: 'left'
+},
+subtitle: {
+    text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+    align: 'left'
+},
+yAxis: {
+    title: {
+        text: 'Viabilidad (%)'
+    }
+},
+xAxis: {
+    accessibility: {
+        rangeDescription: 'Range: 2010 to 2020'
+    }
+},
+legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+},
+plotOptions: {
+    series: {
+        label: {
+            connectorAllowed: false
+        },
+        pointStart: 2010
+    }
+},
+series: [{
+    name: 'Installation & Developers',
+    data: [
+        43934, 48656, 65165, 81827, 112143, 142383,
+        171533, 165174, 155157, 161454, 154610
+    ]
+}, {
+    name: 'Manufacturing',
+    data: [
+        24916, 37941, 29742, 29851, 32490, 30282,
+        38121, 36885, 33726, 34243, 31050
+    ]
+}, {
+    name: 'Sales & Distribution',
+    data: [
+        11744, 30000, 16005, 19771, 20185, 24377,
+        32147, 30912, 29243, 29213, 25663
+    ]
+}, {
+    name: 'Operations & Maintenance',
+    data: [
+        null, null, null, null, null, null, null,
+        null, 11164, 11218, 10077
+    ]
+}, {
+    name: 'Other',
+    data: [
+        21908, 5548, 8105, 11248, 8989, 11816, 18274,
+        17300, 13053, 11906, 10073
+    ]
+}],
+responsive: {
+    rules: [{
+        condition: {
+            maxWidth: 500
+        },
+        chartOptions: {
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
+            }
+        }
+    }]
+}
+});
+
+</script>
