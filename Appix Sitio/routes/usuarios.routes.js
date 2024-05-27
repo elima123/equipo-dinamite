@@ -9,6 +9,5 @@ router.post('/login', controller.do_login)
 router.get('/homePage', isAuth, controller.get_homePage)
 // router.post('/homePage', isAuth, controller.order_homePage)
 router.get('/control', isAuth, controller.get_control)
-router.post('/registro', isAuth, controller.registrar_usuario)
 router.post('/salir', controller.cerrar_sesion)
 module.exports = router 

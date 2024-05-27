@@ -1,144 +1,295 @@
 <!DOCTYPE html>
-    <head>
-        <%- include('./../includes/head.html') %>
-        <link rel="stylesheet" href="/styles/proj-styles.css">
-        <title>Proyecto: <%= proyectoObject.IDProyecto %></title>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/highcharts-more.js"></script>
-        <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
-    </head>
-    <body>
-        <nav class="universal-nav">
-            <div class="flex-1">
-              <%- include('./../includes/go-back.html') %>
-                <img src="/imgs/logo_blanco.png" alt="Appix">
-            </div>
-            <div class="flex-2"> 
-                <%- include('./../includes/person_icon.html') %>
-                <p><%= user.name %></p>
-                <% if (user.rol == "manager") { %>
-                  <p>(M)</p>
-                <% } else if (user.Rol == "desarrollador"){ %>
-                  <p>(D)</p>
-                <% } %>
-            </div>
-        </nav>
 
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" id="navtab-1" aria-current="page" onclick="viewInfo()">Info de Proyecto</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="navtab-2" onclick="viewRiesgos()">Info Riesgos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="navtab-3" onclick="viewAnalisis()">Análisis</a>
-            </li>
-        </ul>
+<head>
+  <%- include('./../includes/head.html') %>
+    <link rel="stylesheet" href="/proj-styles.css">
+    <title>Proyecto: <%= proyectoObject.IDProyecto %>
+    </title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+</head>
 
-        <section class="general-view">
-            <div class="flex-3 general-title">
-                <h1><%= proyectoObject.Nombre %></h1>
-                <button role="none" class="button-close">Cerrar Proyecto</button>
-            </div>
+<body>
+  <nav class="universal-nav">
+    <div class="flex-1">
+      <%- include('./../includes/go-back.html') %>
+        <img src="/imgs/logo_blanco.png" alt="Appix">
+    </div>
+    <div class="flex-2">
+      <%- include('./../includes/person_icon.html') %>
+        <p>
+          <%= user.name %>
+        </p>
+        <% if (user.rol=="manager" ) { %>
+          <p>(M)</p>
+          <% } else if (user.Rol=="desarrollador" ){ %>
+            <p>(D)</p>
+            <% } %>
+    </div>
+  </nav>
 
-            <div class="flex-3">
-              <div class="f-50">
-                <h5 class="card-subtitle mb-2 text-body-secondary" style="margin: 0 3rem 2rem 3rem;">
-                  Cliente: <%= proyectoObject.nombreEmpresa %>
-                </h5><br>
-              </div>
-            </div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="navtab-1" aria-current="page" onclick="viewInfo()">Info de Proyecto</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="navtab-2" onclick="viewRiesgos()">Info Riesgos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="navtab-3" onclick="viewAnalisis()">Análisis</a>
+    </li>
+  </ul>
 
-            <div class="flex-3 info-body">
-              <% if (riesgos.length > 8) { %>
-                <div class="card card-scroll">
-                  <div class="card card-body-scroll">
-              <% } else { %>
-                <div class="card">
-                  <div class="card-body">
-              <% } %> 
-                  <h5 class="card-title">Descripcion</h5>
-                  <p class="card-text" style="width: 100%;">
-                    <%= proyectoObject.Descripcion %>
-                  </p>
+  <section class="general-view">
+    <div class="flex-3 general-title">
+      <h1>
+        <%= proyectoObject.Nombre %>
+      </h1>
+      <button role="none" class="button-close">Cerrar Proyecto</button>
+    </div>
+
+    <div class="flex-3">
+      <div class="f-50">
+        <h5 class="card-subtitle mb-2 text-body-secondary" style="margin: 0 3rem 2rem 3rem;">
+          Cliente: <%= proyectoObject.nombreEmpresa %>
+        </h5><br>
+      </div>
+    </div>
+
+    <div class="flex-3 info-body">
+      <% if (riesgos.length> 8) { %>
+        <div class="card card-scroll">
+          <div class="card card-body-scroll">
+            <% } else { %>
+              <div class="card">
+                <div class="card-body">
+                  <% } %>
+                    <h5 class="card-title">Descripcion</h5>
+                    <p class="card-text" style="width: 100%;">
+                      <%= proyectoObject.Descripcion %>
+                    </p>
                 </div>
                 <h6 class="card-subtitle mb-2" style="margin-left: 1rem;">Riesgos</h6>
                 <ul class="list-group list-group-flush">
-                  <% riesgos.forEach(riesgo => { %>
-                    <li class="list-group-item"><%= riesgo.IDRiesgo %>: <%= riesgo.Riesgo %></li>  
-                  <% }) %>
-                  <% if(riesgos.length == 0) { %>
-                    <li class="list-group-item">none</li>
-                  <% } %>
+                  <% riesgos.forEach(riesgo=> { %>
+                    <li class="list-group-item">
+                      <%= riesgo.IDRiesgo %>: <%= riesgo.Riesgo %>
+                    </li>
+                    <% }) %>
                 </ul>
               </div>
               <div style="flex-basis: 50%;  text-align: start;">
                 <div style="width: 100%; text-align: start;">
                   <h6 style="max-width: 100%;">Progreso de Timeline de Proyecto</h6>
                   <div class="flex-3" style="width: 80%; justify-content: space-between; margin: 0;">
-                    <label><%= proyectoObject.start %></label>
-                    <label><%= proyectoObject.end %></label>
+                    <label>
+                      <%= proyectoObject.start %>
+                    </label>
+                    <label>
+                      <%= proyectoObject.end %>
+                    </label>
                   </div>
                   <div class="progress" role="progressbar" id="prog-bar"></div>
-                    <!-- <div class="progress-bar" style="width: 50%"></div> -->
+                  <!-- <div class="progress-bar" style="width: 50%"></div> -->
                   <!-- </div> -->
                   <div id="range-div" style="width: 100%;"></div>
                 </div>
                 <div id="container-viable" style="width: 80%; max-height: 80%; display: inline-block;"></div>
               </div>
-            </div>
-
-        </section>
-
-        <div class="riesgos-view hidden">
-          <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
-            <h1><%= proyectoObject.Nombre %></h1>
-            <!-- <button role="none" class="button-edit">Editar Riesgos</button> -->
-            <button class="button-20">
-              <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20" fill="none" class="svg-icon"><g stroke-width="1.5" stroke-linecap="round" stroke="#de8a2a"><circle r="7.5" cy="10" cx="10"></circle><path d="m9.99998 7.5v5"></path><path d="m7.5 9.99998h5"></path></g></svg> -->
-              <span class="label">Editar Riesgos</span>
-            </button>
-        </div>
-          <h4>Riesgos Anotados</h4>
-          <table class="table table-striped" style="margin-bottom: 3rem;">
-            <thead>
-              <tr>
-                <th scope="col">IDRiesgo</th>
-                <th scope="col">Riesgo</th>
-                <th scope="col">Categoria</th>
-                <th scope="col">Probabilidad</th>
-                <th scope="col">Impacto</th>
-                <th scope="col">Estrategia</th>
-              </tr>
-            </thead>
-            <tbody>
-                <% riesgos.forEach(riesgo => { %>
-                  <tr >
-                      <td><%= riesgo.IDRiesgo %></td>
-                      <td><%= riesgo.Riesgo %></td>
-                      <td><%= riesgo.Categoria %></td>
-                      <td><%= riesgo.Probabilidad %></td>
-                      <td><%= riesgo.Impacto %></td>
-                      <td><%= riesgo.Estrategia %></td>
-                  </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="analisis-view hidden">
-          <h1 style="text-align: center; margin-bottom: 2rem;"><%= proyectoObject.Nombre %></h1>
-          <div class="flex-3 graph-div">
-            <div id="container" style="width: 49%; height: 400px;"></div>
-            <div id="container-2" style="width: 49%; height: 400px;"></div>
           </div>
-        </div>
-  
-        <footer>
-            <p style="display: inline-block">Powered by: </p>
-            <img src="/imgs/dinamite_logo.png" width="240">
-        </footer>
-    </body>
-    <%- include('./../scripts/proj-script.ejs') %>
-</html>
+
+  </section>
+
+  <div class="riesgos-view hidden">
+    <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
+      <h1>
+        <%= proyectoObject.Nombre %>
+      </h1>
+      <!-- <button role="none" class="button-edit">Editar Riesgos</button> -->
+
+      <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
+      <button id="btn-EditarRiesgos-abrir" class="button-20">
+        <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20" fill="none" class="svg-icon"><g stroke-width="1.5" stroke-linecap="round" stroke="#de8a2a"><circle r="7.5" cy="10" cx="10"></circle><path d="m9.99998 7.5v5"></path><path d="m7.5 9.99998h5"></path></g></svg> -->
+        <span class="label">Editar Riesgos</span>
+      </button>
+
+    </div>
+    <h4>Riesgos Anotados</h4>
+    <table class="table table-striped" style="margin-bottom: 3rem;">
+      <thead>
+        <tr>
+          <th scope="col">IDRiesgo</th>
+          <th scope="col">Riesgo</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Probabilidad</th>
+          <th scope="col">Impacto</th>
+          <th scope="col">Estrategia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% riesgos.forEach(riesgo=> { %>
+          <tr>
+            <td>
+              <%= riesgo.IDRiesgo %>
+            </td>
+            <td>
+              <%= riesgo.Riesgo %>
+            </td>
+            <td>
+              <%= riesgo.Categoria %>
+            </td>
+            <td>
+              <%= riesgo.Probabilidad %>
+            </td>
+            <td>
+              <%= riesgo.Impacto %>
+            </td>
+            <td>
+              <%= riesgo.Estrategia %>
+            </td>
+          </tr>
+          <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="analisis-view hidden">
+    <h1 style="text-align: center; margin-bottom: 2rem;">
+      <%= proyectoObject.Nombre %>
+    </h1>
+    <div class="flex-3 graph-div">
+      <div id="container" style="width: 49%; height: 400px;"></div>
+      <div id="container-2" style="width: 49%; height: 400px;"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p style="display: inline-block">Powered by: </p>
+    <img src="/imgs/dinamite_logo.png" width="240">
+  </footer>
+  .
+
+  <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
+  <div id="EditarRiesgos" class="overlay-EditarRiesgos">
+    <div class="box-EditarRiesgos">
+      <button id="btn-EditarRiesgos-cerrar" class="btn-cerrarPopup-EditarRiesgos">(X)</button>
+      <h3>Seleccione los cambios que desea hacer a los riesgos.</h3>
+      <p>(O si prefiere, puede salir sin hacer cambios dando clic en la X)</p>
+
+      <form id="editarRiesgosForm" action="/proyecto/editarRiesgo" method="POST">
+        <input type="hidden" id="idProyectoHidden" value="<%= proyectoObject.IDProyecto %>" name="idProyecto">
+
+        <input type="checkbox" id="box1" name="Checkbox1">
+        <label for="box1">Riesgo #1: Incomprensión de los requisitos del cliente.</label><br>
+
+        <input type="checkbox" id="box2" name="Checkbox2">
+        <label for="box2">Riesgo #2: Retrasos en la entrega del contenido.</label><br>
+
+        <input type="checkbox" id="box3" name="Checkbox3">
+        <label for="box3">Riesgo #3: Cambios frecuentes en el diseño.</label><br>
+        <!-- Typo in database, "revisiones deldiseño."-->
+        <input type="checkbox" id="box4" name="Checkbox4">
+        <label for="box4">Riesgo #4: Problemas de compatibilidad de plugins.</label><br>
+
+        <input type="checkbox" id="box5" name="Checkbox5">
+        <label for="box5">Riesgo #5: Problemas de seguridad en el sitio web.</label><br>
+
+        <input type="checkbox" id="box6" name="Checkbox6">
+        <label for="box6">Riesgo #6: Fallos en la integración de pasarelas de pago.</label><br>
+
+        <input type="checkbox" id="box7" name="Checkbox7">
+        <label for="box7">Riesgo #7: Aumento inesperado en los costos del proyecto</label><br>
+
+        <input type="checkbox" id="box8" name="Checkbox8">
+        <label for="box8">Riesgo #8: Pérdida de datos o fallo de hosting.</label><br>
+
+        <input type="checkbox" id="box9" name="Checkbox9">
+        <label for="box9">Riesgo #9: Retrasos en la aprobación del cliente.</label><br>
+
+        <input type="checkbox" id="box10" name="Checkbox10">
+        <label for="box10">Riesgo #10: Dificultades técnicas con WordPress o WooCommerce.</label><br>
+
+        <input type="checkbox" id="box11" name="Checkbox11">
+        <label for="box11">Riesgo #11: Sobrecarga de trabajo del equipo de diseño.</label><br>
+
+        <input type="checkbox" id="box12" name="Checkbox12">
+        <label for="box12">Riesgo #12: Falta de experiencia en tecnologías específicas.</label><br>
+
+        <input type="checkbox" id="box13" name="Checkbox13">
+        <label for="box13">Riesgo #13: Inadecuada gestión del cambio.</label><br>
+
+        <input type="checkbox" id="box14" name="Checkbox14">
+        <label for="box14">Riesgo #14: Interrupciones en la cadena de suministro digital.</label><br>
+
+        <input type="checkbox" id="box15" name="Checkbox15">
+        <label for="box15">Riesgo #15: Problemas de SEO y visibilidad en buscadores.</label><br>
+
+        <input type="checkbox" id="box16" name="Checkbox16">
+        <label for="box16">Riesgo #16: Cambio de persona responsable durante y después de.</label><br>
+
+        <input type="checkbox" id="box17" name="Checkbox17">
+        <label for="box17">Riesgo #17: Subestimación de tiempos y costos.</label><br>
+
+        <input type="checkbox" id="box18" name="Checkbox18">
+        <label for="box18">Riesgo #18: Cambios en los requisitos del software.</label><br>
+
+        <input type="checkbox" id="box19" name="Checkbox19">
+        <label for="box19">Riesgo #19: Falta de recursos técnicos.</label><br>
+
+        <input type="checkbox" id="box20" name="Checkbox20">
+        <label for="box20">Riesgo #20: Problemas técnicos y bugs en el desarrollo.</label><br>
+
+        <input type="checkbox" id="box21" name="Checkbox21">
+        <label for="box21">Riesgo #21: Tecnología obsoleta o inadecuada.</label><br>
+
+        <input type=checkbox id="box22" name="Checkbox22">
+        <label for="box22">Riesgo #22: Dificultades de integración con otros sistemas.</label><br>
+
+        <input type="checkbox" id="box23" name="Checkbox23">
+        <label for="box23">Riesgo #23: Dependencia de terceros para componentes críticos.</label><br>
+
+        <input type="checkbox" id="box24" name="Checkbox24">
+        <label for="box24">Riesgo #24: Incumplimiento de estándares de regulación y calidad.</label><br>
+        <!-- Typo in database, "y calid".-->
+
+        <input type="checkbox" id="box25" name="Checkbox25">
+        <label for="box25">Riesgo #25: Retrasos en la entrega de software.</label><br>
+
+        <input type="checkbox" id="box26" name="Checkbox26">
+        <label for="box26">Riesgo #26: Conflictos dentro del equipo de desarrollo.</label><br>
+
+        <input type="checkbox" id="box27" name="Checkbox27">
+        <label for="box27">Riesgo #27: Insuficiencia de pruebas del usuario final.</label><br>
+
+        <input type="checkbox" id="box28" name="Checkbox28">
+        <label for="box28">Riesgo #28: Falta de documentación adecuada.</label><br>
+
+        <input type="checkbox" id="box29" name="Checkbox29">
+        <label for="box29">Riesgo #29: Variaciones en la disponibilidad de recursos.</label><br>
+
+        <input type="checkbox" id="box30" name="Checkbox30">
+        <label for="box30">Riesgo #30: Riesgos asociados a la seguridad de datos.</label><br>
+
+        <input type="checkbox" id="box31" name="Checkbox31">
+        <label for="box31">Riesgo #31: Problemas de compatibilidad entre sistemas.</label><br>
+
+        <input type="checkbox" id="box32" name="Checkbox32">
+        <label for="box32">Riesgo #32: Cambio de persona responsable durante y después de.</label><br>
+        <!-- Typo in database, "después de..." cut of.-->
+
+        <!-- ocupar espacio bootstrap y todo centrado y lineas entre riesgos, here: https://www.youtube.com/watch?v=XXllX0A_9KQ -->
+
+        <button id="btn-EditarRiesgos-cerrar" class="btn-cerrarPopup-EditarRiesgos" type="submit">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
+
+</body>
+<%- include('./../proj-script.ejs') %>
+
+  </html>

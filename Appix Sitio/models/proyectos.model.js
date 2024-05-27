@@ -62,4 +62,37 @@ exports.Project = class {
             throw error
         }
     }
+
+    // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->}
+    static async agregarRiesgo(idProyecto, idRiesgo) {
+        try {
+            const connection = await db() 
+            const result = await connection.execute(`
+            INSERT INTO proyectoriesgos (IDProyecto, IDRiesgo)
+            SELECT ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM proyectoriesgos
+                WHERE IDProyecto = ? AND IDRiesgo = ?
+            );
+
+            `, [idProyecto, idRiesgo, idProyecto, idRiesgo])       
+            await connection.release()
+            return "yes"
+        } catch (error) {
+            throw error
+        }
+    }
+    static async removerRiesgo(idProyecto, idRiesgo) {
+        try {
+            const connection = await db() 
+            const result = await connection.execute(`
+            DELETE FROM proyectoriesgos WHERE IDProyecto = ? AND IDRiesgo = ?;
+            `, [idProyecto, idRiesgo])       
+            await connection.release()
+            return "yes"
+        } catch (error) {
+            throw error
+        }
+    }
+    // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
 } 
