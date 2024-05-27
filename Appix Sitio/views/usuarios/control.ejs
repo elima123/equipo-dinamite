@@ -1,9 +1,12 @@
 <!DOCTYPE html>
     <head>
         <%- include('./../includes/head.html') %>
-        <title>Home</title>
+        <link rel="stylesheet" href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css">
+        <linK rel="stylesheet" href="/styles/control.css">
+        <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+        <title>Control</title>
     </head>
-    <body clas="first-body">
+    <body class="control-body">
         <nav class="universal-nav">
             <div class="flex-1">
                 <%- include('./../includes/go-back.html') %>
@@ -20,18 +23,41 @@
             </div>
         </nav>
 
-        <section>
-            <table>
-                <tr>
-
-                </tr>
-            </table>
+        <section style="text-align: center; width: 100%;">
+            <h1>Control de Usuarios</h1>
+            <div class="button-flex"><%- include('./../includes/add_user.html') %></div>
+            <div id="grid-container"></div>
         </section>
 
         <footer>
             <p style="display: inline-block">Powered by: </p>
             <img src="/imgs/dinamite_logo.png" width="240">
         </footer>        
+
+        <!-- AGREGAR USUARIO -->
+        <div class="overlay" id="overlay">
+            <div class="popup" id="popup">
+              <a id="btn-cerrar-popup" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+              <h3>Registrar Empresa</h3>
+              <form action="/usuarios/registro" method="POST">
+                <div class="contenedor-inputs">
+                  <input type="text" placeholder="Nombre Completo" name="nombre">
+                  <input type="email" placeholder="Correo" name="correo">
+                  <input type="text" placeholder="Contraseña" name="contrasena">
+                  <select name="rol">
+                    <option>Rol</option>
+                    <option value="manager">Manager</option>
+                    <option value="desarrollador">Desarrollador</option>
+                  </select>
+                </div>
+                <input type="submit" class="btn-submit" value="Registrar">
+              </form>
+            </div>
+        </div>
+        <!-- AGREGAR USUARIO -->
+        <div>
+
+        </div>
       
     </body>
     <%- include('./../scripts/ctrl-script.ejs') %>

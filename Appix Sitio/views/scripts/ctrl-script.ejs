@@ -2,4 +2,59 @@
     function backHome() {
         window.location.href = '/usuarios/homePage'
     }
+
+    let usuariosData = JSON.parse('<%- usuariosJSON %>')
+    console.log(usuariosData)
+
+    const grid = new gridjs.Grid({
+        columns: [
+        'ID',
+        'Nombre',
+        'Correo',
+        'Contraseña',
+        'Rol'
+        ],
+        sort: true,
+        search: true,
+        fixedHeader: true,
+        height: '400px',
+        data: usuariosData.map(user => [
+                    user.IDUsuario, user.Nombre, user.Correo, user.Contrasena, user.Rol
+                ]),
+        style: {
+            th: {
+                'background-color': 'lightgray',
+            },
+            td: {
+                'text-align': 'center'
+            }
+        },
+        row: {
+            onClick: (row, event) => {
+                const userId = row.cells[0].data; // Assuming the ID is the first cell
+                console.log(userId)
+                
+                // window.location.href = `/detail/${userId}`
+            }
+        }
+    })
+
+    grid.render(document.getElementById('grid-container'))
+
+    var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
+	        overlay = document.getElementById('overlay'),
+	        popup = document.getElementById('popup'),
+	        btnCerrarPopup = document.getElementById('btn-cerrar-popup')
+
+        btnAbrirPopup.addEventListener('click', function(){
+	        console.log("got here")
+	        overlay.classList.add('active')
+	        popup.classList.add('active')
+        })
+
+        btnCerrarPopup.addEventListener('click', function(e){
+	        e.preventDefault()
+	        overlay.classList.remove('active')
+	        popup.classList.remove('active')
+        })    
 </script>

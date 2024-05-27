@@ -623,3 +623,47 @@ table {
     position: relative;
     bottom: .45rem;
 }
+
+/* at styles.css: <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" --> */
+.overlay-EditarRiesgos {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.box-EditarRiesgos {
+    background-color: #ffffff; /* Usar color sólido en lugar de rgba para mayor consistencia */
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    text-align: center; 
+    position: relative; /* Añadir posición relativa para facilitar el posicionamiento del botón de cierre */
+}
+
+/* Close button */
+.btn-cerrarPopup-EditarRiesgos {
+    font-size: 16px;
+    line-height: 16px;
+    display: block;
+    text-align: right;
+    color: #888888; /* Ajustar el color para mayor contraste */
+
+    top: 10px; /* Ajustar la posición vertical */
+    right: 10px; /* Ajustar la posición horizontal */
+    cursor: pointer; /* Añadir cursor indicando que es interactivo */
+    transition: color 0.3s ease; /* Añadir transición para suavizar el cambio de color */
+}
+
+.btn-cerrarPopup-EditarRiesgos:hover {
+    color: #555555; /* Cambiar color al pasar el cursor sobre el botón */
+}
+
+/* <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" --> */

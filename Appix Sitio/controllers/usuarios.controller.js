@@ -95,7 +95,8 @@ module.exports.get_control = async (req, res) => {
 
         res.render('usuarios/control.ejs', {
             usuario,
-            usuarios
+            usuarios,
+            usuariosJSON: JSON.stringify(usuarios)
         })
 
     } catch (e) {
@@ -138,6 +139,29 @@ module.exports.order_homePage = async (req, res) => {
         })
 
     } catch(e) {
+        throw e
+    }
+}
+
+module.exports.registrar_usuario = async (req, res) => {
+    try {
+        const userCorreo = req.session.correo
+        const userContrasena = req.session.pass
+
+        const usuario = await model.User.verifyUser(userCorreo, userContrasena)
+
+        if (usuario.Rol != "manager") {
+            res.render("usuarios/signIn.ejs")
+            return
+        }
+
+        const { nombre, correo, contrasena, rol } = req.body
+
+        const newUsuario = await model.createUser(nombre, correo, contrasena, rol)
+
+        res.status(201).redirect("/usuarios/control")
+
+    } catch (e) {
         throw e
     }
 }

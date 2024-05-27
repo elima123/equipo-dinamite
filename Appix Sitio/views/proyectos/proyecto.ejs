@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-
 <head>
   <%- include('./../includes/head.html') %>
-    <link rel="stylesheet" href="/proj-styles.css">
-    <title>Proyecto: <%= proyectoObject.IDProyecto %>
-    </title>
+    <link rel="stylesheet" href="/styles/proj-styles.css">
+    <title>Proyecto: <%= proyectoObject.IDProyecto %></title>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
 </head>
-
 <body>
   <nav class="universal-nav">
     <div class="flex-1">
@@ -18,14 +15,12 @@
     </div>
     <div class="flex-2">
       <%- include('./../includes/person_icon.html') %>
-        <p>
-          <%= user.name %>
-        </p>
-        <% if (user.rol=="manager" ) { %>
-          <p>(M)</p>
-          <% } else if (user.Rol=="desarrollador" ){ %>
-            <p>(D)</p>
-            <% } %>
+      <p><%= user.name %></p>
+      <% if (user.rol=="manager" ) { %>
+        <p>(M)</p>
+      <% } else if (user.Rol=="desarrollador" ){ %>
+          <p>(D)</p>
+      <% } %>
     </div>
   </nav>
 
@@ -43,9 +38,7 @@
 
   <section class="general-view">
     <div class="flex-3 general-title">
-      <h1>
-        <%= proyectoObject.Nombre %>
-      </h1>
+      <h1><%= proyectoObject.Nombre %></h1>
       <button role="none" class="button-close">Cerrar Proyecto</button>
     </div>
 
@@ -61,10 +54,10 @@
       <% if (riesgos.length> 8) { %>
         <div class="card card-scroll">
           <div class="card card-body-scroll">
-            <% } else { %>
+      <% } else { %>
               <div class="card">
                 <div class="card-body">
-                  <% } %>
+      <% } %>
                     <h5 class="card-title">Descripcion</h5>
                     <p class="card-text" style="width: 100%;">
                       <%= proyectoObject.Descripcion %>
@@ -72,40 +65,35 @@
                 </div>
                 <h6 class="card-subtitle mb-2" style="margin-left: 1rem;">Riesgos</h6>
                 <ul class="list-group list-group-flush">
-                  <% riesgos.forEach(riesgo=> { %>
-                    <li class="list-group-item">
-                      <%= riesgo.IDRiesgo %>: <%= riesgo.Riesgo %>
-                    </li>
-                    <% }) %>
+                  <% riesgos.forEach(riesgo => { %>
+                    <li class="list-group-item"><%= riesgo.IDRiesgo %>: <%= riesgo.Riesgo %></li>  
+                  <% }) %>
+                  <% if(riesgos.length == 0) { %>
+                    <li class="list-group-item">none</li>
+                  <% } %>
                 </ul>
               </div>
               <div style="flex-basis: 50%;  text-align: start;">
                 <div style="width: 100%; text-align: start;">
                   <h6 style="max-width: 100%;">Progreso de Timeline de Proyecto</h6>
                   <div class="flex-3" style="width: 80%; justify-content: space-between; margin: 0;">
-                    <label>
-                      <%= proyectoObject.start %>
-                    </label>
-                    <label>
-                      <%= proyectoObject.end %>
-                    </label>
+                    <label><%= proyectoObject.start %></label>
+                    <label><%= proyectoObject.end %></label>
                   </div>
                   <div class="progress" role="progressbar" id="prog-bar"></div>
-                  <!-- <div class="progress-bar" style="width: 50%"></div> -->
+                    <!-- <div class="progress-bar" style="width: 50%"></div> -->
                   <!-- </div> -->
                   <div id="range-div" style="width: 100%;"></div>
                 </div>
                 <div id="container-viable" style="width: 80%; max-height: 80%; display: inline-block;"></div>
               </div>
-          </div>
+            </div>
 
   </section>
 
   <div class="riesgos-view hidden">
     <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
-      <h1>
-        <%= proyectoObject.Nombre %>
-      </h1>
+      <h1><%= proyectoObject.Nombre %></h1>
       <!-- <button role="none" class="button-edit">Editar Riesgos</button> -->
 
       <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
@@ -130,36 +118,22 @@
         </tr>
       </thead>
       <tbody>
-        <% riesgos.forEach(riesgo=> { %>
-          <tr>
-            <td>
-              <%= riesgo.IDRiesgo %>
-            </td>
-            <td>
-              <%= riesgo.Riesgo %>
-            </td>
-            <td>
-              <%= riesgo.Categoria %>
-            </td>
-            <td>
-              <%= riesgo.Probabilidad %>
-            </td>
-            <td>
-              <%= riesgo.Impacto %>
-            </td>
-            <td>
-              <%= riesgo.Estrategia %>
-            </td>
+        <% riesgos.forEach(riesgo => { %>
+          <tr >
+              <td><%= riesgo.IDRiesgo %></td>
+              <td><%= riesgo.Riesgo %></td>
+              <td><%= riesgo.Categoria %></td>
+              <td><%= riesgo.Probabilidad %></td>
+              <td><%= riesgo.Impacto %></td>
+              <td><%= riesgo.Estrategia %></td>
           </tr>
-          <% }) %>
-      </tbody>
+      <% }) %>
+    </tbody>
     </table>
   </div>
 
   <div class="analisis-view hidden">
-    <h1 style="text-align: center; margin-bottom: 2rem;">
-      <%= proyectoObject.Nombre %>
-    </h1>
+    <h1 style="text-align: center; margin-bottom: 2rem;"><%= proyectoObject.Nombre %></h1>
     <div class="flex-3 graph-div">
       <div id="container" style="width: 49%; height: 400px;"></div>
       <div id="container-2" style="width: 49%; height: 400px;"></div>
@@ -170,7 +144,6 @@
     <p style="display: inline-block">Powered by: </p>
     <img src="/imgs/dinamite_logo.png" width="240">
   </footer>
-  .
 
   <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
   <div id="EditarRiesgos" class="overlay-EditarRiesgos">
@@ -290,6 +263,6 @@
   <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
 
 </body>
-<%- include('./../proj-script.ejs') %>
+<%- include('./../scripts/proj-script.ejs') %>
 
   </html>

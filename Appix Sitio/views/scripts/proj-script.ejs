@@ -332,4 +332,31 @@ responsive: {
 }
 });
 
+ // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
+
+
+    // Get the functionality div + open/close buttons
+    const EditarRiesgos = document.getElementById('EditarRiesgos');
+    const btnEditarRiesgosAbrir = document.getElementById('btn-EditarRiesgos-abrir');
+    const btnEditarRiesgosCerrar = document.getElementById("btn-EditarRiesgos-cerrar");
+
+    // When the user clicks the button, open the popup 
+    btnEditarRiesgosAbrir.onclick = function () {
+        EditarRiesgos.style.display = "block";
+    }
+
+    // When the user clicks (x), close the popup
+    btnEditarRiesgosCerrar.onclick = function () {
+        EditarRiesgos.style.display = "none";
+    }
+
+    // Submit changes to execute queries
+    document.getElementById('btn-EditarRiesgos-cerrar').addEventListener('click', function () {
+        // Envía el formulario al servidor cuando se hace clic en el botón de cerrar ventana emergente
+        document.getElementById('editarRiesgoForm').submit();
+    });
+
+    // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
+
+
 </script>
