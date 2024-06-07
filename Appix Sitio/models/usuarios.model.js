@@ -110,7 +110,8 @@ exports.getUsuarios = async function () {
     try {
         const connection = await db()
         const result = await connection.execute(`
-        SELECT * FROM Usuarios
+        SELECT *, DATE_FORMAT(FechaCreado, '%Y-%m-%d') AS dateAdded
+        FROM Usuarios
         `)
         await connection.release()
         const realResult = result[0]
@@ -124,12 +125,28 @@ exports.createUser = async function (nombre, correo, contrasena, rol) {
     try {
         const connection = await db()
         const result = await connection.execute(`
-        INSERT INTO Usuarios (Nombre, Correo, Contrasena, Rol)
-        VALUES (?,?,?,?)
+        INSERT INTO Usuarios (Nombre, Correo, Contrasena, Rol, FechaCreado)
+        VALUES (?,?,?,?, NOW())
         `, [nombre, correo, contrasena, rol])
         await connection.release()
         const realResult = result[0]
         return "yes"
+    } catch (e) {
+        throw e
+    }
+}
+
+exports.usuarioProyectos = async function () {
+    try {
+        const connection = await db()
+        const result = await connection.execute(`
+        SELECT up.*, p.Nombre
+        FROM UsuarioProyectos as up
+        INNER JOIN Proyectos as p ON up.IDProyecto = p.IDProyecto
+        `)
+        await connection.release()
+        const realResult = result[0]
+        return realResult
     } catch (e) {
         throw e
     }

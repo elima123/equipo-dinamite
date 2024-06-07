@@ -89,58 +89,58 @@
             }
         }
 
-// Data retrieved from https://netmarketshare.com/
-// Build the chart
-Highcharts.chart('container-2', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: 'Distribución de Tipo de Riesgo',
-        align: 'left'
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true
-            },
-            showInLegend: true
-        }
-    },
-    series: [{
-        name: 'Distribución',
-        colorByPoint: true,
-        data: [{
-            name: 'Calidad',
-            y: parseFloat(((cantCalidad / riesgosData.length) * 100).toFixed(1))
-        }, {
-            name: 'Alcance',
-            y: parseFloat(((cantAlcance / riesgosData.length) * 100).toFixed(1))
-        }, {
-            name: 'Tiempo',
-            y: parseFloat(((cantTiempo / riesgosData.length) * 100).toFixed(1))
-        }, {
-            name: 'Recursos',
-            y: parseFloat(((cantRecursos / riesgosData.length) * 100).toFixed(1))
-        }, {
-            name: 'Costo',
-            y: parseFloat(((cantCosto / riesgosData.length) * 100).toFixed(1))
+    // Build the chart
+    // Pie Chart
+    Highcharts.chart('container-2', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Distribución de Tipo de Riesgo',
+            align: 'left'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Distribución',
+            colorByPoint: true,
+            data: [{
+                name: 'Calidad',
+                y: parseFloat(((cantCalidad / riesgosData.length) * 100).toFixed(1))
+            }, {
+                name: 'Alcance',
+                y: parseFloat(((cantAlcance / riesgosData.length) * 100).toFixed(1))
+            }, {
+                name: 'Tiempo',
+                y: parseFloat(((cantTiempo / riesgosData.length) * 100).toFixed(1))
+            }, {
+                name: 'Recursos',
+                y: parseFloat(((cantRecursos / riesgosData.length) * 100).toFixed(1))
+            }, {
+                name: 'Costo',
+                y: parseFloat(((cantCosto / riesgosData.length) * 100).toFixed(1))
+            }]
         }]
-    }]
-});
+    })
 
 // Indicador de Viabilidad
 
@@ -247,116 +247,118 @@ Highcharts.chart('container-viable', {
             radius: 6
         }
     
-    }]
-});
+        }]
+    })
 
-// Grafica de Viabilidad contra el Tiempo
+    // Grafica de Viabilidad contra el Tiempo
 
-Highcharts.chart('container', {
+    Highcharts.chart('container', {
 
-title: {
-    text: 'Viabilidad a través del Tiempo',
-    align: 'left'
-},
-subtitle: {
-    text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
-    align: 'left'
-},
-yAxis: {
     title: {
-        text: 'Viabilidad (%)'
+        text: 'Viabilidad a través del Tiempo',
+        align: 'left'
+    },
+    // subtitle: {
+    //     text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+    //     align: 'left'
+    // },
+    yAxis: {
+        title: {
+            text: 'Viabilidad (%)'
+        }
+    },
+    xAxis: {
+        categories: [
+            'January', 'February', 'March', 'April', 'May', 'June'
+        ],
+        accessibility: {
+            rangeDescription: 'Range: January to December'
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+    plotOptions: {
+        // series: {
+        //     label: {
+        //         connectorAllowed: false
+        //     },
+        //     pointStart: 2023
+        // }
+    },
+    series: [{
+        name: 'Viabilidad',
+        data: [
+            74, 82, 93, 81, 67, 71
+        ]
+    }],
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
     }
-},
-xAxis: {
-    accessibility: {
-        rangeDescription: 'Range: 2010 to 2020'
-    }
-},
-legend: {
-    layout: 'vertical',
-    align: 'right',
-    verticalAlign: 'middle'
-},
-plotOptions: {
-    series: {
-        label: {
-            connectorAllowed: false
-        },
-        pointStart: 2010
-    }
-},
-series: [{
-    name: 'Installation & Developers',
-    data: [
-        43934, 48656, 65165, 81827, 112143, 142383,
-        171533, 165174, 155157, 161454, 154610
-    ]
-}, {
-    name: 'Manufacturing',
-    data: [
-        24916, 37941, 29742, 29851, 32490, 30282,
-        38121, 36885, 33726, 34243, 31050
-    ]
-}, {
-    name: 'Sales & Distribution',
-    data: [
-        11744, 30000, 16005, 19771, 20185, 24377,
-        32147, 30912, 29243, 29213, 25663
-    ]
-}, {
-    name: 'Operations & Maintenance',
-    data: [
-        null, null, null, null, null, null, null,
-        null, 11164, 11218, 10077
-    ]
-}, {
-    name: 'Other',
-    data: [
-        21908, 5548, 8105, 11248, 8989, 11816, 18274,
-        17300, 13053, 11906, 10073
-    ]
-}],
-responsive: {
-    rules: [{
-        condition: {
-            maxWidth: 500
-        },
-        chartOptions: {
-            legend: {
-                layout: 'horizontal',
-                align: 'center',
-                verticalAlign: 'bottom'
+    })
+
+    // Cerrar Proyecto Popup
+    var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
+	        overlay = document.getElementById('overlay'),
+	        popup = document.getElementById('popup'),
+	        btnCerrarPopup = document.getElementById('btn-cerrar-popup'),
+            btnPopupSeguridad = document.getElementById('btn-verificacion'),
+            popupSeguridad = document.getElementById('popup-2'),
+            warningRed = document.getElementById('warning-red'),
+            finalSubmit = document.getElementById('cerrar-submit')
+
+        btnAbrirPopup.addEventListener('click', function() {
+	        overlay.classList.add('active')
+	        popup.classList.add('active')
+        })
+
+        btnCerrarPopup.addEventListener('click', function(e){
+	        e.preventDefault();
+	        overlay.classList.remove('active')
+	        popup.classList.remove('active')
+        })
+
+        btnPopupSeguridad.addEventListener('click', function() {
+            popupSeguridad.classList.remove('hidden')
+            btnPopupSeguridad.classList.add('hidden')
+        })
+
+        function verificar() {
+            const checkbox = document.getElementById('are-you-sure')
+            if (checkbox.checked == true) {
+                finalSubmit.classList.remove('hidden')
+                warningRed.classList.remove('hidden')
             }
         }
-    }]
-}
-});
-
- // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
-
-
-    // Get the functionality div + open/close buttons
-    const EditarRiesgos = document.getElementById('EditarRiesgos');
-    const btnEditarRiesgosAbrir = document.getElementById('btn-EditarRiesgos-abrir');
-    const btnEditarRiesgosCerrar = document.getElementById("btn-EditarRiesgos-cerrar");
-
-    // When the user clicks the button, open the popup 
-    btnEditarRiesgosAbrir.onclick = function () {
-        EditarRiesgos.style.display = "block";
-    }
-
-    // When the user clicks (x), close the popup
-    btnEditarRiesgosCerrar.onclick = function () {
-        EditarRiesgos.style.display = "none";
-    }
-
-    // Submit changes to execute queries
-    document.getElementById('btn-EditarRiesgos-cerrar').addEventListener('click', function () {
-        // Envía el formulario al servidor cuando se hace clic en el botón de cerrar ventana emergente
-        document.getElementById('editarRiesgoForm').submit();
-    });
 
     // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
 
 
+        const EditarRiesgosOverlay = document.getElementById('EditarRiesgos')
+        const EditarRiesgosPopup = document.getElementById('riesgos-popup')
+        const btnEditarRiesgosAbrir = document.getElementById('btn-EditarRiesgos-abrir')
+        const btnEditarRiesgosCerrar = document.getElementById("btn-EditarRiesgos-cerrar")
+
+        btnEditarRiesgosAbrir.addEventListener('click', function() {
+            EditarRiesgosOverlay.classList.add('active')
+            EditarRiesgosPopup.classList.add('active')
+        })
+
+        btnEditarRiesgosCerrar.addEventListener('click', function() {
+            EditarRiesgosOverlay.classList.remove('active')
+            EditarRiesgosPopup.classList.remove('active')
+        })
 </script>

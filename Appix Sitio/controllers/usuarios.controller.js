@@ -1,6 +1,6 @@
 const model = require('../models/usuarios.model')
 const modelEmp = require('../models/empresas.model')
-const bcyrpt = require('bcryptjs')
+const modelProj = require('../models/proyectos.model')
 
 module.exports.render_login = async (req, res) => {
     res.render("usuarios/signIn.ejs")
@@ -93,10 +93,13 @@ module.exports.get_control = async (req, res) => {
 
         const usuarios = await model.getUsuarios()
 
+        const usuariosProyectos = await model.usuarioProyectos()
+
         res.render('usuarios/control.ejs', {
             usuario,
             usuarios,
-            usuariosJSON: JSON.stringify(usuarios)
+            usuariosJSON: JSON.stringify(usuarios),
+            usuarioProyectosJSON: JSON.stringify(usuariosProyectos),
         })
 
     } catch (e) {
@@ -170,11 +173,11 @@ module.exports.cerrar_sesion = (req, res) => {
     try {
         req.session.destroy((err) => {
             if (err) {
-                throw err;
+                throw err
             }
-            res.render('usuarios/signIn.ejs');
-        });
+            res.render('usuarios/signIn.ejs')
+        })
     } catch (e) {
-        throw e;
+        throw e
     }
 }

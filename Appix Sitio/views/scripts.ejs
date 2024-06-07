@@ -1,16 +1,17 @@
-<script>     
+<script>      
         function controlPage() {
                 window.location.href = '/usuarios/control'
         }
 
         let projects = JSON.parse('<%- projectsJSON %>')
         const projPorPage = 9
-        let currentFilter = "id"
+        // let currentFilter = "id"
         let searchTerm = ""
         let currentPage = 1
         const searchSubmit = document.getElementById('button-addon2')
         const searchInput = document.getElementById('search-input')
-        cambiarPagina(currentPage)
+        // cambiarPagina(currentPage)
+        filterProjects(searchTerm, currentPage)
 
         searchSubmit.addEventListener('click', handleSearch)
 
@@ -20,42 +21,45 @@
                 }
         })
 
-        function handleFilterChange(selectElement) {
-                currentFilter = selectElement.value
-                filterProjects(searchTerm, currentFilter, currentPage)
-        }
-
-        function handleSearch() {
-                searchTerm = searchInput.value.toLowerCase()
-                filterProjects(searchTerm, currentFilter, currentPage)
-        }
-
-        // function cambiarPagina(numPagina) {
-        //         currentPage = numPagina
+        // function handleFilterChange(selectElement) {
+        //         currentFilter = selectElement.value
         //         filterProjects(searchTerm, currentFilter, currentPage)
         // }
 
+        function handleSearch() {
+                searchTerm = searchInput.value.toLowerCase()
+                // filterProjects(searchTerm, currentFilter, currentPage)
+                filterProjects(searchTerm, currentPage)
+        }
+
         function cambiarPagina(numPagina) {
+                filterProjects(searchTerm, numPagina)
+        }
+
+        function filterProjects(searchTerm, numPagina) {
+
+
+                let filteredProjects = projects.filter(project =>
+                        project.Nombre.toLowerCase().includes(searchTerm) || 
+                        project.Descripcion.toLowerCase().includes(searchTerm) ||
+                        project.nombreEmpresa.toLowerCase().includes(searchTerm)
+                )
+
                 const rangeHigh = numPagina*projPorPage - 1
                 const rangeLow = (numPagina-1)*projPorPage
 
-                projects.map((project, i) => {
+                filteredProjects.map((project, i) => {
                         if (i >= rangeLow && i <= rangeHigh) {
                                 project.active = true
                         } else {
                                 project.active = false
                         }
                 })
-                filterProjects('', currentFilter)
-        }
 
-        function filterProjects(searchTerm, currentFilter, currentPage) {
-                const filteredProjects = projects.filter(project =>
-                        project.Nombre.toLowerCase().includes(searchTerm) || 
-                        project.Descripcion.toLowerCase().includes(searchTerm) ||
-                        project.nombreEmpresa.toLowerCase().includes(searchTerm)
-                )
+                const paginationList = document.getElementById('pagination')
+                paginationList.textContent = ''
 
+<<<<<<< Updated upstream
 // Esta parte del codigo filtra los projectos activos segun la pagina en la que estemos.
                 const rangeHigh = currentPage*projPorPage - 1
                 const rangeLow = (currentPage-1)*projPorPage
@@ -83,6 +87,62 @@
                 }
 
                 console.log("pass current filter")
+=======
+                if (numPagina != 1) {
+                        const forwardArrow = document.createElement('li')
+                        forwardArrow.className = 'page-item'
+                        paginationList.appendChild(forwardArrow)
+
+                        const arrow = document.createElement('a')
+                        arrow.className = 'page-link'
+                        arrow.textContent = '<'
+                        arrow.onclick = () => cambiarPagina(numPagina-1)
+                        forwardArrow.appendChild(arrow)  
+                }
+
+                let numPaginas = (filteredProjects.length/projPorPage).toFixed(0)
+                if (numPaginas == 0) {
+                        numPaginas = 1
+                }
+                
+                for (i = 1; i <= numPaginas; i++) {
+                        const page = document.createElement('li')
+                        page.className = 'page-item'
+                        paginationList.appendChild(page)
+
+                        const number = document.createElement('a')
+                        number.className = 'page-link'
+                        number.textContent = i
+                        number.onclick = () => cambiarPagina(i)
+                        page.appendChild(number)
+                }
+
+                if (numPagina != numPaginas) {
+                        const forwardArrow = document.createElement('li')
+                        forwardArrow.className = 'page-item'
+                        paginationList.appendChild(forwardArrow)
+
+                        const arrow = document.createElement('a')
+                        arrow.className = 'page-link'
+                        arrow.textContent = '>'
+                        arrow.onclick = () => cambiarPagina(numPagina+1)
+                        forwardArrow.appendChild(arrow)
+                }
+
+                makeCards(filteredProjects)
+
+                // if (currentFilter === "FechaInicio") {
+                //         filteredProjects.sort((a, b) => new Date(a.FechaInicio) - new Date(b.FechaInicio))
+                // } else if (currentFilter === "FechaFinal") {
+                //         filteredProjects.sort((a, b) => new Date(a.FechaFinal) - new Date(b.FechaFinal))
+                // } else if (currentFilter === "Viabilidad") {
+                //         filteredProjects.sort((a, b) => b.Viabilidad - a.Viabilidad)
+                // } else if (currentFilter === "Costo") {
+                //         filteredProjects.sort((a, b) => a.Costo - b.Costo)
+                // } else if (currentFilter === "ID") {
+                //         filteredProjects.sort((a, b) => a.IDProyecto = b.IDProyecto)
+                // }
+>>>>>>> Stashed changes
 
                 // let previouslyInactive = []
 
@@ -92,15 +152,40 @@
                 //         previouslyInactive.push(project)
                 //         }
                 // })
+        }
 
+        // function cambiarPagina(numPagina) {
+        //         currentPage = numPagina
+        //         filterProjects(searchTerm, currentFilter, currentPage)
+        // }
+
+        // function cambiarPagina(numPagina) {
+        //         const rangeHigh = numPagina*projPorPage - 1
+        //         const rangeLow = (numPagina-1)*projPorPage
+
+        //         projects.map((project, i) => {
+        //                 if (i >= rangeLow && i <= rangeHigh) {
+        //                         project.active = true
+        //                 } else {
+        //                         project.active = false
+        //                 }
+        //         })
+        //         filterProjects('', currentFilter)
+        // }
+
+        function makeCards(filteredProjects) {
                 const projectCards = document.getElementById('project-cards')
                 projectCards.innerHTML = ''
 
                 filteredProjects.forEach(project => {
+<<<<<<< Updated upstream
                         //console.log("hello")
                         console.log(project.active)
                         if (project.active == true) {
                                 console.log(project.active)
+=======
+                        if (project.active == true && project.Estado == 'activo') {
+>>>>>>> Stashed changes
                                 const anchor = document.createElement('a')
                                 anchor.href = '/proyecto/' + project.IDProyecto
 
@@ -143,7 +228,7 @@
                                 client.textContent = 'Cliente: ' + project.nombreEmpresa
 
                                 const descTitle = document.createElement('h6')
-                                descTitle.textContent = 'Descripcion'
+                                descTitle.textContent = 'Descripción'
 
                                 const description = document.createElement('p')
                                 description.className = 'card-text p-desc'
@@ -196,6 +281,7 @@
                         }
                                  
                 })
+<<<<<<< Updated upstream
 
                 filteredProjects.map((projecto)=> {
                         projecto.active = false
@@ -204,7 +290,13 @@
                 // previouslyInactive.forEach(project => {
                 //         project.active = false
                 // })
+=======
+>>>>>>> Stashed changes
         }
+
+        // function filterPastProjects() {
+
+        // }
 
         var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
 	        overlay = document.getElementById('overlay'),
@@ -213,15 +305,15 @@
 
         btnAbrirPopup.addEventListener('click', function(){
 	        console.log("got here")
-	        overlay.classList.add('active');
-	        popup.classList.add('active');
+	        overlay.classList.add('active')
+	        popup.classList.add('active')
         });
 
         btnCerrarPopup.addEventListener('click', function(e){
 	        e.preventDefault();
-	        overlay.classList.remove('active');
-	        popup.classList.remove('active');
-        });
+	        overlay.classList.remove('active')
+	        popup.classList.remove('active')
+        })
 
         // Popup Agregar Proyecto
         var btnAbrirAgregarEmpresaPopup = document.getElementById('btn-abrir-AgregarProyecto-popup'),
@@ -231,13 +323,13 @@
 
         btnAbrirAgregarEmpresaPopup.addEventListener('click', function(){
 	        console.log("got here")
-	        overlay2.classList.add('active');
-	        popup2.classList.add('active');
+	        overlay2.classList.add('active')
+	        popup2.classList.add('active')
         });
 
         btnCerrarPopup2.addEventListener('click', function(e){
 	        e.preventDefault();
-	        overlay2.classList.remove('active');
-	        popup2.classList.remove('active');
+	        overlay2.classList.remove('active')
+	        popup2.classList.remove('active')
         });
 </script>

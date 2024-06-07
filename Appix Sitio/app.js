@@ -1,10 +1,9 @@
-// import express from 'express'
-// import { autenticar } from './database.js'
 const http = require('http')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const express = require('express')
 const session = require('express-session')
+
 const rutasUsuarios = require('./routes/usuarios.routes')
 const rutasProyectos = require('./routes/proyectos.routes')
 const rutasEmpresas = require('./routes/empresas.routes')
@@ -22,8 +21,37 @@ app.use(cookieParser())
 app.use(session({
     secret: "lleguenatiempocabrones",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
 }))
+
+// function activityTracker(req, res, next) {
+//     req.session.lastActiveTime = Date.now()
+//     lastMove = req.session.lastActiveTime
+//     next()
+// }
+
+// function sessionChecker(req, res, next) {
+//     const currentTime = Date.now() 
+//     const sessionTimeout = 600000 // 10 minutes in milliseconds
+//     if (!req.session.lastActiveTime) {
+//         req.session.lastActiveTime = currentTime
+//     }
+//     if (req.session.lastActiveTime && (currentTime - req.session.lastActiveTime) > sessionTimeout) {
+//         console.log("destroying session")
+//         req.session.destroy((err) => {
+//             if (err) {
+//                 console.error('Error destroying session:', err)
+//             }
+//         })
+//         res.redirect('/usuarios/login')
+//     } else {
+//         next()
+//     }
+// }
+
+// app.use(sessionChecker)
+// app.use(activityTracker)
+
 app.use('/usuarios', rutasUsuarios)
 app.use('/proyecto', rutasProyectos)
 app.use('/empresa', rutasEmpresas)

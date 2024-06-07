@@ -15,14 +15,35 @@ module.exports.get_proyecto = async (req, res) => {
 
     const proyectoObject = await model.Project.getProject(proyectoID)
 
-    const riesgosObjectsArray = await model.Project.getRiesgos(proyectoID)
+    const riesgos = await model.Project.getRiesgos(proyectoID)
+
+    const projectDevs = await model.Project.getProjDevs(proyectoID)
+
+    let allRiesgos = await model.Project.getAllRiesgos()
+
+    // allRiesgos.map(riesgo => {
+    //     for (i = 0; i < riesgos.length; i++) {
+    //         if (riesgo.IDRiesgo == resgios[i].IDRiesgo) {
+    //             return {...riesgo, active: true }
+    //         } else {
+    //             return {...riesgo, active: false}
+    //         }
+    //     }
+    // })
+
+    allRiesgos = allRiesgos.map(riesgo => {
+        const isActive = riesgos.some(r => r.IDRiesgo === riesgo.IDRiesgo)
+        return {...riesgo, active: isActive}
+    })
 
     res.render("proyectos/proyecto.ejs", {
         user,
         proyectoObject,
         proyectosJSON: JSON.stringify(proyectoObject),
-        riesgos: riesgosObjectsArray,
-        riesgosJSON: JSON.stringify(riesgosObjectsArray)
+        riesgos,
+        riesgosJSON: JSON.stringify(riesgos),
+        projectDevs,
+        allRiesgos
     })
 }
 
@@ -42,6 +63,24 @@ module.exports.registrar_proyecto = async (req, res) => {
         // } else {
 
         // }
+        res.redirect('/usuarios/homePage')
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.cerrarProyecto = async (req, res) => {
+    try {
+        if (req.session.isLoggedIn == false) {
+            console.log("paso por aqui")
+            res.redirect('/usuarios/login')
+        }
+        
+        const { razon, idProyecto } = req.body
+        console.log(razon, idProyecto)
+
+        const result = await model.Project.cerrarProyecto(idProyecto, razon)
+
         res.redirect('/usuarios/homePage')
     } catch (e) {
         throw e

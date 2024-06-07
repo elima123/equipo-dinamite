@@ -1,5 +1,4 @@
 const db = require('../utils/database')
-const bcrypt = require('bcryptjs')
 
 exports.Project = class {
     static async getProject(idProyecto) {
@@ -63,6 +62,51 @@ exports.Project = class {
         }
     }
 
+    static async proyectoNombres() {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT Nombre FROM Proyectos
+            `)
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async getProjDevs(idProyecto) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT up.*, DATE_FORMAT(FechaAgregado, '%Y-%m-%d') AS dateAdded, u.Nombre, u.Rol
+            FROM UsuarioProyectos AS up
+            INNER JOIN Usuarios AS u ON up.IDUsuario = u.IDUsuario
+            WHERE IDProyecto = ?
+            `, [idProyecto])
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async getAllRiesgos() {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT * FROM Riesgos
+            `)
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
     // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->}
     static async agregarRiesgo(idProyecto, idRiesgo) {
         try {
@@ -95,4 +139,22 @@ exports.Project = class {
         }
     }
     // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
+    
+    static async cerrarProyecto(razon, id) {
+        try {
+            console.log("inside cerrar proyecto")
+            console.log(razon)
+            console.log(id)
+            const connection = await db()
+            const result = await connection.execute(`
+            UPDATE Proyectos 
+            SET estado = 'finalizado', RazonCerrado = ?, FechaCerrado = DATE(NOW())
+            WHERE IDProyecto = ?
+            `,[razon, id])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
 } 

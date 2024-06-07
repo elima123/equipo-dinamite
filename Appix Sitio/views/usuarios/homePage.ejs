@@ -2,7 +2,7 @@
     <head>
         <%- include('./../includes/head.html') %>
         <title>Home</title>
-    </head>
+    </head> 
     <body class="first-body">
         <nav class="universal-nav">
             <div class="flex-1">
@@ -56,20 +56,8 @@
         </div>
 
         <nav class="page-counter">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" onclick="">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <% for (let i = 1; i <= numPages; i++) { %>
-                <li class="page-item"><a class="page-link" onclick="cambiarPagina(<%= i %>)"><%= i %></a>
-              <% } %>
-              <li class="page-item">
-                <a class="page-link" onclick="">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
+            <ul class="pagination" id="pagination">
+    
             </ul>
         </nav>
 

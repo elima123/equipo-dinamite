@@ -1,8 +1,11 @@
 const express = require('express')
 const controller = require('../controllers/usuarios.controller')
 const isAuth = require('../utils/is-auth')
+const sessionChecker = require('../utils/sessionTimer')
 
 const router = express.Router()
+
+router.use(sessionChecker)
 
 router.get('/login', controller.get_registro)
 router.post('/login', controller.do_login)
