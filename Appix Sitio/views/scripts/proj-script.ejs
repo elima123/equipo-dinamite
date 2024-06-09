@@ -53,7 +53,6 @@
     const todayDays = Math.floor(currentDifference/(1000*60*60*24))
 
     const percentage = ((todayDays/days)*100).toFixed(0)
-    console.log(percentage)
 
     const progressBar = document.getElementById('prog-bar')
     progressBar.innerHTML = ''
@@ -344,9 +343,132 @@ Highcharts.chart('container-viable', {
             }
         }
 
+        function cleanTextarea() {
+        // Get the textarea element
+        var textarea = document.getElementById('userInput');
+
+        // Get the value from the textarea and remove extra spaces using a regular expression
+        var cleanedValue = textarea.value.replace(/\s+/g, ' ').trim();
+
+        // Set the cleaned value back to the textarea
+        textarea.value = cleanedValue;
+}
+
+        function formatDate(dateString) {
+            const parts = dateString.split('/');
+            if (parts.length !== 3) {
+                return null; // Invalid date format
+            }
+            const [day, month, year] = parts;
+            return `${year}-${month}-${day}`;
+        }
+
+        // Editar Proyecto Popup
+        const editPOverlay = document.getElementById('overlay-edit-p')
+        const editPPopup = document.getElementById('popup-edit-p')
+        const btnEditPAbrir = document.getElementById('btn-abrir-edit-p')
+        const btnEditPCerrar = document.getElementById('btn-cerrar-popup-p')
+
+        btnEditPAbrir.addEventListener('click', function() {
+            editPOverlay.classList.add('active')
+            editPPopup.classList.add('active')
+
+            const dateInicioFormatted = formatDate(proyectoData.start)
+            const dateFinalFormatted = formatDate(proyectoData.end)
+
+            const fechasDiv = document.getElementById('fechas-div-pop')
+            const fechaI = document.createElement('input')
+            fechaI.type = 'date'
+            fechaI.name = 'fechaInicio'
+            fechaI.id = 'fecha-I'
+            fechaI.value = dateInicioFormatted
+            const fechaF = document.createElement('input')
+            fechaF.type = 'date'
+            fechaF.name = 'fechaFinal'
+            fechaF.id = 'fecha-F'
+            fechaF.value = dateFinalFormatted
+            console.log(dateInicioFormatted)
+            console.log(dateFinalFormatted)
+
+            fechasDiv.appendChild(fechaI)
+            fechasDiv.appendChild(fechaF)
+        })
+
+        btnEditPCerrar.addEventListener('click', function() {
+            editPOverlay.classList.remove('active')
+            editPPopup.classList.remove('active')
+            const fechaInicio = document.getElementById('fecha-I')
+            const fechaFinal = document.getElementById('fecha-F')
+
+            fechaInicio.remove()
+            fechaFinal.remove()
+        })
+
+        function popViewInfo() {
+            const infoGeneral = document.getElementById('editar-info')
+            const infoDes = document.getElementById('editar-desarrolladores')
+            const infoAgreg = document.getElementById('agregar-des')
+            const a1 = document.getElementById('a-1')
+            const a2 = document.getElementById('a-2')
+            const a3 = document.getElementById('a-3')
+
+            infoGeneral.classList.remove('hidden')
+            infoDes.classList.add('hidden')
+            infoAgreg.classList.add('hidden')
+            a1.classList.add('active')
+            a2.classList.remove('active')
+            a3.classList.remove('active')
+        }
+
+        function popViewDes() {
+            const infoGeneral = document.getElementById('editar-info')
+            const infoDes = document.getElementById('editar-desarrolladores')
+            const infoAgreg = document.getElementById('agregar-des')
+            const a1 = document.getElementById('a-1')
+            const a2 = document.getElementById('a-2')
+            const a3 = document.getElementById('a-3')
+
+            infoGeneral.classList.add('hidden')
+            infoDes.classList.remove('hidden')
+            infoAgreg.classList.add('hidden')
+            a1.classList.remove('active')
+            a2.classList.add('active')
+            a3.classList.remove('active')
+        }
+
+        function popViewAgreg() {
+            const infoGeneral = document.getElementById('editar-info')
+            const infoDes = document.getElementById('editar-desarrolladores')
+            const infoAgreg = document.getElementById('agregar-des')
+            const a1 = document.getElementById('a-1')
+            const a2 = document.getElementById('a-2')
+            const a3 = document.getElementById('a-3')
+
+            infoGeneral.classList.add('hidden')
+            infoDes.classList.add('hidden')
+            infoAgreg.classList.remove('hidden')
+            a1.classList.remove('active')
+            a2.classList.remove('active')
+            a3.classList.add('active')
+        }
+
+        // Crear Riesgo
+        const crearRiesgoOverlay = document.getElementById('overlay-cr')
+        const crearRiesgoPopup = document.getElementById('popup-cr')
+        const btnCrearRiesgoAbrir = document.getElementById('btn-crearRiesgo')
+        const btnCrearRiesgoCerrar = document.getElementById('btn-cerrar-popup-cr')
+        
+        btnCrearRiesgoAbrir.addEventListener('click', function() {
+            crearRiesgoOverlay.classList.add('active')
+            crearRiesgoPopup.classList.add('active')
+        })
+
+        btnCrearRiesgoCerrar.addEventListener('click', function() {
+            crearRiesgoOverlay.classList.remove('active')
+            crearRiesgoPopup.classList.remove('active')
+        })
+
     // <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
-
-
         const EditarRiesgosOverlay = document.getElementById('EditarRiesgos')
         const EditarRiesgosPopup = document.getElementById('riesgos-popup')
         const btnEditarRiesgosAbrir = document.getElementById('btn-EditarRiesgos-abrir')

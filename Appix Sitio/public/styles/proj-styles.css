@@ -40,7 +40,7 @@ body {
     border-bottom: 2px solid transparent;
     border-image: linear-gradient(to left, blue, green, orange);
     border-image-slice: 1;
-    margin: 0 3rem 2rem 3rem; width: 85%;
+    margin: 0 3rem 2rem 3rem; width: 90%;
 }
 
 .info-body {
@@ -264,3 +264,17 @@ td {
   border-right: solid black 1px;
   /* border-top: solid black 1px; */
 }
+
+/* Custom CSS to override prefers-reduced-motion */
+/* .collapse {
+  transition: max-height 0.35s ease;
+  overflow: hidden;
+}
+
+.collapse.show {
+  max-height: 1000px; 
+}
+
+.collapse:not(.show) {
+  max-height: 0;
+} */

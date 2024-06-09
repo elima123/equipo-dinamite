@@ -71,6 +71,7 @@ exports.User = class {
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
             LEFT JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
             LEFT JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            WHERE p.Estado = 'activo'
             GROUP BY p.IDProyecto
             `)
             await connection.release()
@@ -101,6 +102,33 @@ exports.User = class {
             const realResult = result[0]
             return realResult
         } catch(e) {
+            throw e
+        }
+    }
+
+    static async cambiarRol(idUsuario) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            UPDATE Usuarios
+            SET Rol = 'manager' WHERE IDUsuario = ?
+            `, [idUsuario])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async eliminarUsuario(idUsuario) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            DELETE FROM Usuarios WHERE IDUsuario = ?
+            `, [idUsuario])
+            await connection.release()
+            return "yes"
+        } catch (e) {
             throw e
         }
     }

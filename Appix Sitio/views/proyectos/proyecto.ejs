@@ -39,16 +39,27 @@
   <section class="general-view">
     <div class="flex-3 general-title">
       <h1><%= proyectoObject.Nombre %></h1>
-      <button role="none" class="button-23" style="color: red; border-color: red;" id="btn-abrir-popup">Cerrar Proyecto</button>
+      <div class="flex-3" style="flex-basis: 35%; position: relative; left: 11rem;">
+        <button role="none" class="button-23" style="color: blue; border-color: blue;" id="btn-abrir-edit-p">Editar Proyecto</button>
+        <button role="none" class="button-23" style="color: red; border-color: red;" id="btn-abrir-popup">Cerrar Proyecto</button>
+      </div>
     </div>
 
     <div class="flex-3" style="align-items: center; margin-bottom: 2rem;">
-      <div class="f-50">
-        <h5 class="card-subtitle mb-2 text-body-secondary" style="margin: 0 3rem 2rem 3rem;">
+      <div class="f-50" style="line-height: 1rem; padding: 0; flex-basis: 33%;">
+        <h5 class="card-subtitle mb-2" style="margin: 0 0 0 3rem;  padding: 0;">
           Cliente: <%= proyectoObject.nombreEmpresa %>
         </h5><br>
+        <div style="width: 100%; color: darkslategray;">
+          <p style="width: 100%; text-align: start; margin: 0 0 0 4rem;">Cel: <%= proyectoObject.telEmpresa %></p>
+          <p style="width: 100%; text-align: start; margin: 0 0 0 4rem;">Correo: <%= proyectoObject.correoEmpresa %></p>
+        </div>
       </div>
-      <div style="flex-basis: 50%; text-align: start;">
+      <div style=" flex-grow: 2; text-align: center; height: 100%;">
+        <h5 style="border-bottom: solid black 1px; width: 60%;">Costo</h5>
+        <p>$<%= proyectoObject.Costo %></p>
+      </div>
+      <div style="flex-basis: 45%; text-align: start;">
         <h6 style="max-width: 100%;">Progreso de Timeline de Proyecto</h6>
         <div class="flex-3" style="width: 80%; justify-content: space-between; margin: 0;">
           <label><%= proyectoObject.start %></label>
@@ -86,23 +97,28 @@
                   <% } %>
                 </ul>
               </div>
-              <div style="flex-basis: 50%; height: 100%; text-align: start;">
-                <div id="container-viable" style="width: 70%; max-height: 70%; display: inline-block; border: solid black 1px; margin: 0 auto;"></div>
+              <div style="flex-basis: 45%; height: 100%; text-align: start;">
+                <div id="container-viable" style="width: 80%; max-height: 70%; display: inline-block; border: solid black 1px; margin: 0 auto;"></div>
               </div>
             </div>
 
   </section>
 
   <div class="riesgos-view hidden">
-    <div class="flex-3" style="margin: 0 3rem 2rem 3rem; width: 85%;">
+    <div class="flex-3" style=" width: 90%; margin-bottom: 2rem;">
       <h1><%= proyectoObject.Nombre %></h1>
-      <button id="btn-EditarRiesgos-abrir" role="none" class="button-23" style="color: orange; border-color: orange;">
-        Editar Riesgos
-      </button>
+      <div class="flex-3" style="flex-basis: 35%; position: relative; left: 11rem;">
+        <button id="btn-crearRiesgo" role="none" class="button-23" style="color: green; border-color: green;">
+          Crear Riesgo
+        </button>
+        <button id="btn-EditarRiesgos-abrir" role="none" class="button-23" style="color: orange; border-color: orange;">
+          Editar Riesgos
+        </button>
+      </div>
 
     </div>
     <h4>Riesgos Anotados</h4>
-    <table class="table table-striped" style="margin-bottom: 3rem;">
+    <table class="table table-striped" style="margin-bottom: 3rem; width: 95%;">
       <thead>
         <tr>
           <th scope="col">IDRiesgo</th>
@@ -141,12 +157,95 @@
     <img src="/imgs/dinamite_logo.png" width="240">
   </footer>
 
+  <!-- AQUI EMPIEZAN TODOS LOS POPUPS -->
+
+  <!-- Popup para Editar Proyecto -->
+  <div id="overlay-edit-p" class="overlay">
+    <div class="popup" id="popup-edit-p" style="height: 83vh; overflow: scroll; overflow-x: hidden;">
+      <a id="btn-cerrar-popup-p" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+      <h3 style="margin-bottom: 2rem; color: darkslategray;">Cambiar Información Actual</h3>
+      <ul class="nav nav-underline">
+        <li class="nav-item">
+          <a class="nav-link active" id="a-1" onclick="popViewInfo()">Info General</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="a-2" onclick="popViewDes()">Quitar Devs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="a-3" onclick="popViewAgreg()">Agregar Devs</a>
+        </li>
+      </ul>
+      <div id="editar-info">
+        <p style="color: gray;">Editar la informacion a su gusto</p>
+        <form action="/proyecto/editarProyecto" method="POST">
+          <div class="contenedor-inputs" style="text-align: start;">
+            <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="<%= proyectoObject.Nombre %>">
+            <label>Descripcion</label>
+            <input type="text" name="descripcion" value="<%= proyectoObject.Descripcion %>">
+            <div class="flex-3">
+              <label>Fecha de Inicio</label>
+              <label style="width: 50%; text-align: start;">Fecha Final</label>
+            </div>
+            <div class="flex-3" id="fechas-div-pop">
+              <!-- <input type="date" name="fechaInicio" value="<%= proyectoObject.start %>">
+              <input type="date" name="fechaFinal" value="<%= proyectoObject.end %>"> -->
+            </div>
+            <label>Costo</label>
+            <input type="number" name="costo" value="<%= proyectoObject.Costo %>">
+            <div style="width: 100%; display: flex; justify-content: center;">
+              <button role="none" type="submit" class="btn-submit">Actualizar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="hidden" id="editar-desarrolladores">
+        <p style="color: gray;">Quitar desarrolladores del proyecto</p>
+          <h6 class="card-subtitle mb-2" style="margin-left: 1rem;">Desarrolladores Actuales</h6>
+          <ul class="list-group list-group-flush">
+            <% projectDevs.forEach(dev => { %>
+                <% if (dev.Rol == 'desarrollador') { %>
+                  <form action="/proyecto/quitarDev" method="POST">
+                    <input type="hidden" name="idUsuario" value="<%= dev.IDUsuario %>">
+                    <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
+                    <li class="list-group-item" style="display: flex; align-items: center;">
+                      <span style="flex: 1;"><%= dev.IDUsuario %>: <%= dev.Nombre %> (Agregado <%= dev.dateAdded %>)</span>
+                      <button class="button-23" type="submit" style="margin-left: auto; padding: 0.5rem; color: red; border-color: red;"><%- include('./../includes/remove_des.html') %></button>
+                    </li>
+                  </form>
+                <% } %>
+            <% }) %>
+                <% if(riesgos.length == 0) { %>
+                      <li class="list-group-item">Aún no hay desarrolladores asignados a este proyecto</li>
+                <% } %>
+          </ul>
+      </div>
+
+      <div class="hidden" id="agregar-des">
+          <p style="color: gray;">Agregar desarrolladores al proyecto</p>
+          <h6 class="card-subtitle mb-2" style="margin-left: 1rem;">Desarrolladores Disponibles</h6>
+          <form action="/proyecto/agregarDev" method="POST">
+            <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
+            <select name="idUsuario">
+              <% for (i = 0; i < nonDevs.length; i++) { %>
+                <option value="<%= nonDevs[i].IDUsuario %>"><%= nonDevs[i].IDUsuario %>: <%= nonDevs[i].Nombre %></option>
+              <% } %>
+            </select>
+            <button class="btn-submit" type="submit">Agregar</button>
+          </form>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Popup para Cerrar Proyecto -->
   <div id="overlay" class="overlay">
     <div class="popup" id="popup">
       <a id="btn-cerrar-popup" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
       <h3 style="margin-bottom: 2rem; color: darkslategray;">Cerrar Proyecto: <span style="color: black;"><%= proyectoObject.Nombre %></span></h3>
-      <form action="/proyecto/cerrar" method="POST">
+      <form action="/proyecto/cerrar" method="POST" onsubmit="cleanTextArea()">
         <div class="contenedor-inputs">
           <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
           <h5>Cual es la razón por cerrar el proyecto?</h5>
@@ -166,9 +265,44 @@
     </div>
   </div>
 
+  <!-- Popup para crear riesgo -->
+  <div id="overlay-cr" class="overlay">
+    <div class="popup" id="popup-cr">
+      <a id="btn-cerrar-popup-cr" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+      <h3 style="margin-bottom: 2rem; color: darkslategray;">Crear Riesgo</h3>
+      <form action="/proyecto/crearRiesgo" method="POST">
+        <div class="contenedor-inputs">
+          <input type="text" placeholder="descripción del riesgo..." name="riesgo">
+          <select name="categoria">
+            <option value="" class="placeholder">Categoria</option>
+            <option value="Alcance">Alcance</option>
+            <option value="Calidad">Calidad</option>
+            <option value="Costo">Costo</option>
+            <option value="Recursos">Recursos</option>
+            <option value="Tiempo">Tiempo</option>
+          </select>
+          <select name="probabilidad">
+            <option value="" class="placeholder">Probabilidad</option>
+            <option value="Alcance">Alta</option>
+            <option value="Calidad">Media</option>
+            <option value="Costo">Baja</option>
+          </select>
+          <select name="impacto">
+            <option value="" class="placeholder">Impacto</option>
+            <option value="Alcance">Alto</option>
+            <option value="Calidad">Medio</option>
+            <option value="Costo">Bajo</option>
+          </select>
+          <input type="text" placeholder="estrategia para atender este riesgo..." name="estrategia">
+          <button type="submit" class="btn-submit">Crear Riesgo</button>          
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->
   <div id="EditarRiesgos" class="overlay">
-      <div class="popup" id="riesgos-popup" style="z-index: 9999;">
+      <div class="popup" id="riesgos-popup" style="z-index: 9999; height: 83vh; overflow: scroll; overflow-x: hidden;" >
       <a id="btn-EditarRiesgos-cerrar" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
       <h3>Seleccione los cambios que desea hacer a los riesgos.</h3>
       <p>(O si prefiere, puede salir sin hacer cambios dando clic en la X)</p>
@@ -240,5 +374,4 @@
 
 </body>
 <%- include('./../scripts/proj-script.ejs') %>
-
 </html>

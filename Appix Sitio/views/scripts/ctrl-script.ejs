@@ -33,7 +33,7 @@
         sort: true,
         search: true,
         fixedHeader: true,
-        height: '400px',
+        height: '500px',
         data: usuariosData.map(user => [
                     user.IDUsuario, user.Nombre, user.Correo, user.Rol, user.dateAdded
                 ]),
@@ -77,6 +77,117 @@
         title.textContent = user.Nombre
         title.style = "margin-bottom: 2rem;"
         popup.appendChild(title)
+
+        if (user.Rol == "desarrollador") {
+            const buttonsDiv = document.createElement('div')
+            buttonsDiv.className = 'flex-3'
+            buttonsDiv.style = 'width: 50%; margin-bottom: 1rem;'
+            popup.appendChild(buttonsDiv)
+
+            const cambiarRolBtn = document.createElement('button')
+            cambiarRolBtn.className = 'button-23'
+            cambiarRolBtn.style = 'padding: .5rem .5rem; color: orange; border-color: orange;'
+            cambiarRolBtn.textContent = 'Cambiar Rol'
+            cambiarRolBtn.onclick = () => {
+                buttonsDiv.className = 'hidden'
+                hemis.className = 'hidden'
+                const seguroDiv = document.createElement('div')
+                seguroDiv.className = 'flex-3'
+                seguroDiv.style = 'width: 100%; margin-bottom: 1rem; border-top: solid black 1px; border-bottom: solid black 1px; padding: 3rem 0;'
+                popup.appendChild(seguroDiv)
+
+                const seguroP = document.createElement('p')
+                seguroP.style = 'flex-basis: 70%;'
+                seguroP.textContent = 'Cambiar el rol de usuario: ' + user.Nombre + " a manager?"
+                seguroDiv.appendChild(seguroP)
+
+                const btnCancelar = document.createElement('button')
+                btnCancelar.className = 'button-23'
+                btnCancelar.style = 'padding: 0.5rem; color: red; border-color: red;'
+                btnCancelar.textContent = "X"
+                btnCancelar.onclick = () => {
+                    seguroDiv.className = 'hidden'
+                    buttonsDiv.className = 'flex-3'
+                    hemis.className = 'hemis-div'
+                }
+                const btnCheck = document.createElement("button")
+                btnCheck.className = 'button-23'
+                btnCheck.style = 'padding: 0.5rem; color: green; border-color: green;'
+                btnCheck.textContent = "Ok"
+                btnCheck.type = 'submit'
+                
+                const hiddenForm = document.createElement('form')
+                hiddenForm.action = '/usuarios/cambiarRol'
+                hiddenForm.method = "POST"
+
+                const hiddenInput = document.createElement('input')
+                hiddenInput.type = 'hidden'
+                hiddenInput.name = 'idUsuario'
+                hiddenInput.value = user.IDUsuario
+                hiddenForm.appendChild(hiddenInput)
+                
+                hiddenForm.appendChild(btnCheck)
+                seguroDiv.appendChild(btnCancelar)
+                seguroDiv.appendChild(hiddenForm)
+
+            }
+            const eliminarUserBtn = document.createElement('button')
+            eliminarUserBtn.className = 'button-23'
+            eliminarUserBtn.style = 'padding: .5rem .5rem; color: red; border-color: red;'
+            eliminarUserBtn.textContent = 'Eliminar Usuario'
+            eliminarUserBtn.onclick = () => {
+                buttonsDiv.className = 'hidden'
+                hemis.className = 'hidden'
+                const seguroDiv = document.createElement('div')
+                seguroDiv.className = 'flex-3'
+                seguroDiv.style = 'width: 100%; margin-bottom: 1rem; border-top: solid black 1px; border-bottom: solid black 1px; padding: 3rem 0;'
+                popup.appendChild(seguroDiv)
+
+                const seguroP = document.createElement('p')
+                seguroP.style = 'flex-basis: 70%;'
+                seguroP.textContent = 'Eliminar Usuario: ' + user.Nombre + "?"
+                seguroDiv.appendChild(seguroP)
+
+                const warning = document.createElement('p')
+                warning.style = 'color: red; position: relative; bottom: 3.5rem;'
+                warning.textContent = 'Esta accion es permanente, no se puede deshacer'
+                popup.appendChild(warning)
+
+                const btnCancelar = document.createElement('button')
+                btnCancelar.className = 'button-23'
+                btnCancelar.style = 'padding: 0.5rem; color: red; border-color: red;'
+                btnCancelar.textContent = "X"
+                btnCancelar.onclick = () => {
+                    seguroDiv.className = 'hidden'
+                    warning.className = 'hidden'
+                    buttonsDiv.className = 'flex-3'
+                    hemis.className = 'hemis-div'
+                }
+                const btnCheck = document.createElement("button")
+                btnCheck.className = 'button-23'
+                btnCheck.style = 'padding: 0.5rem; color: green; border-color: green;'
+                btnCheck.textContent = "Ok"
+                btnCheck.type = 'submit'
+                
+                const hiddenForm = document.createElement('form')
+                hiddenForm.action = '/usuarios/eliminarUsuario'
+                hiddenForm.method = "POST"
+
+                const hiddenInput = document.createElement('input')
+                hiddenInput.type = 'hidden'
+                hiddenInput.name = 'idUsuario'
+                hiddenInput.value = user.IDUsuario
+                hiddenForm.appendChild(hiddenInput)
+                
+                hiddenForm.appendChild(btnCheck)
+                seguroDiv.appendChild(btnCancelar)
+                seguroDiv.appendChild(hiddenForm)
+
+            }
+
+            buttonsDiv.appendChild(cambiarRolBtn)
+            buttonsDiv.appendChild(eliminarUserBtn)
+        }
 
         const hemis = document.createElement('div')
         hemis.className = "hemis-div"

@@ -10,9 +10,10 @@ router.use(sessionChecker)
 router.get("/:IDProyecto", isAuth, controller.get_proyecto)
 router.post('/registro', isAuth, controller.registrar_proyecto)
 router.post('/cerrar', isAuth, controller.cerrarProyecto)
-
-//<!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
+router.post('/crearRiesgo', isAuth, controller.crearRiesgo)
+router.post('/quitarDev', isAuth, controller.quitarDev)
+router.post('/agregarDev', isAuth, controller.agregarDev)
 router.post("/editarRiesgo", isAuth, controller.editarRiesgo)
-//<!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" -->  
+router.post("/editarProyecto", isAuth, controller.editar_proyecto)
 
 module.exports = router

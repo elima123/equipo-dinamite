@@ -58,6 +58,15 @@ module.exports.get_homePage = async (req, res) => {
             proyectos = await model.User.getProyectosDes(usuario.IDUsuario)
         }
 
+        // let pastProyectos
+        // if (usuario.Rol == "manager") {
+        //     pastProyectos = await model.User.getPastProyectosM()
+        // } else if (usuario.Rol == "desarrollador") {
+        //     pastProyectos = await model.User.getPastProyectosD(usuario.IDUsuario)
+        // }
+
+
+
         let combinedData = proyectos.map((project) => {
             return {...project, active: false}
         })
@@ -164,6 +173,31 @@ module.exports.registrar_usuario = async (req, res) => {
 
         res.status(201).redirect("/usuarios/control")
 
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.cambiarRol = async (req, res) => {
+    try {
+        const IDUsuario = req.body.idUsuario
+
+        const result = await model.User.cambiarRol(IDUsuario)
+
+        res.redirect('back')
+
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.eliminarUsuario = async (req, res) => {
+    try {
+        const IDUsuario = req.body.idUsuario
+
+        const result = await model.User.eliminarUsuario(IDUsuario)
+
+        res.redirect('back')
     } catch (e) {
         throw e
     }

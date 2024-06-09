@@ -24,42 +24,12 @@ app.use(session({
     saveUninitialized: false,
 }))
 
-// function activityTracker(req, res, next) {
-//     req.session.lastActiveTime = Date.now()
-//     lastMove = req.session.lastActiveTime
-//     next()
-// }
-
-// function sessionChecker(req, res, next) {
-//     const currentTime = Date.now() 
-//     const sessionTimeout = 600000 // 10 minutes in milliseconds
-//     if (!req.session.lastActiveTime) {
-//         req.session.lastActiveTime = currentTime
-//     }
-//     if (req.session.lastActiveTime && (currentTime - req.session.lastActiveTime) > sessionTimeout) {
-//         console.log("destroying session")
-//         req.session.destroy((err) => {
-//             if (err) {
-//                 console.error('Error destroying session:', err)
-//             }
-//         })
-//         res.redirect('/usuarios/login')
-//     } else {
-//         next()
-//     }
-// }
-
-// app.use(sessionChecker)
-// app.use(activityTracker)
-
 app.use('/usuarios', rutasUsuarios)
 app.use('/proyecto', rutasProyectos)
 app.use('/empresa', rutasEmpresas)
 
 app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain')
-    res.render("Default Text")
-    res.end()
+    res.redirect('/usuarios/login')
 })
 
 app.get("*", (req, res) => {
@@ -71,9 +41,9 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke')
 })
 
-const server = http.createServer((req, res) => {
-    console.log(req.url)
-})
+// const server = http.createServer((req, res) => {
+//     console.log(req.url)
+// })
 
 app.listen(4747, () => {
     console.log("Server started on port 4747")

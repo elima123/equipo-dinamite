@@ -7,7 +7,7 @@ exports.Project = class {
             const result = await connection.execute(`
             SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
 			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
-            e.nombre AS nombreEmpresa,
+            e.Nombre AS nombreEmpresa, e.Telefono AS telEmpresa, e.Correo AS correoEmpresa,
             ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
             FROM Proyectos as p
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
@@ -93,6 +93,21 @@ exports.Project = class {
         }
     }
 
+    static async getAllDevs() {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT IDUsuario, Nombre FROM Usuarios
+            WHERE Rol = 'desarrollador'
+            `)
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
     static async getAllRiesgos() {
         try {
             const connection = await db()
@@ -102,6 +117,65 @@ exports.Project = class {
             await connection.release()
             const realResult = result[0]
             return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async editProyectoInfo(nombre, descripcion, fechaInicio, fechaFinal, costo, idProyecto) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            UPDATE Proyectos 
+            SET Nombre = ?, Descripcion = ?, FechaInicio = ?, FechaFinal = ?, Costo = ?
+            WHERE IDProyecto = ?
+            `,[nombre, descripcion, fechaInicio, fechaFinal, costo, idProyecto])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async quitarDev(idUsuario, idProyecto) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            DELETE FROM UsuarioProyectos
+            WHERE IDUsuario = ? AND IDProyecto = ?
+            `, [idUsuario, idProyecto])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async agregarDev(idUsuario, idProyecto) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto, FechaAgregado)
+            VALUES
+            (?, ?, NOW())
+            `, [idUsuario, idProyecto])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async crearRiesgo(riesgo, cat, prob, imp, estr, impNum) {
+        try {
+            const connection = await db() 
+            const result = await connection.execute(`
+            INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia, ImpactoNumerico)
+            VALUES
+            (?,?,?,?,?,?)
+            `, [riesgo, cat, prob, imp, estr, impNum])       
+            await connection.release()
+            return "yes"
         } catch (e) {
             throw e
         }
