@@ -45,6 +45,6 @@ app.use((err, req, res, next) => {
 //     console.log(req.url)
 // })
 
-app.listen(4747, () => {
-    console.log("Server started on port 4747")
+app.listen(3001, () => {
+    console.log("Server started on port 3001")
 })
