@@ -41,7 +41,8 @@ UPDATE Usuarios SET FechaCreado = '2024-06-05' WHERE IDUsuario = 63;
 UPDATE Usuarios SET FechaCreado = '2024-06-07' WHERE IDUsuario = 64;
 
     
-select * from Proyectos;
+select count(IDProyecto) from Proyectos where Estado = 'finalizado'; 
+select * from proyectos;
 CREATE TABLE Proyectos (
 	IDProyecto INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     IDEmpresa INT,
@@ -78,6 +79,10 @@ SELECT p.*, e.Nombre AS nombreEmpresa
 FROM Proyectos as p
 INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa 
 WHERE IDProyecto = 1;
+
+UPDATE Proyectos
+SET estado = 'finalizado', RazonCerrado = 'slf;jaslsad;fj;askf', FechaCerrado = DATE(NOW())
+WHERE IDProyecto = 5;
 
 CREATE USER u_dinamite@localhost IDENTIFIED BY 'pdinamite';
 GRANT Alter ON appix.* TO u_dinamite@localhost;
