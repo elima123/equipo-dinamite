@@ -137,19 +137,40 @@ exports.Project = class {
         }
     }
 
+    // static async quitarDev(idUsuario, idProyecto) {
+    //     try {
+    //         const connection = await db()
+    //         const result = await connection.execute(`
+    //         DELETE FROM UsuarioProyectos
+    //         WHERE IDUsuario = ? AND IDProyecto = ?
+    //         `, [idUsuario, idProyecto])
+    //         await connection.release()
+    //         return "yes"
+    //     } catch (e) {
+    //         throw e
+    //     }
+    // }
+
     static async quitarDev(idUsuario, idProyecto) {
+        const connection = await db()
         try {
-            const connection = await db()
+            await connection.beginTransaction()
+    
             const result = await connection.execute(`
-            DELETE FROM UsuarioProyectos
-            WHERE IDUsuario = ? AND IDProyecto = ?
+                DELETE FROM UsuarioProyectos
+                WHERE IDUsuario = ? AND IDProyecto = ?
             `, [idUsuario, idProyecto])
-            await connection.release()
+    
+            await connection.commit()
             return "yes"
         } catch (e) {
-            throw e
+            await connection.rollback()
+            throw e;
+        } finally {
+            await connection.release()
         }
     }
+    
 
     static async agregarDev(idUsuario, idProyecto) {
         try {

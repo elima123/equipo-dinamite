@@ -45,19 +45,43 @@ exports.User = class {
             throw e
         }
     }
+
+    // static async verifyUser(correo, contrasena) {
+    //     try {
+    //         const connection = await db()
+    //         const result = await connection.execute(`
+    //         SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
+    //         [correo, contrasena])
+    //         await connection.release()
+    //         const realResult = result[0][0]
+    //         return realResult
+    //     } catch(e) {
+    //         throw e
+    //     } 
+    // }
+
     static async verifyUser(correo, contrasena) {
+        const connection = await db()
         try {
-            const connection = await db()
-            const result = await connection.execute(`
-            SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
-            [correo, contrasena])
-            await connection.release()
-            const realResult = result[0][0]
+            await connection.beginTransaction()
+    
+            const [rows] = await connection.execute(`
+                SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
+                [correo, contrasena]
+            )
+    
+            const realResult = rows[0]
+            
+            await connection.commit()
             return realResult
-        } catch(e) {
+        } catch (e) {
+            await connection.rollback()
             throw e
-        } 
+        } finally {
+            await connection.release()
+        }
     }
+    
 
     static async getProyectosManager() {
         try {
