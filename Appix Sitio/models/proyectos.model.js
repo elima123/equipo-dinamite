@@ -28,7 +28,7 @@ exports.Project = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT r.*
+            SELECT r.*, ROUND(ImpactoNumerico, 2) AS ImpNum
             FROM ProyectoRiesgos as pr
             INNER JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
             WHERE pr.IDProyecto = ?

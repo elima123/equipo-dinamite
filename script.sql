@@ -7,7 +7,7 @@ CREATE TABLE Usuarios (
 	Nombre VARCHAR(30),
     Contrasena VARCHAR(20)
     );
-    
+
 ALTER TABLE Usuarios
 ADD COLUMN Correo VARCHAR(80);
 
