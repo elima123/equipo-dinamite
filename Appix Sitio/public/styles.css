@@ -7,6 +7,14 @@ body {
     font-family: 'Multi Light', sans-serif;
 }
 
+/* .signIn-body {
+    background-image: url('/imgs/Fondo1.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+
 .first-body {
     padding-top: 8vh;
     background-image: url('/imgs/Fondo1.jpg');
@@ -16,9 +24,18 @@ body {
     background-repeat: no-repeat;
 }
 
+.control-body {
+    padding-top: 8vh;
+    background-image: url('/imgs/fondo_upside.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .registro-form {
     margin: 10vh auto 10vh auto;
-}
+} 
 
 .hidden {
     display: none;
@@ -134,7 +151,7 @@ p .hidden {
 }
 
 .manager-options p {
-    display: inline-block;
+    display: inline-block; 
     margin: auto 0 auto 0;
     width: 30%;
     position: relative;
@@ -178,8 +195,7 @@ p .hidden {
     color: #fff;
 }
 
-.controls-flex a,
-.btn-cerrar {
+.controls-flex a, .btn-cerrar {
     cursor: pointer;
     border: solid black 1px;
     padding: 5px 10px;
@@ -190,8 +206,7 @@ p .hidden {
     /* color: #fff; */
 }
 
-.controls-flex a:hover,
-.btn-cerrar:hover {
+.controls-flex a:hover, .btn-cerrar:hover {
     transform: scale(1.1);
 }
 
@@ -202,7 +217,7 @@ p .hidden {
     margin: 0 0 2rem 5rem;
     padding: 0;
     font-size: 2rem;
-}
+} 
 
 .order-by-div label {
     font-size: 1rem;
@@ -266,39 +281,15 @@ p .hidden {
     color: black;
 }
 
-.blank {
-    color: #fff;
-    border-radius: 50%;
-    background-color: green;
-}
-
+.blank {color: #fff; border-radius: 50%; background-color: green;}
 /* .very-risky {color: #fff; border-radius: 50%; background-color: red;} */
-.very-risky {
-    border: solid red 2px;
-    border-radius: 50%;
-}
-
+.very-risky {border: solid red 2px; border-radius: 50%;}
 /* .at-risk {border: solid orange 2px; border-radius: 50%;} */
 /* .at-risk {color: #fff; border-radius: 50%; background-color: orange;} */
-.at-risk {
-    border: solid orange 2px;
-    border-radius: 50%;
-}
-
-.viable {
-    border: solid yellow 2px;
-    border-radius: 50%;
-}
-
-.very-viable {
-    border: solid greenyellow 2px;
-    border-radius: 50%;
-}
-
-.perfect {
-    border: solid green 2px;
-    border-radius: 50%;
-}
+.at-risk {border: solid orange 2px; border-radius: 50%;}
+.viable {border: solid yellow 2px; border-radius: 50%;}
+.very-viable {border: solid greenyellow 2px; border-radius: 50%;}
+.perfect {border: solid green 2px; border-radius: 50%;}
 
 .p-desc {
     padding-bottom: 0.5rem;
@@ -321,7 +312,9 @@ p .hidden {
 
 /* Seccion de Footer */
 footer {
-    background-color: lightgrey;
+    /* background-color: lightgrey; */
+    /* background-color: #009f00; */
+    background-image: url('/imgs/footer_fondo.png');
     height: 10rem;
     display: flex;
     justify-content: center;
@@ -341,7 +334,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 auto;
+    margin: 0 auto;    
     /* border: solid blue 1px; */
     /* padding: 0.5rem; */
 }
@@ -482,64 +475,63 @@ table {
 */
 
 .overlay {
-    background: rgba(0, 0, 0, .3);
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    visibility: hidden;
+	background: rgba(0,0,0,.3);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	visibility: hidden;
 }
 
 .overlay.active {
-    visibility: visible;
+	visibility: visible;
     z-index: 4;
 }
 
 .popup {
-    background: #F8F8F8;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-    /* font-family: 'Montserrat', sans-serif; */
-    padding: 20px;
-    text-align: center;
-    width: 600px;
-
-    transition: .3s ease all;
-    transform: scale(0.7);
-    opacity: 0;
+	background: #F8F8F8;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+	border-radius: 3px;
+	/* font-family: 'Montserrat', sans-serif; */
+	padding: 20px;
+	text-align: center;
+	width: 600px;
+	
+	transition: .3s ease all;
+	transform: scale(0.7);
+	opacity: 0;
 }
-
+ 
 .popup .btn-cerrar-popup {
-    font-size: 16px;
-    line-height: 16px;
-    display: block;
-    text-align: right;
-    transition: .3s ease all;
-    color: #BBBBBB;
+	font-size: 16px;
+	line-height: 16px;
+	display: block;
+	text-align: right;
+	transition: .3s ease all;
+	color: #BBBBBB;
 }
 
 .popup .btn-cerrar-popup:hover {
-    color: #000;
+	color: #000;
 }
 
 .popup h3 {
-    font-size: 36px;
-    font-weight: 600;
+	font-size: 36px;
+	font-weight: 600;
 }
 
-.popup form .contenedor-inputs input,
-select {
-    width: 100%;
-    margin-bottom: 15px;
-    height: 40px;
-    font-size: 18px;
-    line-height: 40px;
-    text-align: center;
-    border: 1px solid #BBBBBB;
+.popup form .contenedor-inputs input, select {
+	width: 100%;
+	margin-bottom: 15px;
+	height: 40px;
+	font-size: 18px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #BBBBBB;
 }
 
 .popup select {
@@ -558,21 +550,21 @@ select {
 }
 
 .popup form .btn-submit {
-    padding: 0 20px;
-    height: 40px;
-    line-height: 40px;
-    border: none;
-    color: #fff;
-    background: #5E7DE3;
-    border-radius: 3px;
-    /* font-family: 'Montserrat', sans-serif; */
-    font-size: 16px;
-    cursor: pointer;
-    transition: .3s ease all;
+	padding: 0 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5E7DE3;
+	border-radius: 3px;
+	/* font-family: 'Montserrat', sans-serif; */
+	font-size: 16px;
+	cursor: pointer;
+	transition: .3s ease all;
 }
 
 .popup form .btn-submit:hover {
-    background: rgba(94, 125, 227, .9);
+	background: rgba(94,125,227, .9);
 }
 
 /* .contenedor article .btn-abrir-popup {
@@ -592,52 +584,39 @@ select {
 } */
 
 .contenedor article .btn-abrir-popup:hover {
-    background: rgba(94, 125, 227, .9);
+	background: rgba(94,125,227, .9);
 }
 
 .contenedor {
-    width: 80%;
-    max-width: 1000px;
-    margin: 20px auto;
+	width: 80%;
+	max-width: 1000px;
+	margin: 20px auto;
 }
 
 .contenedor article {
-    line-height: 28px;
+	line-height: 28px;
 }
 
 .contenedor article h1 {
-    font-size: 30px;
-    text-align: left;
-    padding: 50px 0;
+	font-size: 30px;
+	text-align: left;
+	padding: 50px 0;
 }
 
 .contenedor article p {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
-
 /* ------------------------- */
 /* ANIMACIONES */
 /* ------------------------- */
-.popup.active {
-    transform: scale(1);
-    opacity: 1;
-}
-
-.popup.active h3 {
-    animation: entradaTitulo .8s ease .5s forwards;
-}
-
-.popup.active h4 {
-    animation: entradaSubtitulo .8s ease .5s forwards;
-}
-
-.popup.active .contenedor-inputs {
-    animation: entradaInputs 1s linear 1s forwards;
-}
+.popup.active {	transform: scale(1); opacity: 1; }
+.popup.active h3 { animation: entradaTitulo .8s ease .5s forwards; }
+.popup.active h4 { animation: entradaSubtitulo .8s ease .5s forwards; }
+.popup.active .contenedor-inputs { animation: entradaInputs 1s linear 1s forwards; }
 
 .costo-btn {
     border: none;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px  0;
     height: 2.5rem;
     background-color: lightgrey;
     flex-grow: 1;
@@ -645,8 +624,7 @@ select {
     bottom: .45rem;
 }
 
-
-/* <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" --> */
+/* at styles.css: <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" --> */
 .overlay-EditarRiesgos {
     display: none;
     position: fixed;
@@ -687,6 +665,5 @@ select {
 .btn-cerrarPopup-EditarRiesgos:hover {
     color: #555555; /* Cambiar color al pasar el cursor sobre el botón */
 }
-
 
 /* <!-- IMPLEMENTACIÓN : FUNCIONALIDAD DEL BOTÓN "Editar Riesgos" --> */
