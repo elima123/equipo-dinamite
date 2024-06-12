@@ -2,4 +2,282 @@
     function backHome() {
         window.location.href = '/usuarios/homePage'
     }
+
+    let usuariosData = JSON.parse('<%- usuariosJSON %>')
+    // console.log(usuariosData)
+
+    let proyectosData = JSON.parse('<%- usuarioProyectosJSON %>')
+    // console.log(proyectosData)
+
+    const { h } = gridjs
+
+    const grid = new gridjs.Grid({
+        columns: [
+        'ID',
+        'Nombre',
+        'Correo',
+        'Rol',
+        'Fecha Creado',
+        { 
+        name: 'Acciones',
+        formatter: (cell, row) => {
+          return h('button', {
+            // className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600 edit-box',
+            className: 'button-23 zsss',
+
+            onClick: () => editUser(row.cells[0].data)
+          }, 'Edit')
+        }
+      }
+        ],
+        sort: true,
+        search: true,
+        fixedHeader: true,
+        height: '500px',
+        data: usuariosData.map(user => [
+                    user.IDUsuario, user.Nombre, user.Correo, user.Rol, user.dateAdded
+                ]),
+        style: {
+            th: {
+                'background-color': 'skyblue',
+                'color': 'black',
+                'z-index': '2'
+            },
+            td: {
+                'text-align': 'center'
+            }
+        }
+    })
+
+    grid.render(document.getElementById('grid-container'))
+
+    function editUser(idUser) {
+        let user = usuariosData.filter(user => user.IDUsuario == idUser)
+        user = user[0]
+
+        const userProjects = proyectosData.filter(relationship => {
+            return relationship.IDUsuario == idUser
+        })
+
+        const overlay = document.createElement('div')
+        overlay.className = 'overlay'
+
+        const popup = document.createElement('div')
+        popup.className = 'popup'
+        overlay.appendChild(popup)
+
+        const close = document.createElement('a')
+        close.className = 'btn-cerrar-popup'
+        const i = document.createElement('i')
+        i.className = 'fa fa-times'
+        close.appendChild(i)
+        popup.appendChild(close)
+
+        const title = document.createElement('h3')
+        title.textContent = user.Nombre
+        title.style = "margin-bottom: 2rem;"
+        popup.appendChild(title)
+
+        if (user.Rol == "desarrollador") {
+            const buttonsDiv = document.createElement('div')
+            buttonsDiv.className = 'flex-3'
+            buttonsDiv.style = 'width: 50%; margin-bottom: 1rem;'
+            popup.appendChild(buttonsDiv)
+
+            const cambiarRolBtn = document.createElement('button')
+            cambiarRolBtn.className = 'button-23'
+            cambiarRolBtn.style = 'padding: .5rem .5rem; color: orange; border-color: orange;'
+            cambiarRolBtn.textContent = 'Cambiar Rol'
+            cambiarRolBtn.onclick = () => {
+                buttonsDiv.className = 'hidden'
+                hemis.className = 'hidden'
+                const seguroDiv = document.createElement('div')
+                seguroDiv.className = 'flex-3'
+                seguroDiv.style = 'width: 100%; margin-bottom: 1rem; border-top: solid black 1px; border-bottom: solid black 1px; padding: 3rem 0;'
+                popup.appendChild(seguroDiv)
+
+                const seguroP = document.createElement('p')
+                seguroP.style = 'flex-basis: 70%;'
+                seguroP.textContent = 'Cambiar el rol de usuario: ' + user.Nombre + " a manager?"
+                seguroDiv.appendChild(seguroP)
+
+                const btnCancelar = document.createElement('button')
+                btnCancelar.className = 'button-23'
+                btnCancelar.style = 'padding: 0.5rem; color: red; border-color: red;'
+                btnCancelar.textContent = "X"
+                btnCancelar.onclick = () => {
+                    seguroDiv.className = 'hidden'
+                    buttonsDiv.className = 'flex-3'
+                    hemis.className = 'hemis-div'
+                }
+                const btnCheck = document.createElement("button")
+                btnCheck.className = 'button-23'
+                btnCheck.style = 'padding: 0.5rem; color: green; border-color: green;'
+                btnCheck.textContent = "Ok"
+                btnCheck.type = 'submit'
+                
+                const hiddenForm = document.createElement('form')
+                hiddenForm.action = '/usuarios/cambiarRol'
+                hiddenForm.method = "POST"
+
+                const hiddenInput = document.createElement('input')
+                hiddenInput.type = 'hidden'
+                hiddenInput.name = 'idUsuario'
+                hiddenInput.value = user.IDUsuario
+                hiddenForm.appendChild(hiddenInput)
+                
+                hiddenForm.appendChild(btnCheck)
+                seguroDiv.appendChild(btnCancelar)
+                seguroDiv.appendChild(hiddenForm)
+
+            }
+            const eliminarUserBtn = document.createElement('button')
+            eliminarUserBtn.className = 'button-23'
+            eliminarUserBtn.style = 'padding: .5rem .5rem; color: red; border-color: red;'
+            eliminarUserBtn.textContent = 'Eliminar Usuario'
+            eliminarUserBtn.onclick = () => {
+                buttonsDiv.className = 'hidden'
+                hemis.className = 'hidden'
+                const seguroDiv = document.createElement('div')
+                seguroDiv.className = 'flex-3'
+                seguroDiv.style = 'width: 100%; margin-bottom: 1rem; border-top: solid black 1px; border-bottom: solid black 1px; padding: 3rem 0;'
+                popup.appendChild(seguroDiv)
+
+                const seguroP = document.createElement('p')
+                seguroP.style = 'flex-basis: 70%;'
+                seguroP.textContent = 'Eliminar Usuario: ' + user.Nombre + "?"
+                seguroDiv.appendChild(seguroP)
+
+                const warning = document.createElement('p')
+                warning.style = 'color: red; position: relative; bottom: 3.5rem;'
+                warning.textContent = 'Esta accion es permanente, no se puede deshacer'
+                popup.appendChild(warning)
+
+                const btnCancelar = document.createElement('button')
+                btnCancelar.className = 'button-23'
+                btnCancelar.style = 'padding: 0.5rem; color: red; border-color: red;'
+                btnCancelar.textContent = "X"
+                btnCancelar.onclick = () => {
+                    seguroDiv.className = 'hidden'
+                    warning.className = 'hidden'
+                    buttonsDiv.className = 'flex-3'
+                    hemis.className = 'hemis-div'
+                }
+                const btnCheck = document.createElement("button")
+                btnCheck.className = 'button-23'
+                btnCheck.style = 'padding: 0.5rem; color: green; border-color: green;'
+                btnCheck.textContent = "Ok"
+                btnCheck.type = 'submit'
+                
+                const hiddenForm = document.createElement('form')
+                hiddenForm.action = '/usuarios/eliminarUsuario'
+                hiddenForm.method = "POST"
+
+                const hiddenInput = document.createElement('input')
+                hiddenInput.type = 'hidden'
+                hiddenInput.name = 'idUsuario'
+                hiddenInput.value = user.IDUsuario
+                hiddenForm.appendChild(hiddenInput)
+                
+                hiddenForm.appendChild(btnCheck)
+                seguroDiv.appendChild(btnCancelar)
+                seguroDiv.appendChild(hiddenForm)
+
+            }
+
+            buttonsDiv.appendChild(cambiarRolBtn)
+            buttonsDiv.appendChild(eliminarUserBtn)
+        }
+
+        const hemis = document.createElement('div')
+        hemis.className = "hemis-div"
+        popup.append(hemis)
+
+        const leftHemi = document.createElement('div')
+        leftHemi.style = "flex-basis: 50%; height: 100%; text-align: start;"
+        hemis.appendChild(leftHemi)
+
+        const leftTitle = document.createElement('h6')
+        leftTitle.textContent = "Datos Generales"
+        leftTitle.style = 'border-bottom: solid black 1px;'
+        leftHemi.appendChild(leftTitle)
+
+        const correoLine = document.createElement('p')
+        correoLine.textContent = "Correo: " + user.Correo
+        const contrasenaLine = document.createElement('p')
+        contrasenaLine.textContent = "Contrasena: " + user.Contrasena
+        const rolLine = document.createElement('p')
+        rolLine.textContent = "Rol: " + user.Rol
+        leftHemi.appendChild(correoLine)
+        leftHemi.appendChild(contrasenaLine)
+        leftHemi.appendChild(rolLine)
+
+        const rightHemi = document.createElement('div')
+            rightHemi.style = "flex-basis: 50%; height: 100%; text-align: start;"
+            hemis.append(rightHemi)
+
+        if (user.Rol == 'desarrollador') {
+            const proyectosTabla = document.createElement('div')
+            proyectosTabla.style = "width: 100%;"
+            if(userProjects.length >= 4) {
+                proyectosTabla.style = "overflow: scroll; overflow-x: hidden"
+            }
+            rightHemi.appendChild(proyectosTabla)
+
+            const rightTitle = document.createElement('h6')
+            rightTitle.textContent = "Proyectos Involucrados"
+            rightTitle.style = 'border-bottom: solid black 1px;'
+            proyectosTabla.appendChild(rightTitle)
+
+            const proyectosLista = document.createElement('ul')
+            proyectosLista.className = 'popup-list'
+            proyectosTabla.appendChild(proyectosLista)
+
+            if (userProjects.length == 0) {
+                const line = document.createElement('li')
+                line.textContent = user.Nombre + ' no está asignado a ningún proyecto'
+                proyectosLista.appendChild(line)
+            }
+            else {
+                userProjects.forEach(project => {
+                const line = document.createElement('li')
+                line.textContent = project.IDProyecto + ': ' + project.Nombre
+                proyectosLista.appendChild(line)
+            })
+            }
+
+        } else {
+            const managerMssg = document.createElement('p')
+            managerMssg.textContent = "Manager está involucrado en todos los proyectos"
+            rightHemi.appendChild(managerMssg)
+        }
+
+        overlay.classList.add('active')
+        popup.classList.add('active')
+
+        document.body.appendChild(overlay)
+
+        close.addEventListener('click', () => {
+            overlay.classList.remove('active')
+            popup.classList.remove('active')
+            document.body.removeChild(overlay)
+        })
+    }
+
+    var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
+	        overlay = document.getElementById('overlay'),
+	        popup = document.getElementById('popup'),
+	        btnCerrarPopup = document.getElementById('btn-cerrar-popup')
+
+        btnAbrirPopup.addEventListener('click', function(){
+	        console.log("got here")
+	        overlay.classList.add('active')
+	        popup.classList.add('active')
+        })
+
+        btnCerrarPopup.addEventListener('click', function(e){
+	        e.preventDefault()
+	        overlay.classList.remove('active')
+	        popup.classList.remove('active')
+        })    
 </script>

@@ -15,14 +15,51 @@ module.exports.get_proyecto = async (req, res) => {
 
     const proyectoObject = await model.Project.getProject(proyectoID)
 
-    const riesgosObjectsArray = await model.Project.getRiesgos(proyectoID)
+    const riesgos = await model.Project.getRiesgos(proyectoID)
+
+    const projectDevs = await model.Project.getProjDevs(proyectoID)
+
+    const allDevs = await model.Project.getAllDevs()
+
+    const nonDevs = allDevs.filter(dev => {
+        ya = false
+        for (i = 0; i < projectDevs.length; i++) {
+            if (dev.IDUsuario == projectDevs[i].IDUsuario) {
+                ya = true
+                break
+            }
+        }
+        if (ya == false) {
+            return dev
+        }
+    })
+
+    let allRiesgos = await model.Project.getAllRiesgos()
+
+    // allRiesgos.map(riesgo => {
+    //     for (i = 0; i < riesgos.length; i++) {
+    //         if (riesgo.IDRiesgo == resgios[i].IDRiesgo) {
+    //             return {...riesgo, active: true }
+    //         } else {
+    //             return {...riesgo, active: false}
+    //         }
+    //     }
+    // })
+
+    allRiesgos = allRiesgos.map(riesgo => {
+        const isActive = riesgos.some(r => r.IDRiesgo === riesgo.IDRiesgo)
+        return {...riesgo, active: isActive}
+    })
 
     res.render("proyectos/proyecto.ejs", {
         user,
         proyectoObject,
         proyectosJSON: JSON.stringify(proyectoObject),
-        riesgos: riesgosObjectsArray,
-        riesgosJSON: JSON.stringify(riesgosObjectsArray)
+        riesgos,
+        riesgosJSON: JSON.stringify(riesgos),
+        projectDevs,
+        nonDevs,
+        allRiesgos
     })
 }
 
@@ -43,6 +80,82 @@ module.exports.registrar_proyecto = async (req, res) => {
 
         // }
         res.redirect('/usuarios/homePage')
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.editar_proyecto = async (req, res) => {
+    try {
+        const { idProyecto, nombre, descripcion, fechaInicio, fechaFinal, costo} = req.body
+
+        const result = await model.Project.editProyectoInfo(nombre, descripcion, fechaInicio, fechaFinal, costo, idProyecto)
+
+        res.redirect('back')
+
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.quitarDev = async (req, res) => {
+    try {
+        const { idUsuario, idProyecto} = req.body
+
+        const result = await model.Project.quitarDev(idUsuario, idProyecto)
+
+        res.redirect('back')
+
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.agregarDev = async (req, res) => {
+    try {
+        const { idUsuario, idProyecto} = req.body
+
+        const result = await model.Project.agregarDev(idUsuario, idProyecto)
+
+        res.redirect('back')
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.cerrarProyecto = async (req, res) => {
+    try {
+        const { razon, idProyecto } = req.body
+
+        const result = await model.Project.cerrarProyecto(idProyecto, razon)
+
+        res.redirect('/usuarios/homePage')
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.crearRiesgo = async (req, res) => {
+    try {
+        if (req.session.isLoggedIn == false) {
+            console.log("paso por aqui")
+            res.redirect('/usuarios/login')
+        }
+
+        const { riesgo, categoria, probabilidad, impacto, estrategia } = req.body
+
+        let impactoNumerico = 0
+        if (impacto == "Alto") {
+            impactoNumerico = 0.05
+        } else if (impacto == "Medio") {
+            impactoNumerico = 0.03
+        } else if (impacto == "Bajo") {
+            impactoNumerico = 0.02
+        }
+
+        const result = await model.Project.crearRiesgo(riesgo, categoria, probabilidad, impacto, estrategia, impactoNumerico)
+
+        res.redirect('back')
     } catch (e) {
         throw e
     }

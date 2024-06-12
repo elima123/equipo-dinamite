@@ -5,14 +5,21 @@ exports.Empresa = class {
     static async registrarEmpresa(name, telefono, correo) {
         try {
             const connection = await db() 
+            await connection.beginTransaction()
+
             const result = await connection.execute(`
             INSERT INTO Empresas (Nombre, Telefono, Correo)
             VALUES (?, ?, ?)
             `, [name, telefono, correo])
-            await connection.release()
+
+            await connection.commit()
+
             return "yes"
         } catch (error) {
+            await connection.rollback()
             throw error
+        } finally {
+            await connection.release()
         }
     }
 

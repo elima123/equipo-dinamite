@@ -45,19 +45,43 @@ exports.User = class {
             throw e
         }
     }
+
+    // static async verifyUser(correo, contrasena) {
+    //     try {
+    //         const connection = await db()
+    //         const result = await connection.execute(`
+    //         SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
+    //         [correo, contrasena])
+    //         await connection.release()
+    //         const realResult = result[0][0]
+    //         return realResult
+    //     } catch(e) {
+    //         throw e
+    //     } 
+    // }
+
     static async verifyUser(correo, contrasena) {
+        const connection = await db()
         try {
-            const connection = await db()
-            const result = await connection.execute(`
-            SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
-            [correo, contrasena])
-            await connection.release()
-            const realResult = result[0][0]
+            await connection.beginTransaction()
+    
+            const [rows] = await connection.execute(`
+                SELECT * FROM Usuarios WHERE Correo = ? AND Contrasena = ?`,
+                [correo, contrasena]
+            )
+    
+            const realResult = rows[0]
+            
+            await connection.commit()
             return realResult
-        } catch(e) {
+        } catch (e) {
+            await connection.rollback()
             throw e
-        } 
+        } finally {
+            await connection.release()
+        }
     }
+    
 
     static async getProyectosManager() {
         try {
@@ -71,6 +95,7 @@ exports.User = class {
             INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
             LEFT JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
             LEFT JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            WHERE p.Estado = 'activo'
             GROUP BY p.IDProyecto
             `)
             await connection.release()
@@ -104,13 +129,41 @@ exports.User = class {
             throw e
         }
     }
+
+    static async cambiarRol(idUsuario) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            UPDATE Usuarios
+            SET Rol = 'manager' WHERE IDUsuario = ?
+            `, [idUsuario])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async eliminarUsuario(idUsuario) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            DELETE FROM Usuarios WHERE IDUsuario = ?
+            `, [idUsuario])
+            await connection.release()
+            return "yes"
+        } catch (e) {
+            throw e
+        }
+    }
 } 
 
 exports.getUsuarios = async function () {
     try {
         const connection = await db()
         const result = await connection.execute(`
-        SELECT * FROM Usuarios
+        SELECT *, DATE_FORMAT(FechaCreado, '%Y-%m-%d') AS dateAdded
+        FROM Usuarios
         `)
         await connection.release()
         const realResult = result[0]
@@ -119,3 +172,34 @@ exports.getUsuarios = async function () {
         throw e
     }
 } 
+
+exports.createUser = async function (nombre, correo, contrasena, rol) {
+    try {
+        const connection = await db()
+        const result = await connection.execute(`
+        INSERT INTO Usuarios (Nombre, Correo, Contrasena, Rol, FechaCreado)
+        VALUES (?,?,?,?, NOW())
+        `, [nombre, correo, contrasena, rol])
+        await connection.release()
+        const realResult = result[0]
+        return "yes"
+    } catch (e) {
+        throw e
+    }
+}
+
+exports.usuarioProyectos = async function () {
+    try {
+        const connection = await db()
+        const result = await connection.execute(`
+        SELECT up.*, p.Nombre
+        FROM UsuarioProyectos as up
+        INNER JOIN Proyectos as p ON up.IDProyecto = p.IDProyecto
+        `)
+        await connection.release()
+        const realResult = result[0]
+        return realResult
+    } catch (e) {
+        throw e
+    }
+}

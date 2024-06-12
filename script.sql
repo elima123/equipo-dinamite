@@ -9,37 +9,40 @@ CREATE TABLE Usuarios (
     );
     
 ALTER TABLE Usuarios
+ADD COLUMN Correo VARCHAR(80);
+
+ALTER TABLE Usuarios
+ADD COLUMN FechaCreado DATE;
+    
+ALTER TABLE Usuarios
 ADD COLUMN Rol ENUM("desarrollador", "manager");
     
 DELETE FROM Usuarios WHERE IDUsuario > 20;
     
-UPDATE Usuarios
-SET Rol = "desarrollador" WHERE IDUsuario > 3;
+UPDATE Usuarios SET FechaCreado = '2024-04-02' WHERE IDUsuario = 1;
+UPDATE Usuarios SET FechaCreado = '2024-04-10' WHERE IDUsuario = 2;
+UPDATE Usuarios SET FechaCreado = '2024-04-18' WHERE IDUsuario = 3;
+UPDATE Usuarios SET FechaCreado = '2024-04-22' WHERE IDUsuario = 4;
+UPDATE Usuarios SET FechaCreado = '2024-04-25' WHERE IDUsuario = 5;
+UPDATE Usuarios SET FechaCreado = '2024-05-01' WHERE IDUsuario = 6;
+UPDATE Usuarios SET FechaCreado = '2024-05-07' WHERE IDUsuario = 7;
+UPDATE Usuarios SET FechaCreado = '2024-05-10' WHERE IDUsuario = 8;
+UPDATE Usuarios SET FechaCreado = '2024-05-13' WHERE IDUsuario = 9;
+UPDATE Usuarios SET FechaCreado = '2024-05-15' WHERE IDUsuario = 10;
+UPDATE Usuarios SET FechaCreado = '2024-05-18' WHERE IDUsuario = 11;
+UPDATE Usuarios SET FechaCreado = '2024-05-21' WHERE IDUsuario = 12;
+UPDATE Usuarios SET FechaCreado = '2024-05-23' WHERE IDUsuario = 13;
+UPDATE Usuarios SET FechaCreado = '2024-05-26' WHERE IDUsuario = 14;
+UPDATE Usuarios SET FechaCreado = '2024-05-28' WHERE IDUsuario = 15;
+UPDATE Usuarios SET FechaCreado = '2024-05-30' WHERE IDUsuario = 16;
+UPDATE Usuarios SET FechaCreado = '2024-06-01' WHERE IDUsuario = 61;
+UPDATE Usuarios SET FechaCreado = '2024-06-03' WHERE IDUsuario = 62;
+UPDATE Usuarios SET FechaCreado = '2024-06-05' WHERE IDUsuario = 63;
+UPDATE Usuarios SET FechaCreado = '2024-06-07' WHERE IDUsuario = 64;
 
-INSERT INTO Usuarios (Nombre, Contrasena)
-VALUES
-("Carlos López", "Carlos123"),
-("Sofia Martinez", "Sofia456"),
-("Alejandro Ramirez", "Alejandrito789"),
-("Valeria Hernandez", "Valeria1234"),
-("Diego Gonzalez", "Diego4567"),
-("Ana Rodriguez", "Ana7890"),
-("Luisa Sanchez", "Luisa12345"),
-("Jorge Cruz", "Jorge6789"),
-("Natalia Garcia", "Natalia123"),
-("Rodrigo Torres", "Rodrigo456"),
-("Maria Flores", "Maria789"),
-("Eduardo Diaz", "Eduardo1234"),
-("Andrea Vazquez", "Andrea5678"),
-("Francisco Reyes", "Francisco12345"),
-("Pamela Torres", "Pamela6789"),
-("Javier Gomez", "Javier123"),
-("Daniela Martinez", "Daniela456"),
-("Sergio Hernandez", "Sergio789"),
-("Adriana Aguilar", "Adriana1234"),
-("Ricardo Mendoza", "Ricardo5678");    
     
-select * from Proyectos;
+select count(IDProyecto) from Proyectos where Estado = 'finalizado'; 
+select * from proyectos;
 CREATE TABLE Proyectos (
 	IDProyecto INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     IDEmpresa INT,
@@ -53,27 +56,66 @@ CREATE TABLE Proyectos (
     FOREIGN KEY (IDEmpresa) REFERENCES Empresas (IDEmpresa)
     );
 UPDATE Proyectos
-SET Estado = "finalizado" WHERE IDProyecto = 2 OR IDProyecto = 7;
+SET FechaCerrado = '2024-06-01' WHERE IDProyecto = 7;
 
 ALTER TABLE Proyectos
-MODIFY COLUMN Descripcion VARCHAR(240);
+ADD COLUMN FechaCerrado DATE;
 
-INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
-VALUES
-(4, "TiendaOnline.com", "Una tienda en linea para venta de zapatos", "activo", "2024-02-28","2024-08-28", 200000);
-    
+UPDATE Proyectos 
+SET RazonCerrado = 'Falta de desarrolladores disponibles' WHERE IDProyecto = 7;
 
+ALTER TABLE Proyectos
+MODIFY COLUMN Nombre VARCHAR(50);
+
+UPDATE Proyectos 
+SET estado = 'finalizado', RazonCerrado = 'demasiados riesgso', FechaCerrado = NOW()
+WHERE IDProyecto = 22;
+
+SELECT up.*, p.Nombre
+        FROM UsuarioProyectos as up
+        INNER JOIN Proyectos as p ON up.IDProyecto = p.IDProyecto;
+        
+SELECT p.*, e.Nombre AS nombreEmpresa
+FROM Proyectos as p
+INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa 
+WHERE IDProyecto = 1;
+
+UPDATE Proyectos
+SET estado = 'finalizado', RazonCerrado = 'slf;jaslsad;fj;askf', FechaCerrado = DATE(NOW())
+WHERE IDProyecto = 5;
+
+CREATE USER u_dinamite@localhost IDENTIFIED BY 'pdinamite';
+GRANT Alter ON appix.* TO u_dinamite@localhost;
+GRANT Create ON appix.* TO u_dinamite@localhost;
+GRANT Create view ON appix.* TO u_dinamite@localhost;
+GRANT Delete ON appix.* TO u_dinamite@localhost;
+-- GRANT Delete history ON appix.* TO 'u_dinamite'@'%';
+GRANT Drop ON appix.* TO u_dinamite@localhost;
+GRANT Grant option ON appix.* TO u_dinamite@localhost;
+GRANT Index ON appix.* TO u_dinamite@localhost;
+GRANT Insert ON appix.* TO u_dinamite@localhost;
+GRANT References ON appix.* TO u_dinamite@localhost;
+GRANT Select ON appix.* TO u_dinamite@localhost;
+GRANT Show view ON appix.* TO u_dinamite@localhost;
+GRANT Trigger ON appix.* TO u_dinamite@localhost;
+GRANT Update ON appix.* TO u_dinamite@localhost;
+
+CREATE USER 'u_dinamite'@'%' IDENTIFIED BY 'pdinamite';
+GRANT Alter ON appix.* TO 'u_dinamite'@'%';
+GRANT Create ON appix.* TO 'u_dinamite'@'%';
+GRANT Create view ON appix.* TO 'u_dinamite'@'%';
+GRANT Delete ON appix.* TO 'u_dinamite'@'%';
+-- GRANT Delete history ON appix.* TO 'u_dinamite'@'%';
+GRANT Drop ON appix.* TO 'u_dinamite'@'%';
+GRANT Grant option ON appix.* TO 'u_dinamite'@'%';
+GRANT Index ON appix.* TO 'u_dinamite'@'%';
+GRANT Insert ON appix.* TO 'u_dinamite'@'%';
+GRANT References ON appix.* TO 'u_dinamite'@'%';
+GRANT Select ON appix.* TO 'u_dinamite'@'%';
+GRANT Show view ON appix.* TO 'u_dinamite'@'%';
+GRANT Trigger ON appix.* TO 'u_dinamite'@'%';
+GRANT Update ON appix.* TO 'u_dinamite'@'%';
     
-INSERT INTO Proyectos (IDEmpresa, Nombre, Descripcion, Estado, FechaInicio, FechaFinal, Costo)
-VALUES
-(1, "Proyecto Beta", "Desarrollo de plataforma e-commerce", "activo", "2024-02-15", "2024-09-30", 200000),
-(2, "Proyecto Gamma", "Optimización de procesos logísticos", "activo", "2024-03-10", "2024-08-15", 120000),
-(3, "Proyecto Delta", "Diseño de nuevo producto tecnológico", "activo", "2024-04-20", "2024-11-10", 180000),
-(5, "Proyecto Epsilon", "Implementación de estrategia de marketing digital", "activo", "2024-05-05", "2024-12-20", 160000),
-(6, "Proyecto Zeta", "Desarrollo de aplicación móvil", "activo", "2024-06-30", "2025-01-31", 220000),
-(7, "Proyecto Eta", "Reestructuración de sistemas informáticos", "activo", "2024-07-15", "2025-02-28", 190000),
-(8, "Proyecto Theta", "Investigación de mercado internacional", "activo", "2024-08-10", "2025-03-15", 250000),
-(9, "Proyecto Iota", "Implementación de sistema de gestión ambiental", "activo", "2024-09-25", "2025-04-30", 210000);
     
 select * from empresas;
 CREATE TABLE Empresas (
@@ -83,31 +125,11 @@ CREATE TABLE Empresas (
     Correo VARCHAR(30)
     );
     
+SELECT e.Nombre 
+FROM Empresas as e;
+    
 ALTER TABLE Empresas
 MODIFY COLUMN Nombre VARCHAR(60);
-    
-INSERT INTO Empresas (Nombre, Telefono, Correo)
-VALUES
-("Grupo Industrial Azteca", "55-1234-5678", "contacto@grupoazteca.com.mx"),
-("Constructora Hidalgo SA de CV", "33-9876-5432", "info@constructorahidalgo.com.mx"),
-("Comercializadora Maya SAPI de CV", "81-2468-1357", "ventas@mayacomercial.com.mx"),
-("Ingeniería del Norte SA", "686-555-1234", "contacto@ingenierianorte.com.mx"),
-("Consultores y Asesores Morales", "55-7890-4321", "info@moralesconsulting.com.mx"),
-("Desarrollos Urbanos del Sureste", "999-369-2580", "ventas@dusureste.com.mx"),
-("Energía Renovable SA", "33-1478-9632", "contacto@energiarenovable.com.mx"),
-("Grupo Financiero Azul", "55-2580-1478", "info@grupofinancieroazul.com.mx"),
-("Manufacturas del Bajío SA de CV", "477-369-2580", "ventas@manufacturasbajio.com.mx"),
-("Servicios Logísticos del Pacífico", "322-654-7890", "info@logisticapacifico.com.mx"),
-("Tecnología Avanzada del Golfo", "833-135-2468", "contacto@tecnologiagolfo.com.mx"),
-("Grupo Gastronómico Luna", "55-3698-1478", "info@grupoluna.com.mx"),
-("Despachos Legales Ramírez", "662-789-1234", "contacto@ramirezlegal.com.mx"),
-("Comercializadora del Norte", "81-6543-9876", "ventas@comernorte.com.mx"),
-("Consultoría Estratégica Maya", "998-369-2580", "info@consultmayas.com.mx"),
-("Industria Automotriz del Bajío", "462-369-2580", "ventas@automotrizbajio.com.mx"),
-("Constructora del Sureste SA", "999-1478-9632", "contacto@consursureste.com.mx"),
-("Soluciones Tecnológicas del Centro", "55-9876-5432", "info@solucionescentro.com.mx"),
-("Inmobiliaria del Caribe", "998-369-1478", "contacto@inmocaribe.com.mx"),
-("Grupo Turístico del Pacífico", "322-2580-1478", "info@grupoturisticopacifico.com.mx");
     
 select * from Riesgos;
 CREATE TABLE Riesgos (
@@ -120,6 +142,12 @@ CREATE TABLE Riesgos (
 ALTER TABLE Riesgos
 CHANGE Probablidad Probabilidad ENUM("Baja", "Media", "Alta");
     
+ALTER TABLE Riesgos
+ADD COLUMN ImpactoNumerico FLOAT;
+
+UPDATE Riesgos
+SET ImpactoNumerico = 0.03 WHERE Impacto = "Medio";
+    
 select * from UsuarioProyectos;
 CREATE TABLE UsuarioProyectos (
 	IDUsuario INT,
@@ -127,11 +155,118 @@ CREATE TABLE UsuarioProyectos (
     
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios (IDUsuario),
     FOREIGN KEY (IDProyecto) REFERENCES Proyectos (IDProyecto)
-    );
+);
+
+ALTER TABLE UsuarioProyectos
+ADD COLUMN FechaAgregado DATE;
+
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-15' WHERE IDProyecto = 1;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-17' WHERE IDProyecto = 2;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-19' WHERE IDProyecto = 3;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-21' WHERE IDProyecto = 4;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-23' WHERE IDProyecto = 5;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-25' WHERE IDProyecto = 6;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-27' WHERE IDProyecto = 7;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-04-29' WHERE IDProyecto = 8;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-01' WHERE IDProyecto = 9;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-03' WHERE IDProyecto = 10;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-05' WHERE IDProyecto = 11;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-07' WHERE IDProyecto = 12;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-09' WHERE IDProyecto = 13;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-11' WHERE IDProyecto = 14;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-13' WHERE IDProyecto = 15;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-15' WHERE IDProyecto = 16;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-17' WHERE IDProyecto = 17;
+-- UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-19' WHERE IDProyecto = 18;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-21' WHERE IDProyecto = 19;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-23' WHERE IDProyecto = 20;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-25' WHERE IDProyecto = 21;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-27' WHERE IDProyecto = 22;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-29' WHERE IDProyecto = 23;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-05-31' WHERE IDProyecto = 24;
+UPDATE UsuarioProyectos SET FechaAgregado = '2024-06-02' WHERE IDProyecto = 25;
+
+
+INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto) VALUES
+(11, 3),
+(62, 3);
+
+UPDATE UsuarioProyectos
+SET FechaAgregado = '2024-06-05' WHERE IDUsuario = 62 AND IDProyecto = 3;
+
+(4, 5),
+(4, 20),
+(4, 19),
+(4, 6),
+(5, 16),
+(5, 24),
+(5, 12),
+(5, 13),
+(5, 1),
+(6, 20),
+(6, 1),
+(6, 17),
+(7, 10),
+(7, 5),
+(7, 17),
+(8, 19),
+(8, 3),
+(8, 7),
+(8, 17),
+(8, 8),
+(9, 3),
+(9, 16),
+(9, 1),
+(9, 4),
+(10, 3),
+(10, 6),
+(10, 20),
+(10, 25),
+(10, 7),
+(11, 2),
+(11, 24),
+(11, 1),
+(11, 12),
+(11, 23),
+(12, 9),
+(12, 4),
+(12, 21),
+(13, 10),
+(13, 15),
+(13, 5),
+(13, 11),
+(13, 9),
+(14, 11),
+(14, 22),
+(15, 3),
+(15, 10),
+(15, 24),
+(15, 13),
+(15, 19),
+(16, 15),
+(16, 13),
+(17, 22),
+(17, 13),
+(17, 2),
+(17, 14),
+(17, 11),
+(18, 3),
+(18, 15),
+(18, 6),
+(18, 20),
+(19, 25),
+(19, 6),
+(19, 20),
+(19, 19),
+(19, 1),
+(20, 10),
+(20, 23),
+(20, 17),
+(20, 8);
     
 INSERT INTO UsuarioProyectos (IDUsuario, IDProyecto)
 VALUES
-(6, 7);
+(6, 4);
 
 SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
 			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
@@ -140,7 +275,40 @@ FROM Proyectos as p
 INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
 INNER JOIN UsuarioProyectos as up ON up.IDProyecto = p.IDProyecto
 WHERE up.IDUsuario = 6;
-      
+
+SELECT p.IDProyecto, p.IDEmpresa, p.Nombre, pr.IDProyecto, pr.IDRiesgo, 
+COUNT(pr.IDRiesgo) AS numRiesgos,
+r.IDRiesgo, r.Impacto, r.ImpactoNumerico,
+(((1-(SUM(r.ImpactoNumerico)))/1)*100) AS viabilidad
+FROM Proyectos as p
+JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+WHERE p.IDProyecto = 1;
+
+SELECT p.IDProyecto, p.Nombre, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+e.nombre AS nombreEmpresa,
+ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS viabilidad
+FROM Proyectos as p
+INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+JOIN UsuarioProyectos as up ON p.IDProyecto = up.IDProyecto
+WHERE up.IDUsuario = 6
+GROUP BY p.IDProyecto;
+-- WHERE p.IDProyecto = 1;
+
+SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+            e.nombre AS nombreEmpresa,
+            ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
+            FROM Proyectos as p
+            INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+            LEFT JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+            LEFT JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            GROUP BY p.IDProyecto
+            ORDER BY start DESC;
+
 select * from ProyectoRiesgos;
 CREATE TABLE ProyectoRiesgos (
 	IDProyectoRiesgo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -150,56 +318,67 @@ CREATE TABLE ProyectoRiesgos (
     FOREIGN KEY (IDProyecto) REFERENCES Proyectos (IDProyecto),
     FOREIGN KEY (IDRiesgo) REFERENCES Riesgos (IDRiesgo)
     );
-
-INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo)
-VALUES 
-(7, 1),
-(7, 5),
-(7, 6),
-(7, 8),
-(7, 10),
-(7, 11),
-(7, 13),
-(7, 16),
-(7, 19),
-(7, 22),
-(7, 27),
-(7, 28),
-(7, 31);
-
     
-INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia)
-VALUES 
-("Incomprensión de los requisitos del cliente", "Alcance", "Media", "Alto", "Realizar reuniones detalladas con el cliente."),
-("Retrasos en la entrega del contenido", "Tiempo", "Alta", "Medio", "Establecer plazos claros y roles para entrega de contenido."),
-("Cambios frecuentes en el diseño", "Alcance", "Media ", "Medio", "Definir un alcance claro y limitar las revisiones del diseño."),
-("Problemas de compatibilidad de plugins ", "Calidad", "Baja ", "Alto", "Realizar pruebas de compatibilidad al inicio."),
-("Problemas de seguridad en el sitio web", "Calidad", "Baja", "Alto", "Aplicar estándares de seguridad y realizar actualizaciones."),
-("Fallos en la integración de pasarelas de pago", "Calidad", "Media", "Alto", "Validar integraciones y tener proveedores de respaldo."),
-("Aumento inesperado en los costos del proyecto", "Costo", "Baja", "Medio", "Monitorear y ajustar el presupuesto continuamente."),
-("Pérdida de datos o fallo de hosting", "Calidad", "Baja", "Alto", "Implementar estrategias de respaldo y recuperación ante desastres."),
-("Retrasos en la aprobación del cliente", "Tiempo", "Media", "Medio", "Establecer expectativas y procesos claros de aprobación."),
-("Dificultades técnicas con WordPress o WooCommerce", "Calidad", "Media", "Medio", "Mantenerse actualizado con las últimas versiones y soporte."),
-("Sobrecarga de trabajo del equipo de diseño", "Recursos", "Media", "Alto", "Gestionar la carga de trabajo y los recursos adecuadamente."),
-("Falta de experiencia en tecnologías específicas", "Calidad", "Media", "Alto", "Capacitar al equipo o contratar talento especializado."),
-("Inadecuada gestión del cambio", "Alcance", "Alta", "Alto", "Implementar un sistema estructurado de gestión de cambios."),
-("Interrupciones en la cadena de suministro digital", "Costo", "Baja", "Medio", "Tener alternativas y planes de contingencia."),
-("Problemas de SEO y visibilidad en buscadores", "Calidad", "Media", "Medio", "Aplicar técnicas SEO desde el inicio del proyecto."),
-("Cambio de persona responsable durante y después del proyecto", "Recursos", "Media", "Alto", "Crear planes de transición por si pasa esto."),
-("Subestimación de tiempos y costos", "Tiempo/Costo", "Media", "Alto", "Utilizar datos históricos para estimaciones precisas."),
-("Cambios en los requisitos del software", "Alcance", "Alta", "Alto", "Mantener un proceso de gestión de cambios robusto."),
-("Falta de recursos técnicos", "Costo", "Media", "Alto", "Asegurar disponibilidad de recursos y personal cualificado."),
-("Problemas técnicos y bugs en el desarrollo", "Calidad", "Alta", "Medio", "Implementar pruebas exhaustivas y QA constante."),
-("Tecnología obsoleta o inadecuada", "Calidad", "Baja", "Alto", "Realizar auditorías tecnológicas y actualizaciones regulares."),
-("Dificultades de integración con otros sistemas", "Alcance", "Media", "Alto", "Ejecutar pruebas de integración frecuentes y tempranas."),
-("Dependencia de terceros para componentes críticos", "Costo", "Media", "Medio", "Establecer contratos sólidos y buscar proveedores alternativos."),
-("Incumplimiento de estándares de regulación y calidad", "Calidad", "Media", "Alto", "Cumplir con todas las regulaciones y estándares de la industria."),
-("Retrasos en la entrega de software", "Tiempo", "Alta", "Alto", "Planificar adecuadamente y establecer márgenes de tiempo realistas."),
-("Conflictos dentro del equipo de desarrollo", "Recursos", "Media", "Medio", "Fomentar la comunicación y resolver conflictos prontamente."),
-("Insuficiencia de pruebas del usuario final", "Calidad", "Media", "Alto", "Involucrar al usuario final en las pruebas desde etapas tempranas."),
-("Falta de documentación adecuada", "Calidad", "Media", "Medio", "Establecer estándares de documentación y seguimiento continuo."),
-("Variaciones en la disponibilidad de recursos", "Costo", "Alta", "Medio", "Gestionar eficazmente los recursos y planificar la rotación."),
-("Riesgos asociados a la seguridad de datos", "Calidad", "Alta", "Alto", "Implementar medidas de seguridad de datos robustas."),
-("Problemas de compatibilidad entre sistemas", "Calidad", "Media", "Alto", "Garantizar compatibilidad a través de pruebas y validaciones."),
-("Cambio de persona responsable durante y después del proyecto", "Recursos", "Media", "Alto", "Crear planes de transición por si pasa esto.");
-    
+ALTER TABLE ProyectoRiesgos
+ADD COLUMN FechaAgregado DATE;
+
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-26' WHERE IDProyectoRiesgo = 1;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-19' WHERE IDProyectoRiesgo = 2;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-06' WHERE IDProyectoRiesgo = 3;
+-- UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-01' WHERE IDProyectoRiesgo = 4;
+-- UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-07' WHERE IDProyectoRiesgo = 5;
+-- UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-16' WHERE IDProyectoRiesgo = 6;
+-- UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-16' WHERE IDProyectoRiesgo = 7;
+-- UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-26' WHERE IDProyectoRiesgo = 8;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-22' WHERE IDProyectoRiesgo = 9;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-06' WHERE IDProyectoRiesgo = 10;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-08' WHERE IDProyectoRiesgo = 11;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-23' WHERE IDProyectoRiesgo = 12;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-31' WHERE IDProyectoRiesgo = 13;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-15' WHERE IDProyectoRiesgo = 14;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-20' WHERE IDProyectoRiesgo = 15;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-06-02' WHERE IDProyectoRiesgo = 16;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-25' WHERE IDProyectoRiesgo = 17;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-13' WHERE IDProyectoRiesgo = 18;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-18' WHERE IDProyectoRiesgo = 19;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-13' WHERE IDProyectoRiesgo = 20;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-09' WHERE IDProyectoRiesgo = 21;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-22' WHERE IDProyectoRiesgo = 22;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-19' WHERE IDProyectoRiesgo = 23;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-30' WHERE IDProyectoRiesgo = 24;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-25' WHERE IDProyectoRiesgo = 25;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-28' WHERE IDProyectoRiesgo = 26;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-27' WHERE IDProyectoRiesgo = 27;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-08' WHERE IDProyectoRiesgo = 28;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-05' WHERE IDProyectoRiesgo = 29;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-11' WHERE IDProyectoRiesgo = 30;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-26' WHERE IDProyectoRiesgo = 31;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-21' WHERE IDProyectoRiesgo = 32;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-08' WHERE IDProyectoRiesgo = 33;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-15' WHERE IDProyectoRiesgo = 34;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-13' WHERE IDProyectoRiesgo = 35;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-28' WHERE IDProyectoRiesgo = 36;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-30' WHERE IDProyectoRiesgo = 37;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-09' WHERE IDProyectoRiesgo = 38;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-04' WHERE IDProyectoRiesgo = 39;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-14' WHERE IDProyectoRiesgo = 40;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-06' WHERE IDProyectoRiesgo = 41;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-08' WHERE IDProyectoRiesgo = 42;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-29' WHERE IDProyectoRiesgo = 43;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-18' WHERE IDProyectoRiesgo = 44;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-13' WHERE IDProyectoRiesgo = 45;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-22' WHERE IDProyectoRiesgo = 46;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-20' WHERE IDProyectoRiesgo = 47;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-29' WHERE IDProyectoRiesgo = 48;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-12' WHERE IDProyectoRiesgo = 49;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-15' WHERE IDProyectoRiesgo = 50;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-26' WHERE IDProyectoRiesgo = 51;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-09' WHERE IDProyectoRiesgo = 52;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-04-06' WHERE IDProyectoRiesgo = 53;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-01' WHERE IDProyectoRiesgo = 54;
+UPDATE ProyectoRiesgos SET FechaAgregado = '2024-05-31' WHERE IDProyectoRiesgo = 55;
+ 
+SELECT r.*
+FROM ProyectoRiesgos as pr
+INNER JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+WHERE pr.IDProyecto = 1;
