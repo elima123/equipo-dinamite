@@ -328,6 +328,10 @@ Highcharts.chart('container-viable', {
 	        e.preventDefault();
 	        overlay.classList.remove('active')
 	        popup.classList.remove('active')
+            finalSubmit.classList.add('hidden')
+            warningRed.classList.add('hidden')
+            const checkbox = document.getElementById('are-you-sure')
+            checkbox.checked = false
         })
 
         btnPopupSeguridad.addEventListener('click', function() {
@@ -340,27 +344,27 @@ Highcharts.chart('container-viable', {
             if (checkbox.checked == true) {
                 finalSubmit.classList.remove('hidden')
                 warningRed.classList.remove('hidden')
+            } else if (checkbox.checked == false) {
+                finalSubmit.classList.add('hidden')
+                warningRed.classList.add('hidden')
             }
         }
 
         function cleanTextarea() {
-        // Get the textarea element
-        var textarea = document.getElementById('userInput');
+            var textarea = document.getElementById('userInput')
 
-        // Get the value from the textarea and remove extra spaces using a regular expression
-        var cleanedValue = textarea.value.replace(/\s+/g, ' ').trim();
+            var cleanedValue = textarea.value.replace(/\s+/g, ' ').trim()
 
-        // Set the cleaned value back to the textarea
-        textarea.value = cleanedValue;
-}
+            textarea.value = cleanedValue
+        } 
 
         function formatDate(dateString) {
-            const parts = dateString.split('/');
+            const parts = dateString.split('/')
             if (parts.length !== 3) {
-                return null; // Invalid date format
+                return null 
             }
-            const [day, month, year] = parts;
-            return `${year}-${month}-${day}`;
+            const [day, month, year] = parts
+            return `${year}-${month}-${day}`
         }
 
         // Editar Proyecto Popup
