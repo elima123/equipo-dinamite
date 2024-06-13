@@ -23,6 +23,8 @@ module.exports.get_proyecto = async (req, res) => {
 
     const riesgos = await model.Project.getRiesgos(proyectoID)
 
+    const proyectoRiesgos = await model.Project.getProyectoRiesgos(proyectoID)
+
     const projectDevs = await model.Project.getProjDevs(proyectoID)
 
     const allDevs = await model.Project.getAllDevs()
@@ -39,19 +41,8 @@ module.exports.get_proyecto = async (req, res) => {
             return dev
         }
     })
-    console.log(proyectoObject)
 
     let allRiesgos = await model.Project.getAllRiesgos()
-
-    // allRiesgos.map(riesgo => {
-    //     for (i = 0; i < riesgos.length; i++) {
-    //         if (riesgo.IDRiesgo == resgios[i].IDRiesgo) {
-    //             return {...riesgo, active: true }
-    //         } else {
-    //             return {...riesgo, active: false}
-    //         }
-    //     }
-    // })
 
     allRiesgos = allRiesgos.map(riesgo => {
         const isActive = riesgos.some(r => r.IDRiesgo === riesgo.IDRiesgo)
@@ -66,7 +57,8 @@ module.exports.get_proyecto = async (req, res) => {
         riesgosJSON: JSON.stringify(riesgos),
         projectDevs,
         nonDevs,
-        allRiesgos
+        allRiesgos,
+        proyectoRiesgosJSON: JSON.stringify(proyectoRiesgos)
     })
 }
 
@@ -88,13 +80,6 @@ module.exports.getHistoria = async (req, res) => {
         } else if (usuario.Rol == "desarrollador") {
             proyectos = await model.Project.getHistoriaDes(usuario.IDUsuario)
         }
-
-        // let pastProyectos
-        // if (usuario.Rol == "manager") {
-        //     pastProyectos = await model.User.getPastProyectosM()
-        // } else if (usuario.Rol == "desarrollador") {
-        //     pastProyectos = await model.User.getPastProyectosD(usuario.IDUsuario)
-        // }
 
         if (!proyectos) {
             const projects = []

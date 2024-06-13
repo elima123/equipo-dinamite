@@ -251,63 +251,143 @@ Highcharts.chart('container-viable', {
 
     // Grafica de Viabilidad contra el Tiempo
 
-    Highcharts.chart('container', {
+    const risksData = JSON.parse('<%- proyectoRiesgosJSON %>')
 
-    title: {
-        text: 'Viabilidad a través del Tiempo',
-        align: 'left'
-    },
-    // subtitle: {
-    //     text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
-    //     align: 'left'
-    // },
-    yAxis: {
+    function getMonthNamesBetween(startDate, endDate) {
+        const months = []
+        const current = new Date(startDate)
+
+        while (current <= endDate) {
+            months.push(current.toLocaleString('default', { month: 'long' }))
+            current.setMonth(current.getMonth() + 1)
+        }
+
+        return months
+    }
+
+    function calculateViabilityPoints(risksData, months) {
+        const points = {}
+
+        months.forEach((month) => {
+            const risksInMonth = risksData.filter((risk) => {
+                const riskDate = new Date(risk.FechaAdded)
+                return riskDate.toLocaleString('default', { month: 'long' }) === month
+            });
+
+            const impactSum = risksInMonth.reduce((total, risk) => total + risk.Impacto, 0)
+            const viability = 100 - impactSum * 100
+            points[month] = viability.toFixed(2)
+        });
+
+        return points
+    }
+
+    const months = getMonthNamesBetween(startDate, today)
+    const dataPoints = Array.from({ length: months.length }, () => Math.floor(Math.random() * 100))
+    console.log(dataPoints)
+    const viabilityPoints = calculateViabilityPoints(risksData, months)
+    console.log(viabilityPoints)
+    const numbersOnly = Object.values(viabilityPoints).map(Number)
+    console.log(numbersOnly)
+
+    Highcharts.chart('container', {
+        title: {
+            text: 'Viabilidad a través del Tiempo',
+            align: 'left'
+        },
+        yAxis: {
         title: {
             text: 'Viabilidad (%)'
-        }
+        },
+        min: 0, // Set minimum value for the y-axis
+        max: 100, // Set maximum value for the y-axis
     },
-    xAxis: {
-        categories: [
-            'January', 'February', 'March', 'April', 'May', 'June'
-        ],
-        // accessibility: {
-        //     rangeDescription: 'Range: January to December'
-        // }
-    },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-    plotOptions: {
-        // series: {
-        //     label: {
-        //         connectorAllowed: false
-        //     },
-        //     pointStart: 2023
-        // }
-    },
-    series: [{
-        name: 'Viabilidad',
-        data: [
-            74, 82, 93, 81, 67, 71
-        ]
-    }],
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
+        xAxis: {
+            categories: months
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
                 }
             }
-        }]
-    }
+        },
+        series: [{
+            name: 'Viabilidad',
+            data: numbersOnly
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
     })
+
+    // Highcharts.chart('container', {
+
+    // title: {
+    //     text: 'Viabilidad a través del Tiempo',
+    //     align: 'left'
+    // },
+    // yAxis: {
+    //     title: {
+    //         text: 'Viabilidad (%)'
+    //     }
+    // },
+    // xAxis: {
+    //     categories: months
+    //     // categories: [
+    //     //     'January', 'February', 'March', 'April', 'May', 'June'
+    //     // ]
+    // },
+    // legend: {
+    //     layout: 'vertical',
+    //     align: 'right',
+    //     verticalAlign: 'middle'
+    // },
+    // plotOptions: {
+    //     series: {
+    //         label: {
+    //             connectorAllowed: false
+    //         },
+    //         pointStart: 2023
+    //     }
+    // },
+    // series: [{
+    //     name: 'Viabilidad',
+    //     data: [
+    //         74, 82, 93, 81, 67, 71
+    //     ]
+    // }],
+    // responsive: {
+    //     rules: [{
+    //         condition: {
+    //             maxWidth: 500
+    //         },
+    //         chartOptions: {
+    //             legend: {
+    //                 layout: 'horizontal',
+    //                 align: 'center',
+    //                 verticalAlign: 'bottom'
+    //             }
+    //         }
+    //     }]
+    // }
+    // })
 
     // Cerrar Proyecto Popup
     var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
@@ -391,8 +471,6 @@ Highcharts.chart('container-viable', {
             fechaF.name = 'fechaFinal'
             fechaF.id = 'fecha-F'
             fechaF.value = dateFinalFormatted
-            console.log(dateInicioFormatted)
-            console.log(dateFinalFormatted)
 
             fechasDiv.appendChild(fechaI)
             fechasDiv.appendChild(fechaF)

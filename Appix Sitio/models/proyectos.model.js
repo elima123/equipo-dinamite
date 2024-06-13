@@ -91,6 +91,24 @@ exports.Project = class {
         }
     }
 
+    static async getProyectoRiesgos(idProyecto) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT ROUND(r.ImpactoNumerico, 2) AS Impacto,
+            DATE_FORMAT(pr.FechaAgregado, '%Y-%m-%d') AS FechaAdded
+            FROM Riesgos as r
+            INNER JOIN ProyectoRiesgos as pr ON r.IDRiesgo = pr.IDRiesgo
+            WHERE pr.IDProyecto = ?
+            `, [idProyecto])
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
     static async registrarProyecto(name, empresa, desc, costo, fechaInicio, fechaFinal) {
         try {
             const connection = await db() 
