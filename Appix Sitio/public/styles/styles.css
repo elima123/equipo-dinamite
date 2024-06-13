@@ -145,9 +145,11 @@ p .hidden {
 .manager-options {
     width: 100%;
     height: 15vh;
-    padding: 1rem 3rem 1rem 3rem;
+    padding: 1rem 2rem 1rem 2rem;
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 25%;
 }
 
 .manager-options p {
@@ -158,14 +160,27 @@ p .hidden {
     bottom: .5rem;
 }
 
-.fornow {
-    flex-basis: 60%;
+.fornow-2 {
+    flex-basis: 20%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: auto 0 auto 0;
+    /* color: #fff; */
+}
+
+.fornow {
+    flex-basis: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto 0 auto 0;
+    position: relative;
+    right: 14rem;
     /* color: #fff; */
 }
 
@@ -213,8 +228,8 @@ p .hidden {
 /* Filtrar Proyectos */
 .order-by-div {
     /* max-width: 20%; */
-    flex-basis: 30%;
-    margin: 0 0 2rem 5rem;
+    /* flex-basis: 100%; */
+    margin: 1rem 0 2rem 1rem;
     padding: 0;
     font-size: 2rem;
 } 
@@ -254,6 +269,12 @@ p .hidden {
 }
 
 .card-title {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to left, blue, green, orange);
+    border-image-slice: 1;
+}
+
+.archivados-title {
     border-bottom: 2px solid transparent;
     border-image: linear-gradient(to left, blue, green, orange);
     border-image-slice: 1;

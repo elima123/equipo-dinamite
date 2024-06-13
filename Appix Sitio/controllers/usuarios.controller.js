@@ -68,9 +68,13 @@ module.exports.get_homePage = async (req, res) => {
 
 
         let combinedData = proyectos.map((project) => {
+            if (project.Viabilidad < 0) {
+                project.Viabilidad = 0
+            } else if (project.Viabilidad == null) {
+                project.Viabilidad = 100
+            }
             return {...project, active: false}
         })
-
 
         const numPages = Math.ceil(combinedData.length/9)
 

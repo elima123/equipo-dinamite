@@ -234,6 +234,7 @@
           <form action="/proyecto/agregarDev" method="POST">
             <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
             <select name="idUsuario">
+              <option>Selecciona Desarrollador</option>
               <% for (i = 0; i < nonDevs.length; i++) { %>
                 <option value="<%= nonDevs[i].IDUsuario %>"><%= nonDevs[i].IDUsuario %>: <%= nonDevs[i].Nombre %></option>
               <% } %>
@@ -254,7 +255,6 @@
         <div class="contenedor-inputs">
           <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
           <h5>Cual es la razón por cerrar el proyecto?</h5>
-          <p style="color: gray; font-size: small;">(opcional, se puede dejar vacio)</p>
           <textarea placeholder="Falta de recursos, otra cosa... " rows="2" cols="60" name="razon">
           </textarea><br>
           <div id="popup-2" class="hidden">
@@ -277,6 +277,7 @@
       <h3 style="margin-bottom: 2rem; color: darkslategray;">Crear Riesgo</h3>
       <form action="/proyecto/crearRiesgo" method="POST">
         <div class="contenedor-inputs">
+          <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
           <input type="text" placeholder="descripción del riesgo..." name="riesgo">
           <select name="categoria">
             <option value="" class="placeholder">Categoria</option>
@@ -288,15 +289,15 @@
           </select>
           <select name="probabilidad">
             <option value="" class="placeholder">Probabilidad</option>
-            <option value="Alcance">Alta</option>
-            <option value="Calidad">Media</option>
-            <option value="Costo">Baja</option>
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
           </select>
           <select name="impacto">
             <option value="" class="placeholder">Impacto</option>
-            <option value="Alcance">Alto</option>
-            <option value="Calidad">Medio</option>
-            <option value="Costo">Bajo</option>
+            <option value="Alto">Alto</option>
+            <option value="Medio">Medio</option>
+            <option value="Bajo">Bajo</option>
           </select>
           <input type="text" placeholder="estrategia para atender este riesgo..." name="estrategia">
           <button type="submit" class="btn-submit">Crear Riesgo</button>          

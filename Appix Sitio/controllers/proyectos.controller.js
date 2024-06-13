@@ -1,5 +1,6 @@
 const model = require('../models/proyectos.model')
-const bcyrpt = require('bcryptjs')
+const modelEmp = require('../models/empresas.model')
+const modelUser = require('../models/usuarios.model')
 
 module.exports.render_login = async (req, res) => {
     res.render("usuarios/signIn.ejs")
@@ -14,6 +15,11 @@ module.exports.get_proyecto = async (req, res) => {
     const proyectoID = req.params.IDProyecto
 
     const proyectoObject = await model.Project.getProject(proyectoID)
+    if (proyectoObject.Viabilidad < 0) {
+        proyectoObject.Viabilidad = 0
+    } else if (proyectoObject.Viabilidad == null) {
+        proyectoObject.Viabilidad = 100
+    }
 
     const riesgos = await model.Project.getRiesgos(proyectoID)
 
@@ -33,6 +39,7 @@ module.exports.get_proyecto = async (req, res) => {
             return dev
         }
     })
+    console.log(proyectoObject)
 
     let allRiesgos = await model.Project.getAllRiesgos()
 
@@ -61,6 +68,66 @@ module.exports.get_proyecto = async (req, res) => {
         nonDevs,
         allRiesgos
     })
+}
+
+module.exports.getHistoria = async (req, res) => {
+    try {
+        const userCorreo = req.session.correo
+        const userContrasena = req.session.pass
+
+        const usuario = await modelUser.User.verifyUser(userCorreo, userContrasena)
+
+        if (!usuario) {
+            res.render("usuarios/signIn.ejs")
+            return
+        }
+
+        let proyectos
+        if (usuario.Rol == "manager") {
+            proyectos = await model.Project.getHistoriaManager()
+        } else if (usuario.Rol == "desarrollador") {
+            proyectos = await model.Project.getHistoriaDes(usuario.IDUsuario)
+        }
+
+        // let pastProyectos
+        // if (usuario.Rol == "manager") {
+        //     pastProyectos = await model.User.getPastProyectosM()
+        // } else if (usuario.Rol == "desarrollador") {
+        //     pastProyectos = await model.User.getPastProyectosD(usuario.IDUsuario)
+        // }
+
+        if (!proyectos) {
+            const projects = []
+            res.render("proyectos/historia.ejs", {
+                user: usuario,
+                projects
+            })
+        } else {
+            let combinedData = proyectos.map((project) => {
+                if (project.Viabilidad < 0) {
+                    project.Viabilidad = 0
+                } else if (project.Viabilidad == null) {
+                    project.Viabilidad = 100
+                }
+                return {...project, active: false}
+            })
+    
+            const numPages = Math.ceil(combinedData.length/9)
+    
+            const empresas = await modelEmp.Empresa.getEmpresaNames()
+    
+            res.render("proyectos/historia.ejs", {
+                user: usuario,
+                projects: combinedData,
+                projectsJSON: JSON.stringify(combinedData),
+                empresas,
+                numPages
+            })
+        }
+
+    } catch(e) {
+        throw e
+    }
 }
 
 module.exports.registrar_proyecto = async (req, res) => {
@@ -125,9 +192,9 @@ module.exports.agregarDev = async (req, res) => {
 
 module.exports.cerrarProyecto = async (req, res) => {
     try {
-        const { razon, idProyecto } = req.body
+        const { idProyecto, razon } = req.body
 
-        const result = await model.Project.cerrarProyecto(idProyecto, razon)
+        const result = await model.Project.cerrarProyecto(razon, idProyecto)
 
         res.redirect('/usuarios/homePage')
     } catch (e) {
@@ -142,7 +209,7 @@ module.exports.crearRiesgo = async (req, res) => {
             res.redirect('/usuarios/login')
         }
 
-        const { riesgo, categoria, probabilidad, impacto, estrategia } = req.body
+        const { idProyecto, riesgo, categoria, probabilidad, impacto, estrategia } = req.body
 
         let impactoNumerico = 0
         if (impacto == "Alto") {
@@ -153,7 +220,7 @@ module.exports.crearRiesgo = async (req, res) => {
             impactoNumerico = 0.02
         }
 
-        const result = await model.Project.crearRiesgo(riesgo, categoria, probabilidad, impacto, estrategia, impactoNumerico)
+        const result = await model.Project.crearRiesgo(riesgo, categoria, probabilidad, impacto, estrategia, impactoNumerico, idProyecto)
 
         res.redirect('back')
     } catch (e) {

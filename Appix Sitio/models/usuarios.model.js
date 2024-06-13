@@ -119,7 +119,7 @@ exports.User = class {
             JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
             JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
             JOIN UsuarioProyectos as up ON p.IDProyecto = up.IDProyecto
-            WHERE up.IDUsuario = ?
+            WHERE up.IDUsuario = ? AND p.Estado = 'activo'
             GROUP BY p.IDProyecto
             `,[idUsuario])
             await connection.release()
@@ -147,6 +147,9 @@ exports.User = class {
     static async eliminarUsuario(idUsuario) {
         try {
             const connection = await db()
+            const result1 = await connection.execute(`
+            DELETE FROM UsuarioProyectos WHERE IDUsuario = ?
+            `, [idUsuario])
             const result = await connection.execute(`
             DELETE FROM Usuarios WHERE IDUsuario = ?
             `, [idUsuario])
