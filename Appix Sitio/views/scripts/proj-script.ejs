@@ -265,30 +265,61 @@ Highcharts.chart('container-viable', {
         return months
     }
 
-    function calculateViabilityPoints(risksData, months) {
+    function getWeekNamesBetween(startDate, endDate) {
+        const weeks = []
+        let current = new Date(startDate)
+        current.setHours(0, 0, 0, 0) // Set time to midnight for consistency
+
+        while (current <= endDate) {
+            const weekStart = new Date(current)
+            const weekEnd = new Date(current)
+            weekEnd.setDate(weekEnd.getDate() + 6)
+
+            const startMonth = weekStart.getMonth() + 1
+            const startDate = weekStart.getDate()
+            const endMonth = weekEnd.getMonth() + 1
+            const endDate = weekEnd.getDate()
+
+            weeks.push(`${startMonth}/${startDate} - ${endMonth}/${endDate}`)
+
+            current.setDate(current.getDate() + 7)
+        }
+
+        return weeks
+    }
+
+   
+    function calculateViabilityPoints(risksData, weeks) {
         const points = {}
+        let cumulativeImpactSum = 0
 
-        months.forEach((month) => {
-            const risksInMonth = risksData.filter((risk) => {
+        weeks.forEach((week) => {
+            const [start, end] = week.split(' - ').map(date => new Date(`${new Date().getFullYear()}/${date}`))
+            const risksInWeek = risksData.filter((risk) => {
                 const riskDate = new Date(risk.FechaAdded)
-                return riskDate.toLocaleString('default', { month: 'long' }) === month
-            });
+                return riskDate >= start && riskDate <= end
+            })
 
-            const impactSum = risksInMonth.reduce((total, risk) => total + risk.Impacto, 0)
-            const viability = 100 - impactSum * 100
-            points[month] = viability.toFixed(2)
-        });
+            const weeklyImpactSum = risksInWeek.reduce((total, risk) => total + risk.Impacto, 0)
+            cumulativeImpactSum += weeklyImpactSum
+            const viability = 100 - cumulativeImpactSum * 100
+            points[week] = viability.toFixed(2)
+        })
 
         return points
     }
 
-    const months = getMonthNamesBetween(startDate, today)
-    const dataPoints = Array.from({ length: months.length }, () => Math.floor(Math.random() * 100))
-    console.log(dataPoints)
-    const viabilityPoints = calculateViabilityPoints(risksData, months)
-    console.log(viabilityPoints)
+
+    // const months = getMonthNamesBetween(startDate, today)
+    // const dataPoints = Array.from({ length: months.length }, () => Math.floor(Math.random() * 100))
+    // console.log(dataPoints)
+    // const viabilityPoints = calculateViabilityPoints(risksData, months)
+    // console.log(viabilityPoints)
+    // const numbersOnly = Object.values(viabilityPoints).map(Number)
+    // console.log(numbersOnly)
+    const weeks = getWeekNamesBetween(startDate, today)
+    const viabilityPoints = calculateViabilityPoints(risksData, weeks)
     const numbersOnly = Object.values(viabilityPoints).map(Number)
-    console.log(numbersOnly)
 
     Highcharts.chart('container', {
         title: {
@@ -303,7 +334,7 @@ Highcharts.chart('container-viable', {
         max: 100, // Set maximum value for the y-axis
     },
         xAxis: {
-            categories: months
+            categories: weeks
         },
         legend: {
             layout: 'vertical',

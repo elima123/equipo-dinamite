@@ -79,9 +79,14 @@ p .hidden {
     height: 100%;
 }
 
+.flex-1 a {
+    width: 50%;
+}
+
 .flex-1 img {
     /* width: 150px; */
-    width: 50%;
+    width: 80%;
+    max-width: 100px;
     /* height: 100%; */
     /* border: solid black 1px; */
 }
