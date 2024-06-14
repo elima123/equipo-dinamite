@@ -1,6 +1,55 @@
 const db = require('../utils/database')
 
 exports.Project = class {
+    static async getHistoriaManager() {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+            DATE_FORMAT(FechaCerrado, '%d/%m/%Y') AS cerrado,
+            e.nombre AS nombreEmpresa,
+            ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
+            FROM Proyectos as p
+            INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+            LEFT JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+            LEFT JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            WHERE p.Estado = 'finalizado'
+            GROUP BY p.IDProyecto
+            `)
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
+    static async getHistoriaDes(idUser) {
+        try {
+            const connection = await db()
+            const result = connection.execute(`
+            SELECT p.*, DATE_FORMAT(FechaInicio, '%d/%m/%Y') AS start,
+			            DATE_FORMAT(FechaFinal, '%d/%m/%Y') AS end,
+                        DATE_FORMAT(FechaCerrado, '%d/%m/%Y') AS cerrado,
+            e.nombre AS nombreEmpresa,
+            ROUND((((1-(SUM(r.ImpactoNumerico)))/1)*100), 0) AS Viabilidad
+            FROM Proyectos as p
+            INNER JOIN Empresas as e ON p.IDEmpresa = e.IDEmpresa
+            JOIN ProyectoRiesgos as pr ON p.IDProyecto = pr.IDProyecto
+            JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
+            JOIN UsuarioProyectos as up ON p.IDProyecto = up.IDProyecto
+            WHERE up.IDUsuario = ? AND p.Estado = 'finalizado'
+            GROUP BY p.IDProyecto
+            `,[idUser])
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
+            throw e
+        }
+    }
+
     static async getProject(idProyecto) {
         try {
             const connection = await db()
@@ -28,7 +77,7 @@ exports.Project = class {
         try {
             const connection = await db()
             const result = await connection.execute(`
-            SELECT r.*
+            SELECT r.*, ROUND(ImpactoNumerico, 2) AS ImpNum
             FROM ProyectoRiesgos as pr
             INNER JOIN Riesgos as r ON pr.IDRiesgo = r.IDRiesgo
             WHERE pr.IDProyecto = ?
@@ -38,6 +87,24 @@ exports.Project = class {
             const realResult = result[0]
             return realResult
         } catch(e) {
+            throw e
+        }
+    }
+
+    static async getProyectoRiesgos(idProyecto) {
+        try {
+            const connection = await db()
+            const result = await connection.execute(`
+            SELECT ROUND(r.ImpactoNumerico, 2) AS Impacto,
+            DATE_FORMAT(pr.FechaAgregado, '%Y-%m-%d') AS FechaAdded
+            FROM Riesgos as r
+            INNER JOIN ProyectoRiesgos as pr ON r.IDRiesgo = pr.IDRiesgo
+            WHERE pr.IDProyecto = ?
+            `, [idProyecto])
+            await connection.release()
+            const realResult = result[0]
+            return realResult
+        } catch (e) {
             throw e
         }
     }
@@ -187,14 +254,25 @@ exports.Project = class {
         }
     }
 
-    static async crearRiesgo(riesgo, cat, prob, imp, estr, impNum) {
+    static async crearRiesgo(riesgo, cat, prob, imp, estr, impNum, idProj) {
         try {
             const connection = await db() 
             const result = await connection.execute(`
             INSERT INTO Riesgos (Riesgo, Categoria, Probabilidad, Impacto, Estrategia, ImpactoNumerico)
             VALUES
             (?,?,?,?,?,?)
-            `, [riesgo, cat, prob, imp, estr, impNum])       
+            `, [riesgo, cat, prob, imp, estr, impNum])
+            const [nuevoIdRiesgo] = await connection.execute(`
+            SELECT IDRiesgo FROM Riesgos
+            ORDER BY IDRiesgo DESC
+            LIMIT 1
+            `)
+            const idRiesgo = nuevoIdRiesgo[0].IDRiesgo
+            const result1 = await connection.execute(`
+            INSERT INTO ProyectoRiesgos (IDProyecto, IDRiesgo, FechaAgregado)
+            VALUES
+            (?, ?, NOW())
+            `, [idProj, idRiesgo])     
             await connection.release()
             return "yes"
         } catch (e) {
@@ -237,9 +315,6 @@ exports.Project = class {
     
     static async cerrarProyecto(razon, id) {
         try {
-            console.log("inside cerrar proyecto")
-            console.log(razon)
-            console.log(id)
             const connection = await db()
             const result = await connection.execute(`
             UPDATE Proyectos 

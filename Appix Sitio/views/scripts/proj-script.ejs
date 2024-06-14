@@ -1,6 +1,6 @@
 <script>
     function backHome() {
-        window.location.href = '/usuarios/homePage'
+        window.history.back()
     }
 
     const generalView = document.querySelector(".general-view")
@@ -251,63 +251,174 @@ Highcharts.chart('container-viable', {
 
     // Grafica de Viabilidad contra el Tiempo
 
-    Highcharts.chart('container', {
+    const risksData = JSON.parse('<%- proyectoRiesgosJSON %>')
 
-    title: {
-        text: 'Viabilidad a través del Tiempo',
-        align: 'left'
-    },
-    // subtitle: {
-    //     text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
-    //     align: 'left'
-    // },
-    yAxis: {
+    function getMonthNamesBetween(startDate, endDate) {
+        const months = []
+        const current = new Date(startDate)
+
+        while (current <= endDate) {
+            months.push(current.toLocaleString('default', { month: 'long' }))
+            current.setMonth(current.getMonth() + 1)
+        }
+
+        return months
+    }
+
+    function getWeekNamesBetween(startDate, endDate) {
+        const weeks = []
+        let current = new Date(startDate)
+        current.setHours(0, 0, 0, 0) // Set time to midnight for consistency
+
+        while (current <= endDate) {
+            const weekStart = new Date(current)
+            const weekEnd = new Date(current)
+            weekEnd.setDate(weekEnd.getDate() + 6)
+
+            const startMonth = weekStart.getMonth() + 1
+            const startDate = weekStart.getDate()
+            const endMonth = weekEnd.getMonth() + 1
+            const endDate = weekEnd.getDate()
+
+            weeks.push(`${startMonth}/${startDate} - ${endMonth}/${endDate}`)
+
+            current.setDate(current.getDate() + 7)
+        }
+
+        return weeks
+    }
+
+   
+    function calculateViabilityPoints(risksData, weeks) {
+        const points = {}
+        let cumulativeImpactSum = 0
+
+        weeks.forEach((week) => {
+            const [start, end] = week.split(' - ').map(date => new Date(`${new Date().getFullYear()}/${date}`))
+            const risksInWeek = risksData.filter((risk) => {
+                const riskDate = new Date(risk.FechaAdded)
+                return riskDate >= start && riskDate <= end
+            })
+
+            const weeklyImpactSum = risksInWeek.reduce((total, risk) => total + risk.Impacto, 0)
+            cumulativeImpactSum += weeklyImpactSum
+            const viability = 100 - cumulativeImpactSum * 100
+            points[week] = viability.toFixed(2)
+        })
+
+        return points
+    }
+
+
+    // const months = getMonthNamesBetween(startDate, today)
+    // const dataPoints = Array.from({ length: months.length }, () => Math.floor(Math.random() * 100))
+    // console.log(dataPoints)
+    // const viabilityPoints = calculateViabilityPoints(risksData, months)
+    // console.log(viabilityPoints)
+    // const numbersOnly = Object.values(viabilityPoints).map(Number)
+    // console.log(numbersOnly)
+    const weeks = getWeekNamesBetween(startDate, today)
+    const viabilityPoints = calculateViabilityPoints(risksData, weeks)
+    const numbersOnly = Object.values(viabilityPoints).map(Number)
+
+    Highcharts.chart('container', {
+        title: {
+            text: 'Viabilidad a través del Tiempo',
+            align: 'left'
+        },
+        yAxis: {
         title: {
             text: 'Viabilidad (%)'
-        }
+        },
+        min: 0, // Set minimum value for the y-axis
+        max: 100, // Set maximum value for the y-axis
     },
-    xAxis: {
-        categories: [
-            'January', 'February', 'March', 'April', 'May', 'June'
-        ],
-        accessibility: {
-            rangeDescription: 'Range: January to December'
-        }
-    },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-    plotOptions: {
-        // series: {
-        //     label: {
-        //         connectorAllowed: false
-        //     },
-        //     pointStart: 2023
-        // }
-    },
-    series: [{
-        name: 'Viabilidad',
-        data: [
-            74, 82, 93, 81, 67, 71
-        ]
-    }],
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
+        xAxis: {
+            categories: weeks
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
                 }
             }
-        }]
-    }
+        },
+        series: [{
+            name: 'Viabilidad',
+            data: numbersOnly
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
     })
+
+    // Highcharts.chart('container', {
+
+    // title: {
+    //     text: 'Viabilidad a través del Tiempo',
+    //     align: 'left'
+    // },
+    // yAxis: {
+    //     title: {
+    //         text: 'Viabilidad (%)'
+    //     }
+    // },
+    // xAxis: {
+    //     categories: months
+    //     // categories: [
+    //     //     'January', 'February', 'March', 'April', 'May', 'June'
+    //     // ]
+    // },
+    // legend: {
+    //     layout: 'vertical',
+    //     align: 'right',
+    //     verticalAlign: 'middle'
+    // },
+    // plotOptions: {
+    //     series: {
+    //         label: {
+    //             connectorAllowed: false
+    //         },
+    //         pointStart: 2023
+    //     }
+    // },
+    // series: [{
+    //     name: 'Viabilidad',
+    //     data: [
+    //         74, 82, 93, 81, 67, 71
+    //     ]
+    // }],
+    // responsive: {
+    //     rules: [{
+    //         condition: {
+    //             maxWidth: 500
+    //         },
+    //         chartOptions: {
+    //             legend: {
+    //                 layout: 'horizontal',
+    //                 align: 'center',
+    //                 verticalAlign: 'bottom'
+    //             }
+    //         }
+    //     }]
+    // }
+    // })
 
     // Cerrar Proyecto Popup
     var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
@@ -328,6 +439,10 @@ Highcharts.chart('container-viable', {
 	        e.preventDefault();
 	        overlay.classList.remove('active')
 	        popup.classList.remove('active')
+            finalSubmit.classList.add('hidden')
+            warningRed.classList.add('hidden')
+            const checkbox = document.getElementById('are-you-sure')
+            checkbox.checked = false
         })
 
         btnPopupSeguridad.addEventListener('click', function() {
@@ -340,27 +455,27 @@ Highcharts.chart('container-viable', {
             if (checkbox.checked == true) {
                 finalSubmit.classList.remove('hidden')
                 warningRed.classList.remove('hidden')
+            } else if (checkbox.checked == false) {
+                finalSubmit.classList.add('hidden')
+                warningRed.classList.add('hidden')
             }
         }
 
         function cleanTextarea() {
-        // Get the textarea element
-        var textarea = document.getElementById('userInput');
+            var textarea = document.getElementById('userInput')
 
-        // Get the value from the textarea and remove extra spaces using a regular expression
-        var cleanedValue = textarea.value.replace(/\s+/g, ' ').trim();
+            var cleanedValue = textarea.value.replace(/\s+/g, ' ').trim()
 
-        // Set the cleaned value back to the textarea
-        textarea.value = cleanedValue;
-}
+            textarea.value = cleanedValue
+        } 
 
         function formatDate(dateString) {
-            const parts = dateString.split('/');
+            const parts = dateString.split('/')
             if (parts.length !== 3) {
-                return null; // Invalid date format
+                return null 
             }
-            const [day, month, year] = parts;
-            return `${year}-${month}-${day}`;
+            const [day, month, year] = parts
+            return `${year}-${month}-${day}`
         }
 
         // Editar Proyecto Popup
@@ -387,8 +502,6 @@ Highcharts.chart('container-viable', {
             fechaF.name = 'fechaFinal'
             fechaF.id = 'fecha-F'
             fechaF.value = dateFinalFormatted
-            console.log(dateInicioFormatted)
-            console.log(dateFinalFormatted)
 
             fechasDiv.appendChild(fechaI)
             fechasDiv.appendChild(fechaF)

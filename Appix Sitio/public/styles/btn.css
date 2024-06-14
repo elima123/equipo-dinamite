@@ -35,6 +35,17 @@
   outline: 0;
 } */
 
+.btn-pasados {
+  color: darkred;
+  border: solid darkred 1px;
+}
+
+.btn-pasados:focus {
+  border-color: darkred;
+  box-shadow: darkred 0 2px 5px 0;
+  outline: 0;
+}
+
 .btn-empresa {
     color: orange;
     border: solid orange 1px;

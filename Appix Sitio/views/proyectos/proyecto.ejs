@@ -11,14 +11,14 @@
   <nav class="universal-nav">
     <div class="flex-1">
       <%- include('./../includes/go-back.html') %>
-        <img src="/imgs/logo_blanco.png" alt="Appix">
+      <a href="/usuarios/homePage"><img src="/imgs/logo_blanco.png" alt="Appix"></a>
     </div>
     <div class="flex-2">
       <%- include('./../includes/person_icon.html') %>
       <p><%= user.name %></p>
       <% if (user.rol=="manager" ) { %>
         <p>(M)</p>
-      <% } else if (user.Rol=="desarrollador" ){ %>
+      <% } else if (user.rol=="desarrollador" ){ %>
           <p>(D)</p>
       <% } %>
     </div>
@@ -39,10 +39,12 @@
   <section class="general-view">
     <div class="flex-3 general-title">
       <h1><%= proyectoObject.Nombre %></h1>
-      <div class="flex-3" style="flex-basis: 35%; position: relative; left: 11rem;">
-        <button role="none" class="button-23" style="color: blue; border-color: blue;" id="btn-abrir-edit-p">Editar Proyecto</button>
-        <button role="none" class="button-23" style="color: red; border-color: red;" id="btn-abrir-popup">Cerrar Proyecto</button>
-      </div>
+      <% if (user.rol == 'manager') { %>
+        <div class="flex-3" style="flex-basis: 35%; position: relative; left: 11rem;">
+          <button role="none" class="button-23" style="color: blue; border-color: blue;" id="btn-abrir-edit-p">Editar Proyecto</button>
+          <button role="none" class="button-23" style="color: red; border-color: red;" id="btn-abrir-popup">Cerrar Proyecto</button>
+        </div>
+      <% } %>
     </div>
 
     <div class="flex-3" style="align-items: center; margin-bottom: 2rem;">
@@ -107,15 +109,16 @@
   <div class="riesgos-view hidden">
     <div class="flex-3" style=" width: 90%; margin-bottom: 2rem;">
       <h1><%= proyectoObject.Nombre %></h1>
-      <div class="flex-3" style="flex-basis: 35%; position: relative; left: 11rem;">
-        <button id="btn-crearRiesgo" role="none" class="button-23" style="color: green; border-color: green;">
-          Crear Riesgo
-        </button>
-        <button id="btn-EditarRiesgos-abrir" role="none" class="button-23" style="color: orange; border-color: orange;">
-          Editar Riesgos
-        </button>
-      </div>
-
+      <% if (user.rol == 'manager') { %>
+        <div class="flex-3" style="flex-basis: 35%; position: relative; left: 11rem;">
+          <button id="btn-crearRiesgo" role="none" class="button-23" style="color: green; border-color: green;">
+            Crear Riesgo
+          </button>
+          <button id="btn-EditarRiesgos-abrir" role="none" class="button-23" style="color: orange; border-color: orange;">
+            Editar Riesgos
+          </button>
+        </div>
+      <% } %>
     </div>
     <h4>Riesgos Anotados</h4>
     <table class="table table-striped" style="margin-bottom: 3rem; width: 95%;">
@@ -123,10 +126,11 @@
         <tr>
           <th scope="col">IDRiesgo</th>
           <th scope="col">Riesgo</th>
-          <th scope="col">Categoria</th>
+          <th scope="col">Categoría</th>
           <th scope="col">Probabilidad</th>
           <th scope="col">Impacto</th>
-          <th scope="col">Estrategia</th>
+          <th scope="col">Estrategía</th>
+          <th scope="col">Impacto Numérico</th>
         </tr>
       </thead>
       <tbody>
@@ -138,6 +142,7 @@
               <td><%= riesgo.Probabilidad %></td>
               <td><%= riesgo.Impacto %></td>
               <td><%= riesgo.Estrategia %></td>
+              <td><%= riesgo.ImpNum %></td>
           </tr>
       <% }) %>
     </tbody>
@@ -229,6 +234,7 @@
           <form action="/proyecto/agregarDev" method="POST">
             <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
             <select name="idUsuario">
+              <option>Selecciona Desarrollador</option>
               <% for (i = 0; i < nonDevs.length; i++) { %>
                 <option value="<%= nonDevs[i].IDUsuario %>"><%= nonDevs[i].IDUsuario %>: <%= nonDevs[i].Nombre %></option>
               <% } %>
@@ -249,7 +255,6 @@
         <div class="contenedor-inputs">
           <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
           <h5>Cual es la razón por cerrar el proyecto?</h5>
-          <p style="color: gray; font-size: small;">(opcional, se puede dejar vacio)</p>
           <textarea placeholder="Falta de recursos, otra cosa... " rows="2" cols="60" name="razon">
           </textarea><br>
           <div id="popup-2" class="hidden">
@@ -272,6 +277,7 @@
       <h3 style="margin-bottom: 2rem; color: darkslategray;">Crear Riesgo</h3>
       <form action="/proyecto/crearRiesgo" method="POST">
         <div class="contenedor-inputs">
+          <input type="hidden" name="idProyecto" value="<%= proyectoObject.IDProyecto %>">
           <input type="text" placeholder="descripción del riesgo..." name="riesgo">
           <select name="categoria">
             <option value="" class="placeholder">Categoria</option>
@@ -283,15 +289,15 @@
           </select>
           <select name="probabilidad">
             <option value="" class="placeholder">Probabilidad</option>
-            <option value="Alcance">Alta</option>
-            <option value="Calidad">Media</option>
-            <option value="Costo">Baja</option>
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
           </select>
           <select name="impacto">
             <option value="" class="placeholder">Impacto</option>
-            <option value="Alcance">Alto</option>
-            <option value="Calidad">Medio</option>
-            <option value="Costo">Bajo</option>
+            <option value="Alto">Alto</option>
+            <option value="Medio">Medio</option>
+            <option value="Bajo">Bajo</option>
           </select>
           <input type="text" placeholder="estrategia para atender este riesgo..." name="estrategia">
           <button type="submit" class="btn-submit">Crear Riesgo</button>          

@@ -1,0 +1,210 @@
+<script>      
+    function backHome() {
+        // window.location.href = 'back'
+        window.history.back()
+    }
+
+    let projects = JSON.parse('<%- projectsJSON %>')
+    const projPorPage = 9
+    // let currentFilter = "id"
+    let searchTerm = ""
+    let currentPage = 1
+    const searchSubmit = document.getElementById('button-addon2')
+    const searchInput = document.getElementById('search-input')
+    // cambiarPagina(currentPage)
+    filterProjects(searchTerm, currentPage)
+
+    searchSubmit.addEventListener('click', handleSearch)
+
+    searchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                    handleSearch()
+            }
+    })
+
+    // function handleFilterChange(selectElement) {
+    //         currentFilter = selectElement.value
+    //         filterProjects(searchTerm, currentFilter, currentPage)
+    // }
+
+    function handleSearch() {
+            searchTerm = searchInput.value.toLowerCase()
+            // filterProjects(searchTerm, currentFilter, currentPage)
+            filterProjects(searchTerm, currentPage)
+    }
+
+    function cambiarPagina(numPagina) {
+            console.log(searchTerm, numPagina)
+            filterProjects(searchTerm, numPagina)
+    }
+
+    function filterProjects(searchTerm, numPagina) {
+            console.log(searchTerm, numPagina)
+
+            let filteredProjects = projects.filter(project =>
+                    project.Nombre.toLowerCase().includes(searchTerm) || 
+                    project.Descripcion.toLowerCase().includes(searchTerm) ||
+                    project.nombreEmpresa.toLowerCase().includes(searchTerm)
+            )
+            console.log("total proj's : ", filteredProjects.length)
+
+            const rangeHigh = numPagina*projPorPage - 1
+            const rangeLow = (numPagina-1)*projPorPage
+
+            filteredProjects.map((project, i) => {
+                    if (i >= rangeLow && i <= rangeHigh) {
+                            project.active = true
+                    } else {
+                            project.active = false
+                    }
+            })
+
+            const paginationList = document.getElementById('pagination')
+            paginationList.textContent = ''
+
+            if (numPagina != 1) {
+                    const forwardArrow = document.createElement('li')
+                    forwardArrow.className = 'page-item'
+                    paginationList.appendChild(forwardArrow)
+
+                    const arrow = document.createElement('a')
+                    arrow.className = 'page-link'
+                    arrow.textContent = '<'
+                    arrow.onclick = () => cambiarPagina(numPagina-1)
+                    forwardArrow.appendChild(arrow)  
+            }
+
+            let numPaginas = 0
+            if (filteredProjects.length%projPorPage == 0) {
+                    numPaginas = Math.floor(filteredProjects.length/projPorPage) 
+            } else {
+                    numPaginas = Math.floor(filteredProjects.length/projPorPage) + 1        
+            }
+            console.log("num paginas calculadas: ", numPaginas)
+            if (numPaginas == 0) {
+                    numPaginas = 1
+            }
+
+            for (let i = 1; i <= numPaginas; i++) {
+                    (function(pageNumber) {
+                            const page = document.createElement('li')
+                            page.className = 'page-item'
+                            paginationList.appendChild(page)
+
+                            const number = document.createElement('a')
+                            number.className = 'page-link'
+                            number.textContent = pageNumber
+                            number.onclick = () => cambiarPagina(pageNumber)
+                            page.appendChild(number)
+                    })(i)
+            }
+
+            if (numPagina != numPaginas) {
+                    const forwardArrow = document.createElement('li')
+                    forwardArrow.className = 'page-item'
+                    paginationList.appendChild(forwardArrow)
+
+                    const arrow = document.createElement('a')
+                    arrow.className = 'page-link'
+                    arrow.textContent = '>'
+                    arrow.onclick = () => cambiarPagina(numPagina+1)
+                    forwardArrow.appendChild(arrow)
+            }
+
+            makeCards(filteredProjects)
+    }
+
+
+    function makeCards(filteredProjects) {
+            const projectCards = document.getElementById('project-cards')
+            projectCards.innerHTML = ''
+
+            filteredProjects.forEach(project => {
+                    if (project.active == true) {
+                            const card = document.createElement('div')
+                            card.className = 'card'
+                            card.style = 'width: 20rem; height: 17rem;'
+
+                            const cardBody = document.createElement('div')
+                            cardBody.className = 'card-body'
+
+                            const titleScoreDiv = document.createElement('div')
+                            titleScoreDiv.className = 'flex-3'
+
+                            const title = document.createElement('h5')
+                            title.className = 'card-title'
+                            title.textContent = project.Nombre
+
+                            const viability = document.createElement('p')
+                            if (project.Viabilidad == null){
+                                    viability.className = "blank"
+                            } else if (project.Viabilidad < 50) { 
+                                    viability.className = 'very-risky' 
+                            } else if (project.Viabilidad < 65){ 
+                                    viability.className='at-risk'
+                            } else if (project.Viabilidad < 80){ 
+                                    viability.className='viable'
+                            } else if (project.Viabilidad < 95){ 
+                                    viability.className='very-viable'
+                            } else if (project.Viabilidad <= 100){ 
+                                    viability.className='perfect'
+                            } 
+
+                            if (project.Viabilidad == null) {
+                                    viability.textContent = "?"        
+                            } else {
+                                    viability.textContent = project.Viabilidad
+                            }
+                            const client = document.createElement('h6')
+                            client.className = 'card-subtitle mb-2 text-body-secondary'
+                            client.textContent = 'Cliente: ' + project.nombreEmpresa
+
+                            const descTitle = document.createElement('h6')
+                            descTitle.textContent = 'Razon por Terminacion'
+
+                            const description = document.createElement('p')
+                            description.className = 'card-text p-desc'
+                            description.textContent = project.RazonCerrado
+
+                            const fechasLabelDiv = document.createElement('div')
+                            fechasLabelDiv.className = 'fechas-div'
+                            
+                            const fechaFin = document.createElement('p')
+                            fechaFin.className = 'card-text'
+                            fechaFin.textContent = 'Fecha Cerrado'
+
+                            const fechasDiv = document.createElement('div')
+                            fechasDiv.className = 'fechas-div'
+
+                            const fechaEnd = document.createElement('p')
+                            fechaEnd.className = 'card-text'
+                            fechaEnd.textContent = project.cerrado
+                                    
+                            titleScoreDiv.append(title)
+                            titleScoreDiv.append(viability)
+
+                            fechasLabelDiv.append(fechaFin)
+
+                            fechasDiv.append(fechaEnd)
+
+                            cardBody.append(titleScoreDiv)
+                            cardBody.append(client)
+                            cardBody.append(descTitle)
+                            cardBody.append(description)
+                            cardBody.append(fechasLabelDiv)
+                            cardBody.append(fechasDiv)
+
+                            card.appendChild(cardBody)
+
+                        projectCards.appendChild(card)
+                    }
+                             
+            })
+    }
+
+    // function filterPastProjects() {
+
+    // }
+
+    
+</script>

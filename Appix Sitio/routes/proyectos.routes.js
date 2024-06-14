@@ -7,6 +7,7 @@ const router = express.Router()
 
 router.use(sessionChecker)
 
+router.get('/historia', isAuth, controller.getHistoria)
 router.get("/:IDProyecto", isAuth, controller.get_proyecto)
 router.post('/registro', isAuth, controller.registrar_proyecto)
 router.post('/cerrar', isAuth, controller.cerrarProyecto)

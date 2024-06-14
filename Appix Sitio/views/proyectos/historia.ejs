@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+    <head>
+        <%- include('./../includes/head.html') %>
+        <title>Home</title>
+    </head> 
+    <body class="first-body">
+        <nav class="universal-nav">
+            <div class="flex-1">
+                <%- include('./../includes/go-back.html') %>
+                <a href="/usuarios/homePage"><img src="/imgs/logo_blanco.png" alt="Appix"></a>
+            </div>
+            <div class="search-nav">
+                <div class="input-group mb-3 no-margin">
+                    <input type="text" class="form-control" placeholder="buscar proyecto..." id="search-input">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <%- include('./../includes/search-icon.html') %>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-2">
+                <%- include('./../includes/person_icon.html') %>
+                <p><%= user.Nombre %></p>
+                <% if (user.Rol == "manager") { %>
+                  <p>(M)</p>
+                <% } else if (user.Rol == "desarrollador"){ %>
+                  <p>(D)</p>
+                <% } %>
+            </div>
+            <div class="flex-cerrar">
+              <form action="/usuarios/salir" method="POST">
+                <%- include('./../includes/leave_button.html') %> 
+              </form>
+            </div>
+        </nav>
+
+        <header class="manager-options">
+          <div class="order-by-div">
+              <h1 class="archivados-title">Proyectos Terminados</h1>
+          </div>  
+      </header> 
+
+        <div class="card-flexbox" id="project-cards">
+          <% if (projects.length == 0) { %>
+            <h2>No hay projectos pasados</h2>
+          <% } %>
+        </div>
+
+        <nav class="page-counter">
+            <ul class="pagination" id="pagination">
+    
+            </ul>
+        </nav>
+
+        <footer>
+            <p style="display: inline-block">Powered by: </p>
+            <img src="/imgs/dinamite_logo.png" width="240">
+        </footer>   
+      
+    </body>
+    
+    <% if (projects.length == 0) { %>
+      <%- include('./../scripts/no_proj.ejs') %>
+    <% } else { %>
+      <%- include('./../scripts/historia_script.ejs') %>
+    <% } %>
+</html>
